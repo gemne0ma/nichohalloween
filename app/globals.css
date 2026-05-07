@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Country Almanac base styles */
+@layer base {
+  body {
+    @apply bg-paper text-ink;
+    font-family: var(--font-cormorant-garamond), serif;
+    line-height: 1.6;
+    font-size: 18px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* No system sans. Ever. */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-im-fell-english-sc), serif;
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+  }
+
+  a {
+    @apply text-rust;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  a:hover {
+    @apply text-rust-deep;
+  }
+
+  /* Selection colour */
+  ::selection {
+    @apply bg-forest text-bone;
+  }
+}

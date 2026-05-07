@@ -1,0 +1,2064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nicho Halloween Festival</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=IM+Fell+English:ital@0;1&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F4EBD9;
+    --paper-deep: #E8DCC0;
+    --bone: #EDE3CE;
+    --ink: #1A1A1A;
+    --ink-soft: #3A3A3A;
+    --forest: #2D3A2E;
+    --forest-deep: #1F2A20;
+    --moss: #5A6B4F;
+    --rust: #B85C2E;
+    --rust-deep: #8B3F1F;
+    --pumpkin: #D87A3F;
+    --plum: #4A2942;
+    --mist: #A8AC9F;
+    --shadow: rgba(45,58,46,0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Cormorant Garamond', serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.6;
+    font-size: 18px;
+    overflow-x: hidden;
+  }
+
+  /* Paper grain texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      radial-gradient(circle at 15% 25%, rgba(139,63,31,0.04) 0%, transparent 35%),
+      radial-gradient(circle at 85% 75%, rgba(45,58,46,0.05) 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, rgba(184,92,46,0.02) 0%, transparent 60%);
+    z-index: 1;
+  }
+
+  /* Grain noise overlay */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0.4;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.08 0 0 0 0 0.05 0 0 0 0.06 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+
+  .stage { position: relative; z-index: 3; }
+
+  /* ============= TOP BAR (PAGE NAV) ============= */
+  .stage-nav {
+    position: fixed;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    background: var(--ink);
+    color: var(--bone);
+    padding: 6px 8px;
+    border-radius: 999px;
+    display: flex;
+    gap: 4px;
+    box-shadow: 0 4px 24px var(--shadow);
+    font-family: 'Special Elite', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+  }
+  .stage-nav button {
+    background: none;
+    border: none;
+    color: var(--bone);
+    padding: 8px 14px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: inherit;
+    letter-spacing: inherit;
+    text-transform: uppercase;
+    transition: background 0.2s;
+  }
+  .stage-nav button:hover { background: rgba(255,255,255,0.1); }
+  .stage-nav button.active { background: var(--rust); color: var(--bone); }
+
+  /* ============= SCREEN CONTAINER ============= */
+  .screen { display: none; min-height: 100vh; }
+  .screen.active { display: block; }
+
+  /* ============= PUBLIC SITE NAV ============= */
+  .public-nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--paper);
+    border-bottom: 1px solid var(--ink);
+    padding: 16px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav-brand {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 20px;
+    color: var(--ink);
+    letter-spacing: 0.04em;
+  }
+  .nav-brand .skull { color: var(--rust); margin: 0 8px; }
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    font-family: 'Special Elite', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .nav-links a {
+    color: var(--ink);
+    text-decoration: none;
+    padding-bottom: 4px;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+  }
+  .nav-links a:hover { border-bottom-color: var(--rust); }
+  .nav-cta {
+    font-family: 'Special Elite', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    background: var(--ink);
+    color: var(--bone);
+    padding: 10px 18px;
+    text-decoration: none;
+    border: 1px solid var(--ink);
+    transition: all 0.2s;
+  }
+  .nav-cta:hover { background: var(--rust); border-color: var(--rust); }
+
+  /* ============= HERO ============= */
+  .hero {
+    padding: 80px 40px 60px;
+    text-align: center;
+    position: relative;
+  }
+  .hero-eyebrow {
+    font-family: 'Special Elite', monospace;
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--rust-deep);
+    margin-bottom: 24px;
+  }
+  .hero-title {
+    font-family: 'IM Fell English SC', serif;
+    font-size: clamp(56px, 9vw, 128px);
+    line-height: 0.95;
+    color: var(--ink);
+    letter-spacing: 0.01em;
+    margin-bottom: 8px;
+  }
+  .hero-title .ampersand {
+    font-style: italic;
+    font-family: 'IM Fell English', serif;
+    color: var(--rust);
+  }
+  .hero-subtitle {
+    font-family: 'IM Fell English', serif;
+    font-style: italic;
+    font-size: clamp(20px, 2.4vw, 28px);
+    color: var(--ink-soft);
+    margin-bottom: 16px;
+  }
+  .skull-rule {
+    font-size: 14px;
+    letter-spacing: 1.2em;
+    color: var(--ink);
+    margin: 24px 0 16px;
+  }
+  .hero-meta {
+    font-family: 'Special Elite', monospace;
+    font-size: 13px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  .hero-meta .dot { color: var(--rust); margin: 0 12px; }
+
+  /* Hero image mock - represents the poster photo */
+  .hero-image {
+    margin: 48px auto 0;
+    max-width: 920px;
+    aspect-ratio: 16/10;
+    background:
+      linear-gradient(135deg, rgba(45,58,46,0.6), rgba(45,58,46,0.2)),
+      radial-gradient(ellipse at 30% 70%, var(--moss) 0%, var(--forest) 100%);
+    border: 1px solid var(--ink);
+    box-shadow: 0 12px 40px var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-image::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 25% 65%, rgba(237,227,206,0.9) 8%, transparent 12%),
+      radial-gradient(circle at 75% 70%, rgba(237,227,206,0.85) 7%, transparent 11%),
+      radial-gradient(circle at 25% 80%, rgba(216,122,63,0.7) 3%, transparent 5%);
+  }
+  .hero-image::after {
+    content: 'Photography placeholder · two children in sheets in a wildflower field';
+    position: absolute;
+    bottom: 16px;
+    right: 20px;
+    font-family: 'Special Elite', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: rgba(237,227,206,0.6);
+    text-transform: uppercase;
+  }
+
+  /* ============= SECTIONS ============= */
+  section.public-section {
+    padding: 80px 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .section-eyebrow {
+    font-family: 'Special Elite', monospace;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--rust-deep);
+    margin-bottom: 12px;
+    text-align: center;
+  }
+  .section-title {
+    font-family: 'IM Fell English SC', serif;
+    font-size: clamp(36px, 5vw, 56px);
+    color: var(--ink);
+    text-align: center;
+    margin-bottom: 16px;
+    letter-spacing: 0.02em;
+    line-height: 1;
+  }
+  .section-lede {
+    text-align: center;
+    font-style: italic;
+    font-size: 20px;
+    color: var(--ink-soft);
+    max-width: 640px;
+    margin: 0 auto 56px;
+  }
+
+  /* ============= ATTRACTIONS GRID ============= */
+  .attractions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 32px;
+  }
+  .attraction-card {
+    background: var(--bone);
+    border: 1px solid var(--ink);
+    padding: 0;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .attraction-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px var(--shadow);
+  }
+  .attraction-img {
+    aspect-ratio: 4/3;
+    background: var(--forest);
+    position: relative;
+    overflow: hidden;
+  }
+  .attraction-img::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 40% 60%, var(--moss) 0%, var(--forest-deep) 80%);
+    opacity: 0.9;
+  }
+  .attraction-img.haunted::before { background: radial-gradient(ellipse at 50% 50%, var(--plum) 0%, var(--forest-deep) 80%); }
+  .attraction-img.shop::before { background: radial-gradient(ellipse at 30% 70%, var(--rust) 0%, var(--rust-deep) 80%); }
+  .attraction-img.potions::before { background: radial-gradient(ellipse at 70% 40%, var(--moss) 0%, var(--plum) 80%); }
+  .attraction-img.cake::before { background: radial-gradient(ellipse at 50% 50%, var(--pumpkin) 0%, var(--rust-deep) 80%); }
+  .attraction-img.maze::before { background: radial-gradient(ellipse at 50% 50%, var(--ink-soft) 0%, var(--ink) 80%); }
+  .attraction-body {
+    padding: 24px 28px 28px;
+    border-top: 1px solid var(--ink);
+  }
+  .attraction-num {
+    font-family: 'Special Elite', monospace;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    color: var(--rust-deep);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .attraction-title {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 24px;
+    color: var(--ink);
+    letter-spacing: 0.04em;
+    margin-bottom: 10px;
+    line-height: 1.1;
+  }
+  .attraction-desc {
+    font-size: 16px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+  .attraction-meta {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px dotted var(--mist);
+    font-family: 'Special Elite', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--moss);
+    text-transform: uppercase;
+  }
+
+  /* ============= TOKENS PANEL ============= */
+  .tokens-panel {
+    background: var(--forest);
+    color: var(--bone);
+    padding: 100px 40px;
+    text-align: center;
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+  }
+  .tokens-panel .section-eyebrow { color: var(--pumpkin); }
+  .tokens-panel .section-title { color: var(--bone); }
+  .tokens-panel .section-lede { color: rgba(237,227,206,0.7); }
+
+  .bundles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .bundle {
+    background: var(--bone);
+    color: var(--ink);
+    border: 1px solid var(--bone);
+    padding: 32px 28px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+  }
+  .bundle:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.3);
+  }
+  .bundle.popular {
+    border: 2px solid var(--pumpkin);
+    transform: scale(1.04);
+  }
+  .bundle.popular::before {
+    content: 'Most popular';
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--pumpkin);
+    color: var(--ink);
+    font-family: 'Special Elite', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    white-space: nowrap;
+  }
+  .bundle-tokens {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 56px;
+    line-height: 1;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .bundle-label {
+    font-family: 'Special Elite', monospace;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--rust-deep);
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+  .bundle-rule {
+    width: 40px;
+    height: 1px;
+    background: var(--ink);
+    margin: 0 auto 18px;
+  }
+  .bundle-price {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 32px;
+    color: var(--forest);
+    margin-bottom: 8px;
+  }
+  .bundle-per {
+    font-style: italic;
+    font-size: 14px;
+    color: var(--moss);
+  }
+
+  .tokens-explainer {
+    max-width: 760px;
+    margin: 56px auto 0;
+    padding: 32px;
+    background: rgba(237,227,206,0.08);
+    border: 1px dotted rgba(237,227,206,0.3);
+    text-align: left;
+  }
+  .tokens-explainer h4 {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 18px;
+    color: var(--bone);
+    margin-bottom: 14px;
+    letter-spacing: 0.05em;
+  }
+  .tokens-explainer ol {
+    list-style: none;
+    counter-reset: step;
+  }
+  .tokens-explainer li {
+    counter-increment: step;
+    padding: 10px 0 10px 44px;
+    position: relative;
+    color: rgba(237,227,206,0.85);
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .tokens-explainer li::before {
+    content: counter(step, lower-roman) '.';
+    position: absolute;
+    left: 0;
+    top: 10px;
+    font-family: 'IM Fell English', serif;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--pumpkin);
+    width: 32px;
+    text-align: right;
+  }
+
+  /* ============= SPONSORS ============= */
+  .sponsors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .sponsor-tile {
+    aspect-ratio: 16/9;
+    background: var(--bone);
+    border: 1px solid var(--mist);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'IM Fell English SC', serif;
+    font-size: 14px;
+    color: var(--moss);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 16px;
+  }
+  .sponsor-tile.tier-headline {
+    grid-column: span 2;
+    grid-row: span 2;
+    aspect-ratio: 2/1;
+    font-size: 20px;
+    color: var(--forest);
+    border: 2px solid var(--rust);
+  }
+
+  /* ============= FOOTER ============= */
+  .public-footer {
+    background: var(--ink);
+    color: var(--bone);
+    padding: 60px 40px 40px;
+    text-align: center;
+  }
+  .footer-skull {
+    font-size: 14px;
+    letter-spacing: 1em;
+    color: var(--rust);
+    margin-bottom: 24px;
+  }
+  .footer-title {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 32px;
+    color: var(--bone);
+    letter-spacing: 0.04em;
+    margin-bottom: 12px;
+  }
+  .footer-meta {
+    font-family: 'Special Elite', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: rgba(237,227,206,0.6);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+  }
+  .footer-links {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+    font-family: 'Special Elite', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .footer-links a { color: rgba(237,227,206,0.7); text-decoration: none; }
+  .footer-links a:hover { color: var(--pumpkin); }
+  .footer-fineprint {
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(237,227,206,0.1);
+    font-style: italic;
+    font-size: 13px;
+    color: rgba(237,227,206,0.4);
+  }
+
+  /* ============= LOGIN SCREEN ============= */
+  .login-wrap {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+  }
+  .login-card {
+    background: var(--bone);
+    border: 1px solid var(--ink);
+    padding: 56px 48px;
+    max-width: 440px;
+    width: 100%;
+    box-shadow: 0 20px 60px var(--shadow);
+  }
+  .login-mark {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .login-mark .eyebrow {
+    font-family: 'Special Elite', monospace;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--rust-deep);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .login-mark h1 {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 32px;
+    color: var(--ink);
+    line-height: 1;
+    letter-spacing: 0.03em;
+  }
+  .login-mark .skull {
+    color: var(--rust);
+    font-size: 12px;
+    letter-spacing: 0.5em;
+    margin: 16px 0 0;
+  }
+  .field {
+    margin-bottom: 20px;
+  }
+  .field label {
+    display: block;
+    font-family: 'Special Elite', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--rust-deep);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .field input {
+    width: 100%;
+    padding: 12px 14px;
+    background: var(--paper);
+    border: 1px solid var(--ink);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    color: var(--ink);
+  }
+  .field input:focus {
+    outline: 2px solid var(--rust);
+    outline-offset: -1px;
+  }
+  .login-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--ink);
+    color: var(--bone);
+    border: none;
+    font-family: 'Special Elite', monospace;
+    font-size: 12px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-top: 8px;
+  }
+  .login-btn:hover { background: var(--rust); }
+  .login-help {
+    text-align: center;
+    margin-top: 24px;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--moss);
+  }
+  .login-help a { color: var(--rust-deep); }
+
+  /* ============= EXEC DASHBOARD ============= */
+  .dash {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    min-height: 100vh;
+  }
+  .dash-aside {
+    background: var(--forest);
+    color: var(--bone);
+    padding: 24px 0;
+    border-right: 1px solid var(--ink);
+  }
+  .dash-brand {
+    padding: 0 24px 24px;
+    border-bottom: 1px solid rgba(237,227,206,0.15);
+    margin-bottom: 16px;
+  }
+  .dash-brand .eyebrow {
+    font-family: 'Special Elite', monospace;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    color: var(--pumpkin);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .dash-brand h2 {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 18px;
+    line-height: 1.1;
+    letter-spacing: 0.04em;
+    color: var(--bone);
+  }
+  .dash-nav {
+    display: flex;
+    flex-direction: column;
+  }
+  .dash-nav-section {
+    padding: 12px 24px 4px;
+    font-family: 'Special Elite', monospace;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    color: rgba(237,227,206,0.5);
+    text-transform: uppercase;
+  }
+  .dash-nav a {
+    padding: 10px 24px;
+    color: rgba(237,227,206,0.8);
+    text-decoration: none;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .dash-nav a:hover { background: rgba(0,0,0,0.15); color: var(--bone); }
+  .dash-nav a.active {
+    background: rgba(0,0,0,0.25);
+    color: var(--bone);
+    border-left-color: var(--pumpkin);
+  }
+  .dash-nav .badge {
+    font-family: 'Special Elite', monospace;
+    font-size: 10px;
+    background: var(--rust);
+    color: var(--bone);
+    padding: 1px 7px;
+    border-radius: 999px;
+    letter-spacing: 0.05em;
+  }
+  .dash-aside-foot {
+    margin-top: 32px;
+    padding: 16px 24px;
+    border-top: 1px solid rgba(237,227,206,0.15);
+    font-family: 'Special Elite', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: rgba(237,227,206,0.5);
+    text-transform: uppercase;
+  }
+  .dash-aside-foot strong {
+    color: var(--bone);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 500;
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 14px;
+    display: block;
+    margin-top: 4px;
+  }
+
+  .dash-main {
+    padding: 32px 40px 60px;
+    background: var(--paper);
+    overflow: auto;
+  }
+  .dash-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 16px;
+    margin-bottom: 32px;
+  }
+  .dash-header h1 {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 40px;
+    color: var(--ink);
+    line-height: 1;
+    letter-spacing: 0.03em;
+  }
+  .dash-header .eyebrow {
+    font-family: 'Special Elite', monospace;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: var(--rust-deep);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .dash-countdown {
+    text-align: right;
+    font-family: 'Special Elite', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+  .dash-countdown strong {
+    display: block;
+    font-family: 'IM Fell English SC', serif;
+    font-size: 32px;
+    color: var(--rust-deep);
+    letter-spacing: 0.03em;
+    margin-bottom: 2px;
+    text-transform: none;
+  }
+
+  /* Stat tiles */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+  .stat {
+    background: var(--bone);
+    border: 1px solid var(--ink);
+    padding: 24px 20px;
+    position: relative;
+  }
+  .stat-eyebrow {
+    font-family: 'Special Elite', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--rust-deep);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .stat-value {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 38px;
+    color: var(--ink);
+    line-height: 1;
+    letter-spacing: 0.02em;
+    margin-bottom: 8px;
+  }
+  .stat-meta {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--moss);
+  }
+  .stat-meta.up { color: var(--forest); }
+  .stat-meta.down { color: var(--rust-deep); }
+
+  /* Two-col layout */
+  .dash-cols {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 32px;
+  }
+
+  /* Bucket card */
+  .bucket {
+    background: var(--bone);
+    border: 1px solid var(--ink);
+    margin-bottom: 24px;
+  }
+  .bucket-head {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--ink);
+    background: var(--paper-deep);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .bucket-head h3 {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 18px;
+    color: var(--forest);
+    letter-spacing: 0.05em;
+  }
+  .bucket-head .meta {
+    font-family: 'Special Elite', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--moss);
+    text-transform: uppercase;
+  }
+  .task {
+    padding: 14px 24px;
+    border-bottom: 1px dotted var(--mist);
+    display: grid;
+    grid-template-columns: 24px 1fr auto auto;
+    gap: 12px;
+    align-items: center;
+    transition: background 0.15s;
+    cursor: pointer;
+  }
+  .task:last-child { border-bottom: none; }
+  .task:hover { background: var(--paper); }
+  .task .check {
+    width: 18px;
+    height: 18px;
+    border: 1px solid var(--ink);
+    border-radius: 2px;
+    background: var(--paper);
+  }
+  .task.done .check { background: var(--forest); border-color: var(--forest); }
+  .task.done .check::after {
+    content: '✓';
+    color: var(--bone);
+    font-size: 13px;
+    line-height: 16px;
+    display: block;
+    text-align: center;
+  }
+  .task.done .task-title { text-decoration: line-through; color: var(--moss); }
+  .task-title {
+    font-size: 16px;
+    color: var(--ink);
+  }
+  .task-owner {
+    font-family: 'Special Elite', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    background: var(--paper);
+    padding: 3px 10px;
+    border: 1px solid var(--mist);
+  }
+  .task-due {
+    font-family: 'Special Elite', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--moss);
+    text-transform: uppercase;
+  }
+  .task-due.overdue { color: var(--rust-deep); font-weight: bold; }
+  .task-due.soon { color: var(--rust); }
+
+  /* Right column cards */
+  .side-card {
+    background: var(--bone);
+    border: 1px solid var(--ink);
+    margin-bottom: 24px;
+    padding: 0;
+  }
+  .side-card-head {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--ink);
+    background: var(--paper-deep);
+  }
+  .side-card-head h3 {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 16px;
+    color: var(--forest);
+    letter-spacing: 0.05em;
+  }
+  .side-card-body { padding: 16px 20px; }
+  .side-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px dotted var(--mist);
+    font-size: 15px;
+  }
+  .side-row:last-child { border-bottom: none; }
+  .side-row .label { color: var(--ink-soft); }
+  .side-row .val {
+    font-family: 'Special Elite', monospace;
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    color: var(--ink);
+  }
+  .side-row .val.amount { color: var(--forest); font-weight: bold; }
+
+  /* Pill statuses */
+  .pill {
+    display: inline-block;
+    font-family: 'Special Elite', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border: 1px solid;
+  }
+  .pill.todo { color: var(--moss); border-color: var(--mist); background: var(--paper); }
+  .pill.progress { color: var(--rust-deep); border-color: var(--rust); background: var(--bone); }
+  .pill.blocked { color: var(--bone); background: var(--rust-deep); border-color: var(--rust-deep); }
+  .pill.done { color: var(--bone); background: var(--forest); border-color: var(--forest); }
+
+  /* ============= DOOR CHECK-IN SCREEN ============= */
+  .door {
+    min-height: 100vh;
+    background: var(--forest);
+    color: var(--bone);
+    padding: 40px 32px;
+    display: flex;
+    flex-direction: column;
+  }
+  .door-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(237,227,206,0.2);
+    padding-bottom: 16px;
+    margin-bottom: 32px;
+  }
+  .door-head .brand {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 18px;
+    letter-spacing: 0.04em;
+  }
+  .door-head .meta {
+    font-family: 'Special Elite', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(237,227,206,0.6);
+  }
+  .door-head .meta .live {
+    color: #6FCF97;
+    margin-right: 8px;
+  }
+  .door-body {
+    max-width: 640px;
+    margin: 0 auto;
+    width: 100%;
+    text-align: center;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .door-eyebrow {
+    font-family: 'Special Elite', monospace;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: var(--pumpkin);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .door-title {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 56px;
+    color: var(--bone);
+    line-height: 1;
+    letter-spacing: 0.02em;
+    margin-bottom: 32px;
+  }
+  .door-scanner {
+    background: rgba(0,0,0,0.3);
+    border: 2px dashed rgba(237,227,206,0.3);
+    aspect-ratio: 4/3;
+    max-width: 480px;
+    margin: 0 auto 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 12px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .door-scanner:hover { border-color: var(--pumpkin); }
+  .door-scanner-icon {
+    font-size: 64px;
+    opacity: 0.4;
+  }
+  .door-scanner-label {
+    font-family: 'Special Elite', monospace;
+    font-size: 13px;
+    letter-spacing: 0.25em;
+    color: rgba(237,227,206,0.7);
+    text-transform: uppercase;
+  }
+  .door-search {
+    margin: 24px auto 0;
+    max-width: 480px;
+    display: flex;
+    gap: 0;
+  }
+  .door-search input {
+    flex: 1;
+    padding: 14px 18px;
+    background: var(--bone);
+    border: none;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    color: var(--ink);
+  }
+  .door-search button {
+    padding: 14px 24px;
+    background: var(--pumpkin);
+    color: var(--ink);
+    border: none;
+    font-family: 'Special Elite', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .door-result {
+    background: var(--bone);
+    color: var(--ink);
+    border-radius: 0;
+    padding: 32px;
+    max-width: 480px;
+    margin: 32px auto 0;
+    text-align: left;
+    border: 4px solid var(--forest);
+    display: none;
+  }
+  .door-result.show { display: block; }
+  .door-result.duplicate { border-color: var(--rust-deep); }
+  .door-result-eyebrow {
+    font-family: 'Special Elite', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: var(--forest);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .door-result.duplicate .door-result-eyebrow { color: var(--rust-deep); }
+  .door-result-name {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 28px;
+    line-height: 1;
+    margin-bottom: 16px;
+    letter-spacing: 0.03em;
+  }
+  .door-result-tokens {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 48px;
+    color: var(--forest);
+    margin-bottom: 6px;
+  }
+  .door-result.duplicate .door-result-tokens { color: var(--rust-deep); }
+  .door-result-label {
+    font-family: 'Special Elite', monospace;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  .door-confirm-btn {
+    width: 100%;
+    padding: 18px;
+    background: var(--forest);
+    color: var(--bone);
+    border: none;
+    font-family: 'Special Elite', monospace;
+    font-size: 13px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  .door-confirm-btn:hover { background: var(--ink); }
+  .door-result.duplicate .door-confirm-btn { background: var(--rust-deep); }
+
+  /* ============= FAQ ACCORDION ============= */
+  .faq-list {
+    max-width: 820px;
+    margin: 0 auto;
+    border-top: 1px solid var(--ink);
+  }
+  .faq-item {
+    border-bottom: 1px solid var(--ink);
+    overflow: hidden;
+  }
+  .faq-item summary {
+    padding: 22px 28px;
+    cursor: pointer;
+    list-style: none;
+    font-family: 'IM Fell English SC', serif;
+    font-size: 18px;
+    color: var(--ink);
+    letter-spacing: 0.04em;
+    line-height: 1.3;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    background: var(--bone);
+    transition: background 0.15s;
+  }
+  .faq-item summary:hover {
+    background: var(--paper-deep);
+  }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after {
+    content: '+';
+    font-family: 'IM Fell English', serif;
+    font-size: 24px;
+    color: var(--rust-deep);
+    flex-shrink: 0;
+    transition: transform 0.2s;
+    line-height: 1;
+  }
+  .faq-item[open] summary::after {
+    content: '−';
+    color: var(--rust);
+  }
+  .faq-item .faq-body {
+    padding: 8px 28px 24px;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    background: var(--bone);
+  }
+
+  /* ============= SILENT AUCTION ============= */
+  .auction-explainer {
+    background: var(--bone);
+    border: 1px solid var(--ink);
+    padding: 28px 32px;
+    margin-bottom: 48px;
+    text-align: center;
+  }
+  .auction-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 28px;
+  }
+  .auction-item {
+    background: var(--bone);
+    border: 1px solid var(--ink);
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+  }
+  .auction-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px var(--shadow);
+  }
+  .auction-item.hot {
+    border: 2px solid var(--rust);
+    position: relative;
+  }
+  .auction-item.hot::before {
+    content: 'Hot lot';
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: var(--rust);
+    color: var(--bone);
+    font-family: 'Special Elite', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    z-index: 2;
+  }
+  .auction-img {
+    aspect-ratio: 4/3;
+    border-bottom: 1px solid var(--ink);
+  }
+  .auction-body {
+    padding: 24px 26px 26px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .auction-meta-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .auction-num {
+    font-family: 'Special Elite', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: var(--rust-deep);
+    text-transform: uppercase;
+  }
+  .auction-classroom {
+    font-family: 'Special Elite', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--moss);
+    text-transform: uppercase;
+    border: 1px solid var(--mist);
+    padding: 2px 8px;
+  }
+  .auction-title {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 22px;
+    color: var(--ink);
+    line-height: 1.1;
+    letter-spacing: 0.03em;
+    margin-bottom: 6px;
+  }
+  .auction-donor {
+    font-style: italic;
+    font-size: 13px;
+    color: var(--moss);
+    margin-bottom: 10px;
+  }
+  .auction-desc {
+    font-size: 15px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    margin-bottom: 16px;
+    flex: 1;
+  }
+  .auction-bid-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 14px 0;
+    border-top: 1px dotted var(--mist);
+    border-bottom: 1px dotted var(--mist);
+    margin-bottom: 16px;
+  }
+  .auction-bid-label {
+    font-family: 'Special Elite', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--rust-deep);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .auction-bid-amount {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 28px;
+    color: var(--forest);
+    line-height: 1;
+  }
+  .auction-bid-est {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 16px;
+    color: var(--moss);
+  }
+  .auction-bid-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--ink);
+    color: var(--bone);
+    border: none;
+    font-family: 'Special Elite', monospace;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .auction-bid-btn:hover { background: var(--rust); }
+
+  /* responsive */
+  @media (max-width: 900px) {
+    .public-nav { flex-direction: column; gap: 16px; padding: 16px; }
+    .nav-links { gap: 16px; flex-wrap: wrap; justify-content: center; }
+    .dash { grid-template-columns: 1fr; }
+    .dash-aside { display: none; }
+    .stat-grid { grid-template-columns: repeat(2, 1fr); }
+    .dash-cols { grid-template-columns: 1fr; }
+    .stage-nav { font-size: 8px; }
+    .stage-nav button { padding: 6px 8px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- STAGE NAVIGATION (floating prototype switcher) -->
+<nav class="stage-nav">
+  <button class="active" data-screen="public">Tickets</button>
+  <button data-screen="auction">Silent auction</button>
+  <button data-screen="dashboard">Admin dashboard</button>
+</nav>
+
+<div class="stage">
+
+  <!-- ===================== PUBLIC SITE ===================== -->
+  <div class="screen active" id="screen-public">
+
+    <nav class="public-nav">
+      <div class="nav-brand">Nicho <span class="skull">☠</span> Halloween Festival</div>
+      <div class="nav-links">
+        <a href="#attractions">Attractions</a>
+        <a href="#tokens">Tokens</a>
+        <a onclick="switchScreen('auction')">Silent Auction</a>
+        <a href="#sponsors">Sponsors</a>
+        <a href="#map">Map</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <a href="#tokens" class="nav-cta">Buy tokens</a>
+    </nav>
+
+    <header class="hero">
+      <div class="hero-eyebrow">The 37th year  ·  Saturday 24 October 2026  ·  3 to 7 pm</div>
+      <h1 class="hero-title">Nicho Halloween<br><span class="ampersand">&</span> Festival</h1>
+      <div class="hero-subtitle">A 37-year tradition, returning to Balmain East for one night only.</div>
+      <div class="skull-rule">☠ ☠ ☠</div>
+      <div class="hero-meta">Live music <span class="dot">·</span> Games <span class="dot">·</span> Haunted house <span class="dot">·</span> Snacks</div>
+      <div class="hero-image"></div>
+    </header>
+
+    <section class="public-section" id="attractions">
+      <div class="section-eyebrow">What you'll find</div>
+      <h2 class="section-title">The Attractions</h2>
+      <p class="section-lede">A wandering programme of curiosities, hauntings and small enchantments. Tokens accepted at every door.</p>
+
+      <div class="attractions-grid">
+        <div class="attraction-card">
+          <div class="attraction-img haunted"></div>
+          <div class="attraction-body">
+            <div class="attraction-num">No. 01</div>
+            <h3 class="attraction-title">The Haunted House</h3>
+            <p class="attraction-desc">A classroom transformed. Dim lighting, gentle scares, age-appropriate ghosts. Suitable for the brave.</p>
+            <div class="attraction-meta">5 tokens · ages 5+</div>
+          </div>
+        </div>
+        <div class="attraction-card">
+          <div class="attraction-img shop"></div>
+          <div class="attraction-body">
+            <div class="attraction-num">No. 02</div>
+            <h3 class="attraction-title">Little Shop of Horrors</h3>
+            <p class="attraction-desc">Plushies, lanyards, drinks and small terrors. The general store of the festival.</p>
+            <div class="attraction-meta">Various · all ages</div>
+          </div>
+        </div>
+        <div class="attraction-card">
+          <div class="attraction-img potions"></div>
+          <div class="attraction-body">
+            <div class="attraction-num">No. 03</div>
+            <h3 class="attraction-title">Potion Making</h3>
+            <p class="attraction-desc">Edible concoctions, fizzing brews, suspicious goo. Bring a steady hand.</p>
+            <div class="attraction-meta">3 tokens · all ages</div>
+          </div>
+        </div>
+        <div class="attraction-card">
+          <div class="attraction-img cake"></div>
+          <div class="attraction-body">
+            <div class="attraction-num">No. 04</div>
+            <h3 class="attraction-title">The Cake Walk</h3>
+            <p class="attraction-desc">An old fete favourite. Walk the numbered ring, claim a homemade cake when the music stops.</p>
+            <div class="attraction-meta">2 tokens · all ages</div>
+          </div>
+        </div>
+        <div class="attraction-card">
+          <div class="attraction-img maze"></div>
+          <div class="attraction-body">
+            <div class="attraction-num">No. 05</div>
+            <h3 class="attraction-title">The Box Maze</h3>
+            <p class="attraction-desc">A tunnel made of cardboard. Crawl. Get lost. Re-emerge slightly braver.</p>
+            <div class="attraction-meta">2 tokens · ages 4+</div>
+          </div>
+        </div>
+        <div class="attraction-card">
+          <div class="attraction-img"></div>
+          <div class="attraction-body">
+            <div class="attraction-num">No. 06</div>
+            <h3 class="attraction-title">Willy Wonka's Candy</h3>
+            <p class="attraction-desc">Sweets weighed by the bag. Pay in tokens, walk away with a small mountain.</p>
+            <div class="attraction-meta">5 tokens per bag · all ages</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tokens-panel" id="tokens">
+      <div class="section-eyebrow">Save 15% online</div>
+      <h2 class="section-title">Buy your tokens</h2>
+      <p class="section-lede">Tokens are the currency of the festival. Pre-purchase online and save 15% on the festival-day price, then collect your bundle at the door.</p>
+
+      <div class="bundles">
+        <div class="bundle">
+          <div class="bundle-tokens">25</div>
+          <div class="bundle-label">Tokens</div>
+          <div class="bundle-rule"></div>
+          <div class="bundle-price">$21.25</div>
+          <div class="bundle-per">$25 at festival</div>
+        </div>
+        <div class="bundle">
+          <div class="bundle-tokens">50</div>
+          <div class="bundle-label">Tokens</div>
+          <div class="bundle-rule"></div>
+          <div class="bundle-price">$42.50</div>
+          <div class="bundle-per">$50 at festival</div>
+        </div>
+        <div class="bundle popular">
+          <div class="bundle-tokens">100</div>
+          <div class="bundle-label">Tokens</div>
+          <div class="bundle-rule"></div>
+          <div class="bundle-price">$85</div>
+          <div class="bundle-per">$100 at festival</div>
+        </div>
+        <div class="bundle">
+          <div class="bundle-tokens">200</div>
+          <div class="bundle-label">Tokens</div>
+          <div class="bundle-rule"></div>
+          <div class="bundle-price">$170</div>
+          <div class="bundle-per">$200 at festival</div>
+        </div>
+      </div>
+
+      <div class="tokens-explainer">
+        <h4>How it works</h4>
+        <ol>
+          <li>Choose your bundle and pay securely with Stripe.</li>
+          <li>You'll receive a confirmation email with your order number.</li>
+          <li>Bring the email to the Token Booth at the festival entrance.</li>
+          <li>Volunteer hands you your physical tokens, ticks you off the list, and you're in.</li>
+          <li>Spend them across the festival. Most attractions are 2 to 5 tokens. Tokens never expire (within the day) and you might bribe a sibling.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="public-section" id="sponsors">
+      <div class="section-eyebrow">With thanks</div>
+      <h2 class="section-title">Our Sponsors</h2>
+      <p class="section-lede">The festival exists because local businesses choose to back a small school. We are grateful for every one.</p>
+
+      <div class="sponsors-grid">
+        <div class="sponsor-tile tier-headline">Headline Sponsor<br>placeholder</div>
+        <div class="sponsor-tile">Sponsor logo</div>
+        <div class="sponsor-tile">Sponsor logo</div>
+        <div class="sponsor-tile">Sponsor logo</div>
+        <div class="sponsor-tile">Sponsor logo</div>
+        <div class="sponsor-tile">Sponsor logo</div>
+        <div class="sponsor-tile">Sponsor logo</div>
+        <div class="sponsor-tile">Sponsor logo</div>
+        <div class="sponsor-tile">Sponsor logo</div>
+        <div class="sponsor-tile">Sponsor logo</div>
+        <div class="sponsor-tile">Sponsor logo</div>
+        <div class="sponsor-tile">Sponsor logo</div>
+      </div>
+    </section>
+
+    <section class="public-section" id="map" style="padding-top: 0;">
+      <div class="section-eyebrow">Find your way</div>
+      <h2 class="section-title">The Festival Map</h2>
+      <p class="section-lede">Most attractions are stroller and wheelchair accessible. The map below shows the layout of the festival grounds.</p>
+
+      <div style="background: var(--bone); border: 1px solid var(--ink); padding: 32px; max-width: 900px; margin: 0 auto; text-align: center;">
+        <div style="aspect-ratio: 4/3; background: linear-gradient(135deg, rgba(45,58,46,0.15), rgba(184,92,46,0.1)); border: 1px dashed var(--mist); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 12px; margin-bottom: 24px;">
+          <div style="font-family: 'Special Elite', monospace; font-size: 11px; letter-spacing: 0.25em; color: var(--moss); text-transform: uppercase;">Site map placeholder</div>
+          <div style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 14px; color: var(--moss);">Real festival map will be uploaded as PDF and shown inline</div>
+        </div>
+        <a class="nav-cta" style="display: inline-block;" onclick="alert('In production this downloads the festival map PDF.')">Download map PDF</a>
+      </div>
+    </section>
+
+    <section class="public-section" id="faq" style="padding-top: 0;">
+      <div class="section-eyebrow">Got a haunting question?</div>
+      <h2 class="section-title">FAQs</h2>
+      <p class="section-lede">Unearth all the spine-chilling answers here. If we've missed yours, the P&C is at the bottom of the page.</p>
+
+      <div class="faq-list">
+        <details class="faq-item" open>
+          <summary>How do I get to Nicholson Street Public School?</summary>
+          <div class="faq-body">We're at 23 Nicholson Street, Balmain East. The 442 bus runs from QVB to Balmain East Ferry Wharf. Ferries dock at Balmain East Wharf, then it's a five-minute walk up to the school. Street parking is limited and timed. There's no light rail or train. Check the 442 timetable and ferry services at transportnsw.info.</div>
+        </details>
+        <details class="faq-item">
+          <summary>What are tokens?</summary>
+          <div class="faq-body">Tokens are how you pay for everything at the festival. Attractions, food, drinks, games, the lot. No cash exchanges hands at any stall. Most attractions cost 2 to 5 tokens. You buy tokens at the door (cash or card via Square), or pre-purchase online and save 15%.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Why pre-purchase tokens online?</summary>
+          <div class="faq-body">You save 15% off the festival-day price, and you skip the queue at the token booth. Pre-purchase closes at midnight on the day before the festival.</div>
+        </details>
+        <details class="faq-item">
+          <summary>How do I collect my pre-purchased tokens?</summary>
+          <div class="faq-body">Bring your confirmation email to the Token Booth at the festival entrance on the day. We'll find your order, hand you the matching number of physical tokens, and you're off. Refunds are only available if the festival is cancelled. Tokens aren't redeemable for cash.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Can I buy tokens on the day?</summary>
+          <div class="faq-body">Yes. The Token Booth opens at 3pm and runs throughout the festival. Pay by cash or card. Day-of pricing is the full price (the 15% pre-purchase discount only applies online).</div>
+        </details>
+        <details class="faq-item">
+          <summary>Is the venue accessible?</summary>
+          <div class="faq-body">Yes, the festival is an accessible event. Most attractions are stroller and wheelchair accessible. A small number sit at the top of stairs. The site map shows accessible routes.</div>
+        </details>
+        <details class="faq-item">
+          <summary>What if it rains?</summary>
+          <div class="faq-body">The Nicho Halloween Festival is an all-weather event and has run every year except during COVID. In the unlikely event of cancellation we'll post on this site and on the school Facebook page.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Are dogs welcome?</summary>
+          <div class="faq-body">We love dogs but the festival isn't dog-friendly. Crowds, queues, and small children in costume aren't a great combination for most pets. Assistance dogs are always welcome.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Will there be photography?</summary>
+          <div class="faq-body">Yes, we'll have a photographer on site. By attending the festival you're consenting to incidental photography for festival promotion. If you'd prefer your child not be photographed, let a volunteer know on the day and we'll make a note.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Are there food allergies catered for?</summary>
+          <div class="faq-body">All food at the festival has allergen labelling. The kitchen handles common allergens (gluten, dairy, nuts) but cross-contamination is possible in a busy festival kitchen, so we can't guarantee allergen-free food. Bring backups for severe allergies.</div>
+        </details>
+        <details class="faq-item">
+          <summary>What's age-appropriate?</summary>
+          <div class="faq-body">Most attractions are suitable from age 4 up. The Haunted House has gentle scares suitable for ages 5+. The 'Mini Monsters' zone is dedicated to under-5s with age-appropriate games and craft.</div>
+        </details>
+        <details class="faq-item">
+          <summary>What if my child gets lost?</summary>
+          <div class="faq-body">We have a designated 'Lost & Found' tent (marked on the site map) staffed throughout the festival. Lost children are taken there immediately and announcements made over the PA. Brief your child to find a volunteer (we'll be in high-vis vests).</div>
+        </details>
+        <details class="faq-item">
+          <summary>Can I volunteer?</summary>
+          <div class="faq-body">Yes please! Email volunteers@nichohalloween.com.au or sign up via the school P&C.</div>
+        </details>
+      </div>
+    </section>
+
+    <footer class="public-footer">
+      <div class="footer-skull">☠ ☠ ☠</div>
+      <div class="footer-title">Nicho Halloween Festival</div>
+      <div class="footer-meta">37th year · Sat 24 October 2026 · 3 to 7pm · Nicholson Street Public School, Balmain East</div>
+      <div class="footer-links">
+        <a href="#faq">FAQ</a>
+        <a href="#map">Map</a>
+        <a>Privacy</a>
+        <a>Contact P&C</a>
+      </div>
+      <div class="footer-fineprint">A community fundraiser by the Nicholson Street Public School, Balmain East P&C. Every dollar goes to the school.</div>
+    </footer>
+  </div>
+
+  <!-- ===================== SILENT AUCTION SHOWCASE ===================== -->
+  <div class="screen" id="screen-auction">
+    <nav class="public-nav">
+      <div class="nav-brand" onclick="switchScreen('public')" style="cursor:pointer">Nicho <span class="skull">☠</span> Halloween Festival</div>
+      <div class="nav-links">
+        <a onclick="switchScreen('public')">Attractions</a>
+        <a onclick="switchScreen('public')">Tokens</a>
+        <a class="current" style="border-bottom: 1px solid var(--rust)">Silent Auction</a>
+        <a onclick="switchScreen('public')">Sponsors</a>
+        <a onclick="switchScreen('public')">FAQ</a>
+      </div>
+      <a class="nav-cta" onclick="switchScreen('public')">Buy tokens</a>
+    </nav>
+
+    <header class="hero" style="padding: 60px 40px 40px;">
+      <div class="hero-eyebrow">Bidding open · closes Sunday 25 October at 9pm</div>
+      <h1 class="hero-title" style="font-size: clamp(48px, 7vw, 96px);">The Silent Auction</h1>
+      <div class="hero-subtitle">Generously donated by our community. Every dollar raised goes to the school.</div>
+      <div class="skull-rule">☠ ☠ ☠</div>
+    </header>
+
+    <section class="public-section" style="padding-top: 0;">
+      <div class="auction-explainer">
+        <div class="auction-explainer-text">
+          <p style="font-size: 18px; color: var(--ink-soft); font-style: italic; margin-bottom: 12px;">Bidding takes place on our auction partner's secure platform. Tap any item to place a bid.</p>
+          <p style="font-family: 'Special Elite', monospace; font-size: 11px; letter-spacing: 0.18em; color: var(--rust-deep); text-transform: uppercase;">87 items · $14,200 raised so far · 23 bidders</p>
+        </div>
+      </div>
+
+      <div class="auction-grid">
+        <article class="auction-item">
+          <div class="auction-img" style="background: radial-gradient(ellipse at 40% 60%, var(--moss), var(--forest));"></div>
+          <div class="auction-body">
+            <div class="auction-meta-top">
+              <span class="auction-num">Lot 01</span>
+              <span class="auction-classroom">Kindergarten</span>
+            </div>
+            <h3 class="auction-title">Two Nights at Whale Beach</h3>
+            <p class="auction-donor">Donated by The Henderson Family</p>
+            <p class="auction-desc">Self-contained beach house, sleeps six, walking distance to the ocean. Available weekends, Nov 2026 to Mar 2027.</p>
+            <div class="auction-bid-row">
+              <div>
+                <div class="auction-bid-label">Current bid</div>
+                <div class="auction-bid-amount">$680</div>
+              </div>
+              <div style="text-align: right;">
+                <div class="auction-bid-label">Estimated value</div>
+                <div class="auction-bid-est">$1,200</div>
+              </div>
+            </div>
+            <button class="auction-bid-btn">Place a bid</button>
+          </div>
+        </article>
+
+        <article class="auction-item hot">
+          <div class="auction-img" style="background: radial-gradient(ellipse at 30% 70%, var(--rust), var(--rust-deep));"></div>
+          <div class="auction-body">
+            <div class="auction-meta-top">
+              <span class="auction-num">Lot 02</span>
+              <span class="auction-classroom">Year 1</span>
+            </div>
+            <h3 class="auction-title">Remedial Massage Package</h3>
+            <p class="auction-donor">Donated by Balmain Wellness Co.</p>
+            <p class="auction-desc">Three one-hour remedial massage sessions with senior therapist. Bookable any weekday, valid 12 months.</p>
+            <div class="auction-bid-row">
+              <div>
+                <div class="auction-bid-label">Current bid</div>
+                <div class="auction-bid-amount">$340</div>
+              </div>
+              <div style="text-align: right;">
+                <div class="auction-bid-label">Estimated value</div>
+                <div class="auction-bid-est">$450</div>
+              </div>
+            </div>
+            <button class="auction-bid-btn">Place a bid</button>
+          </div>
+        </article>
+
+        <article class="auction-item">
+          <div class="auction-img" style="background: radial-gradient(ellipse at 50% 50%, var(--plum), var(--forest-deep));"></div>
+          <div class="auction-body">
+            <div class="auction-meta-top">
+              <span class="auction-num">Lot 03</span>
+              <span class="auction-classroom">Year 2</span>
+            </div>
+            <h3 class="auction-title">Original Watercolour</h3>
+            <p class="auction-donor">Donated by Esme Larkin (local artist)</p>
+            <p class="auction-desc">Framed botanical watercolour, A3, signed and dated. Drawn from gardens around Balmain East.</p>
+            <div class="auction-bid-row">
+              <div>
+                <div class="auction-bid-label">Current bid</div>
+                <div class="auction-bid-amount">$210</div>
+              </div>
+              <div style="text-align: right;">
+                <div class="auction-bid-label">Estimated value</div>
+                <div class="auction-bid-est">$380</div>
+              </div>
+            </div>
+            <button class="auction-bid-btn">Place a bid</button>
+          </div>
+        </article>
+
+        <article class="auction-item">
+          <div class="auction-img" style="background: radial-gradient(ellipse at 60% 40%, var(--pumpkin), var(--rust-deep));"></div>
+          <div class="auction-body">
+            <div class="auction-meta-top">
+              <span class="auction-num">Lot 04</span>
+              <span class="auction-classroom">Year 3</span>
+            </div>
+            <h3 class="auction-title">Family Dinner for Six</h3>
+            <p class="auction-donor">Donated by Trattoria di Mama</p>
+            <p class="auction-desc">Six-course tasting menu for six, including matched wines. Bookable Tue-Thu, valid 6 months.</p>
+            <div class="auction-bid-row">
+              <div>
+                <div class="auction-bid-label">Current bid</div>
+                <div class="auction-bid-amount">$520</div>
+              </div>
+              <div style="text-align: right;">
+                <div class="auction-bid-label">Estimated value</div>
+                <div class="auction-bid-est">$700</div>
+              </div>
+            </div>
+            <button class="auction-bid-btn">Place a bid</button>
+          </div>
+        </article>
+
+        <article class="auction-item">
+          <div class="auction-img" style="background: radial-gradient(ellipse at 45% 55%, var(--moss), var(--ink));"></div>
+          <div class="auction-body">
+            <div class="auction-meta-top">
+              <span class="auction-num">Lot 05</span>
+              <span class="auction-classroom">Year 4</span>
+            </div>
+            <h3 class="auction-title">Surfboard, hand-shaped</h3>
+            <p class="auction-donor">Donated by Sea Shaper Studio</p>
+            <p class="auction-desc">6'2" mid-length, hand-shaped from sustainable foam, with custom tail design. Includes leg-rope and bag.</p>
+            <div class="auction-bid-row">
+              <div>
+                <div class="auction-bid-label">Current bid</div>
+                <div class="auction-bid-amount">$840</div>
+              </div>
+              <div style="text-align: right;">
+                <div class="auction-bid-label">Estimated value</div>
+                <div class="auction-bid-est">$1,400</div>
+              </div>
+            </div>
+            <button class="auction-bid-btn">Place a bid</button>
+          </div>
+        </article>
+
+        <article class="auction-item">
+          <div class="auction-img" style="background: radial-gradient(ellipse at 35% 65%, var(--plum), var(--ink));"></div>
+          <div class="auction-body">
+            <div class="auction-meta-top">
+              <span class="auction-num">Lot 06</span>
+              <span class="auction-classroom">Year 5</span>
+            </div>
+            <h3 class="auction-title">Pottery Wheel Workshop</h3>
+            <p class="auction-donor">Donated by Annandale Clay Works</p>
+            <p class="auction-desc">Three-hour wheel-throwing workshop for two. All materials and firing included. Take home two finished pieces.</p>
+            <div class="auction-bid-row">
+              <div>
+                <div class="auction-bid-label">Current bid</div>
+                <div class="auction-bid-amount">$180</div>
+              </div>
+              <div style="text-align: right;">
+                <div class="auction-bid-label">Estimated value</div>
+                <div class="auction-bid-est">$320</div>
+              </div>
+            </div>
+            <button class="auction-bid-btn">Place a bid</button>
+          </div>
+        </article>
+      </div>
+
+      <div style="text-align: center; margin-top: 56px;">
+        <a class="nav-cta" style="display: inline-block;" onclick="alert('In production this links to all 87 lots on the auction platform.')">View all 87 lots</a>
+      </div>
+    </section>
+
+    <footer class="public-footer">
+      <div class="footer-skull">☠ ☠ ☠</div>
+      <div class="footer-title">Nicho Halloween Festival</div>
+      <div class="footer-meta">Sat 24 October 2026 · 3 to 7pm · Nicholson Street Public School, Balmain East</div>
+      <div class="footer-links">
+        <a onclick="switchScreen('public')">Home</a>
+        <a>FAQ</a>
+        <a>Privacy</a>
+        <a>Contact P&C</a>
+      </div>
+      <div class="footer-fineprint">A community fundraiser by the Nicholson Street Public School, Balmain East P&C. Every dollar goes to the school.</div>
+    </footer>
+  </div>
+
+  <!-- ===================== LOGIN ===================== -->
+  <div class="screen" id="screen-login">
+    <div class="login-wrap">
+      <div class="login-card">
+        <div class="login-mark">
+          <h1>Nicho Halloween<br>Festival</h1>
+          <div class="skull">☠ ☠ ☠</div>
+        </div>
+        <div class="field">
+          <label>Email</label>
+          <input type="email" placeholder="you@email.com" value="">
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <input type="password" placeholder="••••••••••" value="">
+        </div>
+        <button class="login-btn" onclick="switchScreen('dashboard')">Log in</button>
+        <div class="login-help">
+          Forgot your password? <a href="#">Recover it</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== EXEC DASHBOARD ===================== -->
+  <div class="screen" id="screen-dashboard">
+    <div class="dash">
+      <aside class="dash-aside">
+        <div class="dash-brand">
+          <div class="eyebrow">Admin</div>
+          <h2>Nicho Halloween<br>Festival</h2>
+        </div>
+        <div class="dash-nav">
+          <div class="dash-nav-section">Overview</div>
+          <a class="active">Dashboard</a>
+          <a>Token orders <span class="badge">12</span></a>
+
+          <div class="dash-nav-section">Workstreams</div>
+          <a>Sponsorship</a>
+          <a>Auction</a>
+          <a>Vendors</a>
+          <a>Attractions</a>
+          <a>Marketing</a>
+          <a>Build</a>
+
+          <div class="dash-nav-section">Registers</div>
+          <a>Vendors</a>
+          <a>Sponsors</a>
+          <a>Auction items <span class="badge">87</span></a>
+        </div>
+        <div class="dash-aside-foot">
+          Logged in as
+          <strong>Gemma Toogood</strong>
+        </div>
+      </aside>
+
+      <main class="dash-main">
+        <div class="dash-header">
+          <div>
+            <div class="eyebrow">Tuesday 6 May 2026 · Good evening</div>
+            <h1>The Dashboard</h1>
+          </div>
+          <div class="dash-countdown">
+            Countdown
+            <strong>171 days</strong>
+            until the festival
+          </div>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat">
+            <div class="stat-eyebrow">Tokens sold</div>
+            <div class="stat-value">$0</div>
+            <div class="stat-meta">Sales open in September</div>
+          </div>
+          <div class="stat">
+            <div class="stat-eyebrow">Sponsors signed</div>
+            <div class="stat-value">$0 / $20K</div>
+            <div class="stat-meta">Target locked tonight</div>
+          </div>
+          <div class="stat">
+            <div class="stat-eyebrow">Tasks open</div>
+            <div class="stat-value">14</div>
+            <div class="stat-meta up">3 due this week</div>
+          </div>
+          <div class="stat">
+            <div class="stat-eyebrow">Auction items</div>
+            <div class="stat-value">0 / 50</div>
+            <div class="stat-meta">5 classes × 10 items</div>
+          </div>
+        </div>
+
+        <div class="dash-cols">
+          <div>
+            <div class="bucket">
+              <div class="bucket-head">
+                <h3>This Week</h3>
+                <div class="meta">3 due · 1 overdue</div>
+              </div>
+              <div class="task">
+                <div class="check"></div>
+                <div class="task-title">Lock sponsor tier structure (Pumpkin / Goblin / Witch)</div>
+                <div class="task-owner">Gemma</div>
+                <div class="task-due overdue">Due 5 May</div>
+              </div>
+              <div class="task">
+                <div class="check"></div>
+                <div class="task-title">Send class champion brief to 5 classroom parents</div>
+                <div class="task-owner">Sarah</div>
+                <div class="task-due soon">Due 8 May</div>
+              </div>
+              <div class="task">
+                <div class="check"></div>
+                <div class="task-title">Confirm inflatable hire booking for 24 October</div>
+                <div class="task-owner">Hannah</div>
+                <div class="task-due soon">Due 9 May</div>
+              </div>
+              <div class="task done">
+                <div class="check"></div>
+                <div class="task-title">Schedule first planning session with committee</div>
+                <div class="task-owner">Gemma</div>
+                <div class="task-due">Done 6 May</div>
+              </div>
+            </div>
+
+            <div class="bucket">
+              <div class="bucket-head">
+                <h3>Sponsorship</h3>
+                <div class="meta">2 of 8 done</div>
+              </div>
+              <div class="task done">
+                <div class="check"></div>
+                <div class="task-title">Draft sponsor tier doc (Pumpkin to Headless Horseman)</div>
+                <div class="task-owner">Gemma</div>
+                <div class="task-due">Done 4 May</div>
+              </div>
+              <div class="task done">
+                <div class="check"></div>
+                <div class="task-title">Past sponsor list audit</div>
+                <div class="task-owner">Gemma</div>
+                <div class="task-due">Done 5 May</div>
+              </div>
+              <div class="task">
+                <div class="check"></div>
+                <div class="task-title">Build target list of 20 local businesses</div>
+                <div class="task-owner">Hannah</div>
+                <div class="task-due">Due 18 May</div>
+              </div>
+              <div class="task">
+                <div class="check"></div>
+                <div class="task-title">Sponsor outreach pack PDF (one-pager)</div>
+                <div class="task-owner">Gemma</div>
+                <div class="task-due">Due 25 May</div>
+              </div>
+              <div class="task">
+                <div class="check"></div>
+                <div class="task-title">Confirm DGR / tax-deductibility position with school</div>
+                <div class="task-owner">Sarah</div>
+                <div class="task-due">Due 12 May</div>
+              </div>
+            </div>
+
+            <div class="bucket">
+              <div class="bucket-head">
+                <h3>Vendors</h3>
+                <div class="meta">0 of 6 booked</div>
+              </div>
+              <div class="task">
+                <div class="check"></div>
+                <div class="task-title">Get three quotes for inflatable hire</div>
+                <div class="task-owner">Hannah</div>
+                <div class="task-due soon">Due 9 May</div>
+              </div>
+              <div class="task">
+                <div class="check"></div>
+                <div class="task-title">Lodge council event permit application</div>
+                <div class="task-owner">Hannah</div>
+                <div class="task-due">Due 15 May</div>
+              </div>
+              <div class="task">
+                <div class="check"></div>
+                <div class="task-title">Confirm public liability insurance is current</div>
+                <div class="task-owner">Sarah</div>
+                <div class="task-due">Due 20 May</div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="side-card">
+              <div class="side-card-head">
+                <h3>Latest token orders</h3>
+              </div>
+              <div class="side-card-body" style="font-style: italic; color: var(--moss); text-align: center; padding: 32px 20px;">
+                Token sales open in September. Watch this space.
+              </div>
+            </div>
+
+            <div class="side-card">
+              <div class="side-card-head">
+                <h3>Sponsor pipeline</h3>
+              </div>
+              <div class="side-card-body">
+                <div class="side-row"><span class="label">Balmain East Bakery</span><span class="pill progress">Approached</span></div>
+                <div class="side-row"><span class="label">Balmain East Hardware</span><span class="pill todo">To call</span></div>
+                <div class="side-row"><span class="label">Local Real Estate</span><span class="pill todo">To call</span></div>
+                <div class="side-row"><span class="label">Children's Bookshop</span><span class="pill progress">Awaiting</span></div>
+                <div class="side-row"><span class="label">Italian Restaurant</span><span class="pill todo">To call</span></div>
+              </div>
+            </div>
+
+            <div class="side-card">
+              <div class="side-card-head">
+                <h3>Key dates</h3>
+              </div>
+              <div class="side-card-body">
+                <div class="side-row"><span class="label">Sponsors locked</span><span class="val">31 Aug</span></div>
+                <div class="side-row"><span class="label">Auction items in</span><span class="val">15 Sep</span></div>
+                <div class="side-row"><span class="label">Token sales open</span><span class="val">1 Sep</span></div>
+                <div class="side-row"><span class="label">Bump-in week</span><span class="val">19 Oct</span></div>
+                <div class="side-row"><span class="label amount">Festival day</span><span class="val amount">24 Oct</span></div>
+              </div>
+            </div>
+
+            <div class="side-card">
+              <div class="side-card-head">
+                <h3>Money raised</h3>
+              </div>
+              <div class="side-card-body">
+                <div class="side-row"><span class="label">Sponsorships</span><span class="val">$0</span></div>
+                <div class="side-row"><span class="label">Token pre-sales</span><span class="val">$0</span></div>
+                <div class="side-row"><span class="label">Silent auction</span><span class="val">$0</span></div>
+                <div class="side-row"><span class="label amount">Total raised</span><span class="val amount">$0</span></div>
+                <div class="side-row" style="margin-top: 8px; padding-top: 12px; border-top: 1px solid var(--ink);"><span class="label">Goal</span><span class="val amount">$50,000</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // Stage navigation
+  document.querySelectorAll('.stage-nav button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      // Admin dashboard pill goes via login screen first to demonstrate auth gate
+      if (btn.dataset.screen === 'dashboard') {
+        switchScreen('login');
+        // Update active button state to reflect dashboard intent
+        document.querySelectorAll('.stage-nav button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      } else {
+        switchScreen(btn.dataset.screen);
+      }
+    });
+  });
+
+  function switchScreen(screen) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.stage-nav button').forEach(b => b.classList.remove('active'));
+    document.getElementById('screen-' + screen).classList.add('active');
+    document.querySelector('.stage-nav button[data-screen="' + screen + '"]').classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  // Task toggle
+  document.querySelectorAll('.task').forEach(task => {
+    task.addEventListener('click', (e) => {
+      task.classList.toggle('done');
+    });
+  });
+
+  // Bundle hover lift (already CSS) - clicking buys
+  document.querySelectorAll('.bundle').forEach(b => {
+    b.addEventListener('click', () => {
+      alert('In the real site, this opens Stripe Checkout for the selected bundle.');
+    });
+  });
+</script>
+</body>
+</html>
