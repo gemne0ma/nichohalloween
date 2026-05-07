@@ -7,7 +7,9 @@
       "Bash(npx drizzle-kit *)",
       "Bash(npm ls *)",
       "Bash(git branch *)",
-      "Bash(git remote *)"
+      "Bash(git remote *)",
+      "Bash(npm view *)",
+      "Bash(npm run *)"
     ]
   }
 }

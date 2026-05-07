@@ -5,9 +5,9 @@ import { NextResponse } from "next/server";
 // Public pages (homepage, attractions, tokens, auction, etc.) are open to everyone.
 const isAdminRoute = createRouteMatcher(["/admin(.*)"]);
 
-export default clerkMiddleware((auth, req) => {
+export default clerkMiddleware(async (auth, req) => {
   if (isAdminRoute(req)) {
-    const { userId } = auth();
+    const { userId } = await auth();
     if (!userId) {
       const signInUrl = new URL("/sign-in", req.url);
       signInUrl.searchParams.set("redirect_url", req.url);
