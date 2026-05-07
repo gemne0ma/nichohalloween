@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ClerkProvider } from "@clerk/nextjs";
 import {
   IM_Fell_English_SC,
   Cormorant_Garamond,
@@ -47,7 +48,11 @@ export default function RootLayout({
       lang="en"
       className={`${imFellEnglishSC.variable} ${cormorantGaramond.variable} ${specialElite.variable}`}
     >
-      <body>{children}</body>
+      <body>
+        <ClerkProvider>
+          {children}
+        </ClerkProvider>
+      </body>
     </html>
   );
 }
