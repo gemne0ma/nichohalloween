@@ -23,7 +23,8 @@ export default function Home() {
 
         {/* Subtitle */}
         <p className="font-body italic text-xl md:text-2xl text-ink-soft mt-2 mb-6 text-center max-w-xl">
-          An iconic 37-year tradition, returning to Balmain East for one day only!
+          An iconic 37-year tradition, returning to Balmain East for one day
+          only!
         </p>
 
         {/* Skull rule */}
