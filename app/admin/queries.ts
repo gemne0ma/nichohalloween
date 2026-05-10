@@ -1,6 +1,6 @@
 import { db } from "@/db";
-import { tokenOrders, sponsors, tasks, auctionItems, vendors } from "@/db/schema";
-import { eq, sql, desc, and, ne, asc, ilike, or } from "drizzle-orm";
+import { tokenOrders, sponsors, tasks, auctionItems, vendors, users, tags, taskTags } from "@/db/schema";
+import { eq, sql, desc, and, ne, asc, ilike, or, inArray } from "drizzle-orm";
 
 // ─── Stat tile data ─────────────────────────────────────
 
@@ -143,27 +143,108 @@ export async function getMoneyRaised() {
 
 // ─── Tasks by bucket (for task boards) ───────────────────
 
+export type TaskTag = {
+  id: string;
+  name: string;
+  slug: string;
+  color: string | null;
+};
+
 export type TaskRow = {
   id: string;
   bucket: string;
   title: string;
   description: string | null;
   ownerId: string | null;
+  assignedTo: string | null;
+  assigneeName: string | null;
   dueDate: string | null;
   status: "todo" | "in_progress" | "blocked" | "done";
   notes: string | null;
+  tags: TaskTag[];
   createdAt: Date;
   updatedAt: Date;
 };
 
 export async function getTasksByBucket(bucket: string): Promise<TaskRow[]> {
+  // Fetch tasks with assignee name via left join
   const rows = await db
-    .select()
+    .select({
+      id: tasks.id,
+      bucket: tasks.bucket,
+      title: tasks.title,
+      description: tasks.description,
+      ownerId: tasks.ownerId,
+      assignedTo: tasks.assignedTo,
+      assigneeName: users.name,
+      dueDate: tasks.dueDate,
+      status: tasks.status,
+      notes: tasks.notes,
+      createdAt: tasks.createdAt,
+      updatedAt: tasks.updatedAt,
+    })
     .from(tasks)
+    .leftJoin(users, eq(tasks.assignedTo, users.id))
     .where(eq(tasks.bucket, bucket as any))
     .orderBy(tasks.dueDate, tasks.createdAt);
 
-  return rows as TaskRow[];
+  // Fetch tags for all tasks in this bucket in one query
+  const taskIds = rows.map((r) => r.id);
+  let tagMap = new Map<string, TaskTag[]>();
+
+  if (taskIds.length > 0) {
+    const tagRows = await db
+      .select({
+        taskId: taskTags.taskId,
+        tagId: tags.id,
+        tagName: tags.name,
+        tagSlug: tags.slug,
+        tagColor: tags.color,
+      })
+      .from(taskTags)
+      .innerJoin(tags, eq(taskTags.tagId, tags.id))
+      .where(inArray(taskTags.taskId, taskIds));
+
+    for (const row of tagRows) {
+      const existing = tagMap.get(row.taskId) || [];
+      existing.push({
+        id: row.tagId,
+        name: row.tagName,
+        slug: row.tagSlug,
+        color: row.tagColor,
+      });
+      tagMap.set(row.taskId, existing);
+    }
+  }
+
+  return rows.map((r) => ({
+    ...r,
+    tags: tagMap.get(r.id) || [],
+  })) as TaskRow[];
+}
+
+// ─── Admin users (for assignee dropdowns) ───────────────
+
+export type AdminUser = {
+  id: string;
+  name: string | null;
+  email: string;
+};
+
+export async function getAdminUsers(): Promise<AdminUser[]> {
+  return db
+    .select({ id: users.id, name: users.name, email: users.email })
+    .from(users)
+    .orderBy(users.name);
+}
+
+// ─── All tags (for tag pickers) ─────────────────────────
+
+export async function getAllTags(): Promise<TaskTag[]> {
+  return db
+    .select({ id: tags.id, name: tags.name, slug: tags.slug, color: tags.color })
+    .from(tags)
+    .orderBy(tags.name);
 }
 
 // ─── Full register queries ──────────────────────────────

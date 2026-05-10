@@ -1,6 +1,7 @@
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import AdminSidebar from "./components/AdminSidebar";
+import { syncUser } from "@/lib/sync-user";
 
 // Every page under /admin/* runs through this layout.
 // If the visitor isn't logged in, they get bounced to /sign-in.
@@ -20,6 +21,14 @@ export default async function AdminLayout({
     user.firstName && user.lastName
       ? `${user.firstName} ${user.lastName}`
       : user.emailAddresses[0]?.emailAddress || "Admin";
+
+  // Upsert this admin into our users table so they appear
+  // in assignee dropdowns. Cheap INSERT ... ON CONFLICT.
+  await syncUser({
+    id: user.id,
+    email: user.emailAddresses[0]?.emailAddress || "",
+    name: displayName,
+  });
 
   return (
     <div className="flex min-h-screen">

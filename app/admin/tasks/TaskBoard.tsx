@@ -5,13 +5,29 @@ import { createTask, updateTaskStatus, updateTask, deleteTask } from "./actions"
 
 type TaskStatus = "todo" | "in_progress" | "blocked" | "done";
 
+type TaskTag = {
+  id: string;
+  name: string;
+  slug: string;
+  color: string | null;
+};
+
+type AdminUser = {
+  id: string;
+  name: string | null;
+  email: string;
+};
+
 type Task = {
   id: string;
   title: string;
   description: string | null;
+  assignedTo: string | null;
+  assigneeName: string | null;
   dueDate: string | null;
   status: TaskStatus;
   notes: string | null;
+  tags: TaskTag[];
 };
 
 const STATUS_OPTIONS: { value: TaskStatus; label: string }[] = [
@@ -32,14 +48,22 @@ export default function TaskBoard({
   bucket,
   bucketLabel,
   tasks: initialTasks,
+  adminUsers,
+  allTags,
 }: {
   bucket: string;
   bucketLabel: string;
   tasks: Task[];
+  adminUsers: AdminUser[];
+  allTags: TaskTag[];
 }) {
   const [showCreate, setShowCreate] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+
+  // Filters
+  const [filterAssignee, setFilterAssignee] = useState<string>("all");
+  const [filterTag, setFilterTag] = useState<string>("all");
 
   function handleStatusChange(taskId: string, newStatus: TaskStatus) {
     startTransition(async () => {
@@ -67,15 +91,30 @@ export default function TaskBoard({
     const description = (formData.get("description") as string) || null;
     const dueDate = (formData.get("dueDate") as string) || null;
     const notes = (formData.get("notes") as string) || null;
+    const assignedTo = (formData.get("assignedTo") as string) || null;
+    const tagIds = formData.getAll("tagIds") as string[];
 
     startTransition(async () => {
-      await updateTask(taskId, { title, description, dueDate, notes });
+      await updateTask(taskId, { title, description, dueDate, notes, assignedTo }, tagIds);
       setEditingId(null);
     });
   }
 
-  const openTasks = initialTasks.filter((t) => t.status !== "done");
-  const doneTasks = initialTasks.filter((t) => t.status === "done");
+  // Apply filters
+  let filtered = initialTasks;
+  if (filterAssignee !== "all") {
+    filtered = filtered.filter((t) =>
+      filterAssignee === "unassigned" ? !t.assignedTo : t.assignedTo === filterAssignee
+    );
+  }
+  if (filterTag !== "all") {
+    filtered = filtered.filter((t) => t.tags.some((tag) => tag.id === filterTag));
+  }
+
+  const openTasks = filtered.filter((t) => t.status !== "done");
+  const doneTasks = filtered.filter((t) => t.status === "done");
+
+  const hasFilters = filterAssignee !== "all" || filterTag !== "all";
 
   return (
     <div>
@@ -95,6 +134,55 @@ export default function TaskBoard({
         >
           {showCreate ? "Cancel" : "+ Add task"}
         </button>
+      </div>
+
+      {/* Filter bar */}
+      <div className="flex flex-wrap gap-3 mb-6">
+        <div className="flex items-center gap-2">
+          <label className="font-mono text-[10px] uppercase tracking-wider text-moss">
+            Assignee
+          </label>
+          <select
+            value={filterAssignee}
+            onChange={(e) => setFilterAssignee(e.target.value)}
+            className="bg-bone border border-mist px-2 py-1.5 font-mono text-xs text-ink focus:outline-none focus:border-forest"
+          >
+            <option value="all">All</option>
+            <option value="unassigned">Unassigned</option>
+            {adminUsers.map((u) => (
+              <option key={u.id} value={u.id}>
+                {u.name || u.email}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <label className="font-mono text-[10px] uppercase tracking-wider text-moss">
+            Tag
+          </label>
+          <select
+            value={filterTag}
+            onChange={(e) => setFilterTag(e.target.value)}
+            className="bg-bone border border-mist px-2 py-1.5 font-mono text-xs text-ink focus:outline-none focus:border-forest"
+          >
+            <option value="all">All</option>
+            {allTags.map((tag) => (
+              <option key={tag.id} value={tag.id}>
+                {tag.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {hasFilters && (
+          <button
+            onClick={() => { setFilterAssignee("all"); setFilterTag("all"); }}
+            className="font-mono text-[10px] uppercase tracking-wider text-rust hover:text-rust-deep transition-colors py-1"
+          >
+            Clear filters
+          </button>
+        )}
       </div>
 
       {/* Create form */}
@@ -126,17 +214,59 @@ export default function TaskBoard({
                 placeholder="Optional details"
               />
             </div>
-            <div>
-              <label className="font-mono text-xs uppercase tracking-wider text-moss block mb-1">
-                Due date
-              </label>
-              <input
-                name="dueDate"
-                type="date"
-                className="w-full bg-paper border border-mist px-3 py-2 font-body text-base text-ink focus:outline-none focus:border-forest"
-              />
+            <div className="space-y-4">
+              <div>
+                <label className="font-mono text-xs uppercase tracking-wider text-moss block mb-1">
+                  Due date
+                </label>
+                <input
+                  name="dueDate"
+                  type="date"
+                  className="w-full bg-paper border border-mist px-3 py-2 font-body text-base text-ink focus:outline-none focus:border-forest"
+                />
+              </div>
+              <div>
+                <label className="font-mono text-xs uppercase tracking-wider text-moss block mb-1">
+                  Assign to
+                </label>
+                <select
+                  name="assignedTo"
+                  className="w-full bg-paper border border-mist px-3 py-2 font-mono text-sm text-ink focus:outline-none focus:border-forest"
+                >
+                  <option value="">Unassigned</option>
+                  {adminUsers.map((u) => (
+                    <option key={u.id} value={u.id}>
+                      {u.name || u.email}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
           </div>
+
+          {/* Tag checkboxes */}
+          <div>
+            <label className="font-mono text-xs uppercase tracking-wider text-moss block mb-2">
+              Tags
+            </label>
+            <div className="flex flex-wrap gap-2">
+              {allTags.map((tag) => (
+                <label
+                  key={tag.id}
+                  className="flex items-center gap-1.5 cursor-pointer"
+                >
+                  <input
+                    type="checkbox"
+                    name="tagIds"
+                    value={tag.id}
+                    className="accent-forest"
+                  />
+                  <TagPill tag={tag} />
+                </label>
+              ))}
+            </div>
+          </div>
+
           <button
             type="submit"
             disabled={isPending}
@@ -158,7 +288,9 @@ export default function TaskBoard({
         {openTasks.length === 0 ? (
           <div className="px-5 py-6">
             <p className="font-body text-base italic text-moss">
-              No open tasks. Nice work, or time to add some.
+              {hasFilters
+                ? "No tasks match these filters."
+                : "No open tasks. Nice work, or time to add some."}
             </p>
           </div>
         ) : (
@@ -169,6 +301,8 @@ export default function TaskBoard({
                   key={task.id}
                   task={task}
                   isPending={isPending}
+                  adminUsers={adminUsers}
+                  allTags={allTags}
                   onSave={(formData) => handleUpdate(task.id, formData)}
                   onCancel={() => setEditingId(null)}
                 />
@@ -211,6 +345,22 @@ export default function TaskBoard({
         </details>
       )}
     </div>
+  );
+}
+
+// ─── Tag pill ───────────────────────────────────────────
+
+function TagPill({ tag }: { tag: TaskTag }) {
+  return (
+    <span
+      className="inline-block font-mono text-[9px] uppercase tracking-[0.15em] px-2 py-0.5 rounded-sm"
+      style={{
+        backgroundColor: tag.color ? `${tag.color}20` : "#A8AC9F20",
+        color: tag.color || "#5A6B4F",
+      }}
+    >
+      {tag.name}
+    </span>
   );
 }
 
@@ -274,6 +424,17 @@ function TaskRow({
               {task.description}
             </p>
           )}
+          {/* Tags + assignee row */}
+          <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
+            {task.tags.map((tag) => (
+              <TagPill key={tag.id} tag={tag} />
+            ))}
+            {task.assigneeName && (
+              <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-moss">
+                {task.tags.length > 0 && "·"} {task.assigneeName}
+              </span>
+            )}
+          </div>
         </div>
 
         {/* Due date */}
@@ -330,14 +491,20 @@ function TaskRow({
 function EditRow({
   task,
   isPending,
+  adminUsers,
+  allTags,
   onSave,
   onCancel,
 }: {
   task: Task;
   isPending: boolean;
+  adminUsers: AdminUser[];
+  allTags: TaskTag[];
   onSave: (formData: FormData) => void;
   onCancel: () => void;
 }) {
+  const currentTagIds = task.tags.map((t) => t.id);
+
   return (
     <form action={onSave} className="px-5 py-4 bg-paper-deep space-y-3">
       <input
@@ -361,6 +528,18 @@ function EditRow({
             defaultValue={task.dueDate ?? ""}
             className="w-full bg-paper border border-mist px-3 py-2 font-body text-sm text-ink focus:outline-none focus:border-forest"
           />
+          <select
+            name="assignedTo"
+            defaultValue={task.assignedTo ?? ""}
+            className="w-full bg-paper border border-mist px-3 py-2 font-mono text-sm text-ink focus:outline-none focus:border-forest"
+          >
+            <option value="">Unassigned</option>
+            {adminUsers.map((u) => (
+              <option key={u.id} value={u.id}>
+                {u.name || u.email}
+              </option>
+            ))}
+          </select>
           <textarea
             name="notes"
             defaultValue={task.notes ?? ""}
@@ -370,6 +549,26 @@ function EditRow({
           />
         </div>
       </div>
+
+      {/* Tag checkboxes */}
+      <div className="flex flex-wrap gap-2">
+        {allTags.map((tag) => (
+          <label
+            key={tag.id}
+            className="flex items-center gap-1.5 cursor-pointer"
+          >
+            <input
+              type="checkbox"
+              name="tagIds"
+              value={tag.id}
+              defaultChecked={currentTagIds.includes(tag.id)}
+              className="accent-forest"
+            />
+            <TagPill tag={tag} />
+          </label>
+        ))}
+      </div>
+
       <div className="flex gap-3">
         <button
           type="submit"

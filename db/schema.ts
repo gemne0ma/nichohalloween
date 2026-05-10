@@ -7,6 +7,7 @@ import {
   integer,
   boolean,
   pgEnum,
+  primaryKey,
 } from "drizzle-orm/pg-core";
 
 // ─── Enums ───────────────────────────────────────────────
@@ -49,10 +50,11 @@ export const bundleTypeEnum = pgEnum("bundle_type", [
 
 // ─── Tables ──────────────────────────────────────────────
 
-// Synced from Clerk. Anyone authenticated is admin.
+// Synced from Clerk on admin login. Anyone authenticated is admin.
 export const users = pgTable("users", {
   id: text("id").primaryKey(), // Clerk user ID (string, not uuid)
   email: text("email").notNull(),
+  name: text("name"), // display name, synced from Clerk
   createdAt: timestamp("created_at", { withTimezone: true })
     .defaultNow()
     .notNull(),
@@ -64,6 +66,7 @@ export const tasks = pgTable("tasks", {
   title: text("title").notNull(),
   description: text("description"),
   ownerId: text("owner_id").references(() => users.id),
+  assignedTo: text("assigned_to").references(() => users.id),
   dueDate: date("due_date"),
   status: taskStatusEnum("status").default("todo").notNull(),
   notes: text("notes"),
@@ -149,3 +152,29 @@ export const attractions = pgTable("attractions", {
     .defaultNow()
     .notNull(),
 });
+
+// ─── Tags (controlled vocabulary for task categorisation) ─
+
+export const tags = pgTable("tags", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  name: text("name").notNull().unique(), // e.g. "Vendors"
+  slug: text("slug").notNull().unique(), // e.g. "vendors"
+  color: text("color"), // optional hex for UI pill colour
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+});
+
+// Join table: many tasks to many tags
+export const taskTags = pgTable(
+  "task_tags",
+  {
+    taskId: uuid("task_id")
+      .notNull()
+      .references(() => tasks.id, { onDelete: "cascade" }),
+    tagId: uuid("tag_id")
+      .notNull()
+      .references(() => tags.id, { onDelete: "cascade" }),
+  },
+  (t) => [primaryKey({ columns: [t.taskId, t.tagId] })]
+);
