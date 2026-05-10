@@ -28,10 +28,9 @@ export const taskStatusEnum = pgEnum("task_status", [
 ]);
 
 export const sponsorTierEnum = pgEnum("sponsor_tier", [
-  "pumpkin",
-  "goblin",
-  "witch",
-  "horseman",
+  "gold",
+  "silver",
+  "bronze",
 ]);
 
 export const auctionStatusEnum = pgEnum("auction_status", [

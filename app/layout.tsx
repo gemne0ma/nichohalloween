@@ -1,34 +1,26 @@
 import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
-import {
-  IM_Fell_English_SC,
-  Cormorant_Garamond,
-  Special_Elite,
-} from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
-// Display headings. The 17th-century letterpress look.
-const imFellEnglishSC = IM_Fell_English_SC({
-  weight: "400",
-  subsets: ["latin"],
-  variable: "--font-im-fell-english-sc",
+// Display headings. Bold slab serif with presence.
+const trenchSlab = localFont({
+  src: "../public/TrenchSlab_Complete/Fonts/WEB/fonts/TrenchSlab-Variable.woff2",
+  variable: "--font-trench-slab",
   display: "swap",
 });
 
-// Body text. Elegant, readable, warm.
-const cormorantGaramond = Cormorant_Garamond({
-  weight: ["400", "500", "600", "700"],
-  style: ["normal", "italic"],
-  subsets: ["latin"],
-  variable: "--font-cormorant-garamond",
+// Body, subheads, metadata. Clean geometric sans.
+const alpino = localFont({
+  src: "../public/Alpino_Complete/Fonts/WEB/fonts/Alpino-Variable.woff2",
+  variable: "--font-alpino",
   display: "swap",
 });
 
-// Typewriter ephemera. Eyebrows, metadata, ticket numbers.
-const specialElite = Special_Elite({
-  weight: "400",
-  subsets: ["latin"],
-  variable: "--font-special-elite",
+// Tagline / accent serif.
+const telma = localFont({
+  src: "../public/Telma_Complete/Fonts/WEB/fonts/Telma-Variable.woff2",
+  variable: "--font-telma",
   display: "swap",
 });
 
@@ -46,7 +38,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${imFellEnglishSC.variable} ${cormorantGaramond.variable} ${specialElite.variable}`}
+      className={`${trenchSlab.variable} ${alpino.variable} ${telma.variable}`}
     >
       <body>
         <ClerkProvider>

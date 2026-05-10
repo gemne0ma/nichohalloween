@@ -24,9 +24,10 @@ const config: Config = {
         mist: "#A8AC9F",
       },
       fontFamily: {
-        display: ["var(--font-im-fell-english-sc)", "serif"],
-        body: ["var(--font-cormorant-garamond)", "serif"],
-        mono: ["var(--font-special-elite)", "monospace"],
+        display: ["var(--font-trench-slab)", "serif"],
+        body: ["var(--font-alpino)", "sans-serif"],
+        mono: ["var(--font-alpino)", "sans-serif"],
+        telma: ["var(--font-telma)", "serif"],
       },
     },
   },

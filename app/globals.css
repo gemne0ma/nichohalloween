@@ -6,16 +6,15 @@
 @layer base {
   body {
     @apply bg-paper text-ink;
-    font-family: var(--font-cormorant-garamond), serif;
+    font-family: var(--font-alpino), sans-serif;
     line-height: 1.6;
-    font-size: 18px;
+    font-size: 22px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* No system sans. Ever. */
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-im-fell-english-sc), serif;
+    font-family: var(--font-trench-slab), serif;
     line-height: 1.1;
     letter-spacing: 0.02em;
   }
@@ -30,8 +29,18 @@
     @apply text-rust-deep;
   }
 
-  /* Selection colour */
   ::selection {
     @apply bg-forest text-bone;
+  }
+
+  /* Visible focus ring for keyboard navigation (accessibility) */
+  :focus-visible {
+    outline: 2px solid #2D3A2E;
+    outline-offset: 2px;
+  }
+
+  /* Remove default outline only when focus-visible handles it */
+  :focus:not(:focus-visible) {
+    outline: none;
   }
 }

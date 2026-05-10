@@ -27,7 +27,7 @@ That's it. No event-night app, no QR scanning, no door check-in. On the night, a
 | **Payments** | Stripe Checkout (hosted). Site never touches card data. **Festival runs its own dedicated Stripe account in P&C's name**, separate from the school's Wix Payments setup which is used for everything else (school P&C general site, other school ticketing). Two parallel payment streams, both into the same P&C bank account, treasurer reconciles each separately. Confirmed with treasurer 6 May. |
 | **Token model** | Physical tokens. Site sells bundles, customer gets plain confirmation email with order number. On the night, customer shows email at token booth, volunteer crosses off the printed list, hands over physical tokens. **No QR codes. No scanning. No event-night app.** |
 | **POS at stalls** | Square, off-the-shelf. Reconciled by CSV after the event. **Do not build POS.** |
-| **Silent auction** | Hybrid. Read-only showcase page on our site. Bidding lives on **32auctions** (locked, used by the festival for years). Bidders click "Place a bid", open 32auctions in new tab. **Do not build bidding.** |
+| **Silent auction** | Hybrid. Read-only showcase page on our site. Bidding lives on an external platform (TBD, evaluating 32auctions, Galabid, Trellis). Bidders click "Place a bid", open external platform in new tab. **Do not build bidding.** |
 | **Aesthetic** | "Country Almanac" mood. Cream/forest/rust palette. IM Fell English SC display, Cormorant Garamond body, Special Elite mono. Real photography. **No purple gradients, no clip-art, no neon, no cartoon Halloween.** |
 | **Roles** | One: `admin`. Public is unauthenticated. No volunteer role. No door check-in. |
 | **Domain** | TBC. Probably `nichohalloween.com.au`. Buy through Vercel or Cloudflare. **Festival site is standalone, not hosted on or linked to the school's Wix site.** Confirmed with treasurer 6 May. |
@@ -152,7 +152,7 @@ sponsors
   business_name       text
   contact             text
   email               text
-  tier                enum('pumpkin' | 'goblin' | 'witch' | 'horseman')
+  tier                enum('gold' | 'silver' | 'bronze')
   committed_amount    integer (cents)
   paid_amount         integer (cents)
   logo_url            text
@@ -275,7 +275,6 @@ Fonts (load via next/font):
 - No black backgrounds. The site is cream.
 - No clip art. No cartoon ghosts/bats/witches/jack-o-lanterns.
 - Real photography only. Phone snaps from past festivals are fine, stock photos are not.
-- Skull dingbat (☠) used as punctuation, sparingly. Three is a flourish, twelve is clutter.
 - Generous whitespace.
 - The mockup at `/mnt/user-data/outputs/nicho_mockup.html` is the visual source of truth. Match it.
 
@@ -424,11 +423,13 @@ Update this list as decisions land. Strike through, don't delete.
 - [ ] Domain name (probably `nichohalloween.com.au`)
 - [ ] Email sender address (`tickets@...`, `hello@...`)
 - [ ] Token equivalent dollar value at stalls (1 token = $1.00 implied from 100-pack-at-$100; confirm stall pricing aligns. E.g. inflatable = 4 tokens means $4 to enter.)
+- [ ] Auction platform (evaluating 32auctions, Galabid, Trellis. Assigned to Gemma.)
+- [ ] Social media links in homepage footer (Facebook, Instagram, others TBC). Need URLs from committee.
 
 **Resolved:**
-- ~~Auction platform: Galabid vs 32auctions~~ Resolved 6 May. **32auctions** locked, the festival's existing platform.
+- ~~Sponsor tier names~~ Resolved 8 May. **Gold / Silver / Bronze.** (Earlier drafts had Pumpkin/Goblin/Witch/Horseman and Platinum/Gold/Bronze. Gold/Silver/Bronze is confirmed.)
 - ~~Token bundle structure~~ Resolved 6 May. Match the historical model: 25/50/100/200 packs with 15% pre-purchase discount.
-- ~~Sponsor tier pricing~~ Suggested: Pumpkin $500 / Goblin $1,500 / Witch $3,000 / Headless Horseman $5,000. Confirm with treasurer before sponsor outreach in June.
+- ~~Sponsor tier pricing~~ Suggested: Gold $6,600 / Silver $3,500 / Bronze $1,800 (based on 2025 actuals). Confirm with treasurer before sponsor outreach in June.
 - ~~P&C treasurer name + Stripe access~~ Resolved 6 May. Festival runs its own Stripe account in P&C's name, alongside the school's existing Wix Payments. Treasurer happy with parallel payment streams.
 - ~~Festival on Wix vs standalone domain~~ Resolved 6 May. Standalone domain, separate from school Wix.
 

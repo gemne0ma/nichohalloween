@@ -10,7 +10,13 @@
       "Bash(git remote *)",
       "Bash(npm view *)",
       "Bash(npm run *)",
-      "Bash(curl -s --max-time 10 -A \"Mozilla/5.0\" http://localhost:3002/)"
+      "Bash(curl -s --max-time 10 -A \"Mozilla/5.0\" http://localhost:3002/)",
+      "PowerShell(Get-NetTCPConnection -LocalPort 3000 -ErrorAction SilentlyContinue)",
+      "PowerShell(Get-Process -Name node -ErrorAction SilentlyContinue)",
+      "PowerShell(Stop-Process -Force -ErrorAction SilentlyContinue)",
+      "PowerShell(\"killed\")",
+      "PowerShell(\"ready\")",
+      "PowerShell(winget install Stripe.StripeCLI)"
     ]
   }
 }
