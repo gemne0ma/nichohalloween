@@ -130,6 +130,114 @@ function buildConfirmationHtml({
 </html>`;
 }
 
+// ─── Task assignment notification ───────────────────────
+
+type TaskAssignmentParams = {
+  to: string;
+  assigneeName: string;
+  assignerName: string;
+  taskTitle: string;
+  bucket: string;
+  dueDate?: string | null;
+};
+
+export async function sendTaskAssignment({
+  to,
+  assigneeName,
+  assignerName,
+  taskTitle,
+  bucket,
+  dueDate,
+}: TaskAssignmentParams) {
+  const { error } = await resend.emails.send({
+    from: FROM_ADDRESS,
+    to,
+    subject: `New task: ${taskTitle}`,
+    html: buildTaskAssignmentHtml({ assigneeName, assignerName, taskTitle, bucket, dueDate }),
+  });
+
+  if (error) {
+    // Log but don't throw. Assignment notification is not critical
+    // enough to block the task creation.
+    console.error("Task assignment email failed:", error);
+  }
+}
+
+function buildTaskAssignmentHtml({
+  assigneeName,
+  assignerName,
+  taskTitle,
+  bucket,
+  dueDate,
+}: Omit<TaskAssignmentParams, "to">) {
+  const dueLine = dueDate
+    ? `<p style="margin:0 0 8px; font-size:14px; color:#5A6B4F; font-family:'Courier New', monospace;">Due: ${escapeHtml(new Date(dueDate).toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" }))}</p>`
+    : "";
+
+  return `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Task Assigned</title>
+</head>
+<body style="margin:0; padding:0; background-color:#F4EBD9; font-family:Georgia, 'Times New Roman', serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#F4EBD9; padding:40px 20px;">
+    <tr>
+      <td align="center">
+        <table width="560" cellpadding="0" cellspacing="0" style="background-color:#EDE3CE; max-width:560px; width:100%;">
+          <tr>
+            <td style="background-color:#1F2A20; padding:28px 32px;">
+              <h1 style="margin:0; font-size:22px; color:#EDE3CE; font-family:Georgia, serif; letter-spacing:1px;">
+                Nicho Halloween Festival
+              </h1>
+              <p style="margin:6px 0 0; font-size:12px; color:#A8AC9F; font-family:'Courier New', monospace; text-transform:uppercase; letter-spacing:2px;">
+                Task assigned to you
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:32px;">
+              <p style="margin:0 0 20px; font-size:17px; color:#1A1A1A; line-height:1.6;">
+                Hi ${escapeHtml(assigneeName)},
+              </p>
+              <p style="margin:0 0 24px; font-size:17px; color:#1A1A1A; line-height:1.6;">
+                ${escapeHtml(assignerName)} assigned you a task:
+              </p>
+              <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#F4EBD9; margin-bottom:24px;">
+                <tr>
+                  <td style="padding:20px 24px;">
+                    <p style="margin:0 0 8px; font-size:19px; color:#1A1A1A; font-weight:bold; line-height:1.4;">
+                      ${escapeHtml(taskTitle)}
+                    </p>
+                    <p style="margin:0 0 8px; font-size:13px; color:#B85C2E; font-family:'Courier New', monospace; text-transform:uppercase; letter-spacing:1px;">
+                      ${escapeHtml(bucket)}
+                    </p>
+                    ${dueLine}
+                  </td>
+                </tr>
+              </table>
+              <p style="margin:0; font-size:15px; color:#3A3A3A; line-height:1.6;">
+                Head to the admin dashboard to see the full details.
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:20px 32px; border-top:1px dashed #A8AC9F;">
+              <p style="margin:0; font-size:12px; color:#5A6B4F; line-height:1.5;">
+                You're receiving this because you're on the Nicho Halloween Festival committee.
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
+}
+
 function escapeHtml(str: string): string {
   return str
     .replace(/&/g, "&amp;")

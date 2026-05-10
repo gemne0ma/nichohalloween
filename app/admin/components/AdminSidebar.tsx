@@ -79,11 +79,11 @@ export default function AdminSidebar({ userName }: { userName: string }) {
             <p className="font-mono text-xs uppercase tracking-[0.3em] text-moss mb-1">
               Admin
             </p>
-            <p className="font-display text-2xl leading-tight">
+            <Link href="/" className="font-display text-2xl leading-tight hover:text-paper transition-colors block">
               Nicho Halloween
               <br />
               Festival
-            </p>
+            </Link>
           </div>
           <button
             onClick={() => setMobileOpen(false)}
@@ -112,11 +112,11 @@ export default function AdminSidebar({ userName }: { userName: string }) {
           <p className="font-mono text-xs uppercase tracking-[0.3em] text-moss mb-1">
             Admin
           </p>
-          <p className="font-display text-2xl leading-tight">
+          <Link href="/" className="font-display text-2xl leading-tight hover:text-paper transition-colors block">
             Nicho Halloween
             <br />
             Festival
-          </p>
+          </Link>
         </div>
 
         <NavContent pathname={pathname} />
