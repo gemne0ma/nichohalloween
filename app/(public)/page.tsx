@@ -16,7 +16,7 @@ export default function Home() {
         {/* Background image */}
         <div
           aria-hidden
-          className="absolute inset-0 bg-[url('/Halloween.png')] bg-cover bg-[position:80%_center] md:bg-center pointer-events-none"
+          className="absolute inset-0 bg-[url('/Halloween.png')] bg-cover bg-[position:95%_center] md:bg-center pointer-events-none"
         />
 
         {/* Dark overlay so light text reads against the photo */}
