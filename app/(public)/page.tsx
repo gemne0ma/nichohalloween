@@ -49,7 +49,7 @@ export default function Home() {
           </div>
 
           {/* Meta line */}
-          <p className="font-mono text-[10px] md:text-lg tracking-[0.08em] md:tracking-[0.25em] uppercase text-paper mb-3 text-center flex flex-wrap items-center justify-center gap-x-1 md:gap-x-0">
+          <p className="font-mono text-sm md:text-lg font-bold tracking-[0.1em] md:tracking-[0.25em] uppercase text-paper mb-3 text-center flex flex-wrap items-center justify-center gap-x-1 md:gap-x-0 [text-shadow:_0_2px_12px_rgba(0,0,0,0.8)]">
             <span>Live music</span> <span className="text-pumpkin mx-1 md:mx-3 text-[1.2em] md:text-[3em] leading-none align-middle relative -top-[1px] md:-top-[2px]">&middot;</span> <span>Games</span>{" "}
             <span className="text-pumpkin mx-1 md:mx-3 text-[1.2em] md:text-[3em] leading-none align-middle relative -top-[1px] md:-top-[2px]">&middot;</span> <span>Haunted house</span>{" "}
             <span className="text-pumpkin mx-1 md:mx-3 text-[1.2em] md:text-[3em] leading-none align-middle relative -top-[1px] md:-top-[2px]">&middot;</span> <span>Tasty food</span>
