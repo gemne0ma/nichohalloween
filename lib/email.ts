@@ -3,9 +3,7 @@ import { formatCents } from "@/lib/bundles";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-// Sender address. Using onboarding@resend.dev until nichohalloween.com.au is verified in Resend.
-// Once verified, switch to: "Nicho Halloween Festival <hello@nichohalloween.com.au>"
-const FROM_ADDRESS = "Nicho Halloween Festival <onboarding@resend.dev>";
+const FROM_ADDRESS = "Nicho Halloween Festival <hello@nichohalloween.com.au>";
 
 type OrderEmailParams = {
   to: string;

@@ -176,24 +176,24 @@ export default function FAQPage() {
 
               {si === 1 && (
                 <div className="flex flex-col sm:flex-row gap-6 sm:gap-10 my-14 items-start">
-                  <div className="rotate-1 bg-bone p-3 md:p-4 pb-12 md:pb-14 shadow-[3px_5px_16px_rgba(26,26,26,0.18),1px_2px_4px_rgba(26,26,26,0.1)] max-w-[260px] sm:max-w-[300px]">
+                  <div className="-rotate-2 bg-bone p-3 md:p-4 pb-12 md:pb-14 shadow-[3px_5px_16px_rgba(26,26,26,0.18),1px_2px_4px_rgba(26,26,26,0.1)] max-w-[280px] sm:max-w-[340px]">
                     <img
-                      src="/pram.jpg"
-                      alt="Little ones in costume being wheeled through the festival"
+                      src="/londonwheel.jpg"
+                      alt="The London Wheel of Fortune at the festival"
                       className="w-full aspect-[3/4] object-cover"
                     />
                     <p className="font-mono text-[9px] md:text-xs uppercase tracking-[0.2em] text-moss text-center mt-3">
-                      Never too young
+                      Try your hand at our London Wheel of Fortune!
                     </p>
                   </div>
-                  <div className="-rotate-2 bg-bone p-3 md:p-4 pb-12 md:pb-14 shadow-[3px_5px_16px_rgba(26,26,26,0.18),1px_2px_4px_rgba(26,26,26,0.1)] max-w-[340px] sm:max-w-[420px] w-full sm:mt-8">
+                  <div className="rotate-1 bg-bone p-3 md:p-4 pb-12 md:pb-14 shadow-[3px_5px_16px_rgba(26,26,26,0.18),1px_2px_4px_rgba(26,26,26,0.1)] max-w-[340px] sm:max-w-[420px] w-full sm:mt-8">
                     <img
-                      src="/londonwheel.jpg"
-                      alt="The festival ferris wheel lit up"
+                      src="/pram.jpg"
+                      alt="Prams lined up at the festival"
                       className="w-full aspect-[4/3] object-cover"
                     />
                     <p className="font-mono text-[9px] md:text-xs uppercase tracking-[0.2em] text-moss text-center mt-3">
-                      The wheel. Every year.
+                      Ample parking for the littlest ghouls&apos; carriages
                     </p>
                   </div>
                 </div>
