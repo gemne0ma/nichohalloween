@@ -16,7 +16,7 @@ export default function Home() {
         {/* Background image: mobile-cropped version focused on yellow-hat ghost, full image on desktop */}
         <div
           aria-hidden
-          className="absolute inset-0 bg-[url('/Halloween-mobile.png')] md:bg-[url('/Halloween.png')] bg-cover bg-center pointer-events-none"
+          className="absolute inset-0 bg-[url('/Halloween-mobile.png')] md:bg-[url('/Halloween.png')] bg-cover bg-[position:center_calc(50%+60px)] md:bg-center pointer-events-none"
         />
 
         {/* Dark overlay so light text reads against the photo */}
@@ -41,7 +41,7 @@ export default function Home() {
 
           {/* Subtitle on a wooden plank */}
           <div
-            className="relative mb-3 w-[clamp(280px,55vw,880px)] max-w-[92vw] h-[clamp(120px,24vw,400px)] bg-[url('/plank.png')] bg-[length:100%_100%] bg-no-repeat bg-center flex items-center justify-center"
+            className="relative mb-3 w-[clamp(314px,62vw,986px)] max-w-[92vw] h-[clamp(134px,27vw,448px)] bg-[url('/plank.png')] bg-[length:100%_100%] bg-no-repeat bg-center flex items-center justify-center"
           >
             <p className="font-display text-[clamp(16px,3.74vw,46px)] tracking-wide text-paper text-center whitespace-nowrap px-[10%] [text-shadow:_0_2px_14px_rgba(0,0,0,0.95)] relative top-[1px]">
               An iconic 37-year tradition
