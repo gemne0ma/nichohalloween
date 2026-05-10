@@ -41,7 +41,7 @@ export default function Home() {
 
           {/* Subtitle on a wooden plank */}
           <div
-            className="relative mb-3 w-[clamp(314px,62vw,986px)] max-w-[92vw] h-[clamp(134px,27vw,448px)] bg-[url('/plank.png')] bg-[length:100%_100%] bg-no-repeat bg-center flex items-center justify-center"
+            className="relative mb-3 -top-[20px] md:top-0 w-[clamp(314px,62vw,986px)] max-w-[92vw] h-[clamp(134px,27vw,448px)] bg-[url('/plank.png')] bg-[length:100%_100%] bg-no-repeat bg-center flex items-center justify-center"
           >
             <p className="font-display text-[clamp(16px,3.74vw,46px)] tracking-wide text-paper text-center whitespace-nowrap px-[10%] [text-shadow:_0_2px_14px_rgba(0,0,0,0.95)] relative top-[1px]">
               An iconic 37-year tradition
@@ -49,7 +49,7 @@ export default function Home() {
           </div>
 
           {/* Meta line */}
-          <p className="font-mono text-sm md:text-lg font-bold tracking-[0.1em] md:tracking-[0.25em] uppercase text-paper mb-3 text-center flex flex-wrap items-center justify-center gap-x-1 md:gap-x-0 [text-shadow:_0_2px_12px_rgba(0,0,0,0.8)] relative -top-[120px] md:top-0">
+          <p className="font-mono text-sm md:text-lg font-bold tracking-[0.1em] md:tracking-[0.25em] uppercase text-paper mb-3 text-center flex flex-wrap items-center justify-center gap-x-1 md:gap-x-0 [text-shadow:_0_2px_12px_rgba(0,0,0,0.8)] relative -top-[40px] md:top-0">
             <span>Live music</span> <span className="text-pumpkin mx-1 md:mx-3 text-[1.2em] md:text-[3em] leading-none align-middle relative -top-[1px] md:-top-[2px]">&middot;</span> <span>Games</span>{" "}
             <span className="text-pumpkin mx-1 md:mx-3 text-[1.2em] md:text-[3em] leading-none align-middle relative -top-[1px] md:-top-[2px]">&middot;</span> <span>Haunted house</span>{" "}
             <span className="text-pumpkin mx-1 md:mx-3 text-[1.2em] md:text-[3em] leading-none align-middle relative -top-[1px] md:-top-[2px]">&middot;</span> <span>Tasty food</span>
