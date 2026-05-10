@@ -12,57 +12,57 @@ export default function Home() {
   return (
     <main>
       {/* ─── Hero section (Halloween.png background) ─── */}
-      <section className="relative min-h-screen flex flex-col items-center justify-center px-4 md:px-8 pt-6 md:pt-8 pb-4 overflow-hidden">
+      <section className="relative min-h-screen flex flex-col items-center justify-start pt-16 md:justify-center md:pt-8 px-4 md:px-8 pb-4 overflow-hidden">
         {/* Background image: mobile-cropped version focused on yellow-hat ghost, full image on desktop */}
         <div
           aria-hidden
           className="absolute inset-0 bg-[url('/Halloween-mobile.png')] md:bg-[url('/Halloween.png')] bg-cover bg-center pointer-events-none"
         />
 
-        {/* Dark overlay so light text reads against the photo */}
+        {/* Dark overlay: lighter on mobile so ghost reads better in lower half */}
         <div
           aria-hidden
-          className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/50 to-black/70 pointer-events-none"
+          className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/50 to-black/30 md:from-black/30 md:via-black/50 md:to-black/70 pointer-events-none"
         />
 
-        {/* Foreground content, all light text */}
-        {/* DOM order = mobile order: Plank → Date → Title → Meta → Countdown */}
-        {/* Desktop reorders via md:order: Date(1) → Title(2) → Plank(3) → Meta(4) → Countdown(5) */}
+        {/* Foreground content */}
+        {/* DOM order = mobile: Plank → Date → Title → Meta → Countdown */}
+        {/* Desktop via md:order: Date(1) → Title(2) → Plank(3) → Meta(4) → Countdown(5) */}
         <div className="relative flex flex-col items-center drop-shadow-[0_2px_12px_rgba(0,0,0,0.5)]">
-          {/* Subtitle on a wooden plank: first on mobile, after title on desktop */}
+          {/* Subtitle on a wooden plank */}
           <div
-            className="md:order-3 mb-2 md:mb-3 w-[clamp(314px,62vw,986px)] max-w-[92vw] h-[clamp(134px,27vw,448px)] bg-[url('/plank.png')] bg-[length:100%_100%] bg-no-repeat bg-center flex items-center justify-center"
+            className="md:order-3 mb-4 md:mb-3 w-[clamp(280px,72vw,986px)] max-w-[92vw] h-[clamp(70px,18vw,448px)] md:w-[clamp(314px,62vw,986px)] md:h-[clamp(134px,27vw,448px)] bg-[url('/plank.png')] bg-[length:100%_100%] bg-no-repeat bg-center flex items-center justify-center"
           >
-            <p className="font-display text-[clamp(16px,3.74vw,46px)] tracking-wide text-paper text-center whitespace-nowrap px-[10%] [text-shadow:_0_2px_14px_rgba(0,0,0,0.95)] relative top-[1px]">
+            <p className="font-display text-[clamp(14px,3.74vw,46px)] tracking-wide text-paper text-center whitespace-nowrap px-[10%] [text-shadow:_0_2px_14px_rgba(0,0,0,0.95)] relative top-[1px]">
               An iconic 37-year tradition
             </p>
           </div>
 
           {/* Eyebrow */}
-          <p className="md:order-1 font-display font-bold text-sm md:text-3xl lg:text-4xl tracking-[0.1em] md:tracking-[0.3em] uppercase text-pumpkin mb-3 [text-shadow:_0_2px_20px_rgba(0,0,0,0.8)] text-center">
+          <p className="md:order-1 font-display font-bold text-sm md:text-3xl lg:text-4xl tracking-[0.1em] md:tracking-[0.3em] uppercase text-pumpkin mb-4 md:mb-3 [text-shadow:_0_2px_20px_rgba(0,0,0,0.8)] text-center">
             Saturday 24 October 2026 &middot; 3 to 7 pm
           </p>
 
           {/* Title */}
-          <h1 className="md:order-2 font-display font-bold text-4xl md:text-8xl lg:text-9xl xl:text-[10rem] text-center leading-[0.95] tracking-tight text-paper mt-8 md:mt-[100px]">
+          <h1 className="md:order-2 font-display font-bold text-4xl md:text-8xl lg:text-9xl xl:text-[10rem] text-center leading-[0.95] tracking-tight text-paper mt-2 md:mt-[100px] mb-4 md:mb-0">
             Nicho Halloween
             <br />
             Festival
           </h1>
 
           {/* Meta line */}
-          <p className="md:order-4 font-mono text-sm md:text-lg font-bold tracking-[0.1em] md:tracking-[0.25em] uppercase text-paper mb-3 text-center flex flex-wrap items-center justify-center gap-x-1 md:gap-x-0 [text-shadow:_0_2px_12px_rgba(0,0,0,0.8)]">
+          <p className="md:order-4 font-mono text-sm md:text-lg font-bold tracking-[0.1em] md:tracking-[0.25em] uppercase text-paper mb-6 md:mb-3 text-center flex flex-wrap items-center justify-center gap-x-1 md:gap-x-0 [text-shadow:_0_2px_12px_rgba(0,0,0,0.8)]">
             <span>Live music</span> <span className="text-pumpkin mx-1 md:mx-3 text-[1.2em] md:text-[3em] leading-none align-middle relative -top-[1px] md:-top-[2px]">&middot;</span> <span>Games</span>{" "}
             <span className="text-pumpkin mx-1 md:mx-3 text-[1.2em] md:text-[3em] leading-none align-middle relative -top-[1px] md:-top-[2px]">&middot;</span> <span>Haunted house</span>{" "}
             <span className="text-pumpkin mx-1 md:mx-3 text-[1.2em] md:text-[3em] leading-none align-middle relative -top-[1px] md:-top-[2px]">&middot;</span> <span>Tasty food</span>
           </p>
 
-          {/* Countdown with "Haunted sleeps to go" graphic to its left */}
+          {/* Countdown with "Haunted sleeps to go" graphic */}
           <div className="md:order-5 flex flex-col md:flex-row items-center gap-4 md:gap-6">
             <img
               src="/text.png"
               alt="Haunted sleeps to go"
-              className="w-[200px] md:w-[360px] h-auto -rotate-[15deg]"
+              className="w-[160px] md:w-[360px] h-auto -rotate-[15deg]"
             />
             <Countdown />
           </div>
