@@ -43,7 +43,7 @@ export default async function TasksOverviewPage() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {Object.entries(BUCKET_LABELS).map(([bucket, label]) => {
-          const counts = countMap.get(bucket) ?? { total: 0, open: 0, done: 0 };
+          const counts = countMap.get(bucket as any) ?? { total: 0, open: 0, done: 0 };
           return (
             <Link
               key={bucket}
