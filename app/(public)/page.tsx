@@ -26,30 +26,31 @@ export default function Home() {
         />
 
         {/* Foreground content, all light text */}
+        {/* Mobile order: Plank → Date → Title → Meta. Desktop order: Date → Title → Plank → Meta (DOM order). */}
         <div className="relative flex flex-col items-center drop-shadow-[0_2px_12px_rgba(0,0,0,0.5)]">
-          {/* Subtitle on a wooden plank: appears first on mobile, after title on desktop */}
+          {/* Eyebrow */}
+          <p className="order-2 md:order-none font-display font-bold text-sm md:text-3xl lg:text-4xl tracking-[0.1em] md:tracking-[0.3em] uppercase text-pumpkin mb-3 [text-shadow:_0_2px_20px_rgba(0,0,0,0.8)] text-center">
+            Saturday 24 October 2026 &middot; 3 to 7 pm
+          </p>
+
+          {/* Title */}
+          <h1 className="order-3 md:order-none font-display font-bold text-4xl md:text-8xl lg:text-9xl xl:text-[10rem] text-center leading-[0.95] tracking-tight text-paper mt-8 md:mt-[100px]">
+            Nicho Halloween
+            <br />
+            Festival
+          </h1>
+
+          {/* Subtitle on a wooden plank: first on mobile, after title on desktop */}
           <div
-            className="order-first md:order-none mb-2 md:mb-3 w-[clamp(314px,62vw,986px)] max-w-[92vw] h-[clamp(134px,27vw,448px)] bg-[url('/plank.png')] bg-[length:100%_100%] bg-no-repeat bg-center flex items-center justify-center"
+            className="order-1 md:order-none mb-2 md:mb-3 w-[clamp(314px,62vw,986px)] max-w-[92vw] h-[clamp(134px,27vw,448px)] bg-[url('/plank.png')] bg-[length:100%_100%] bg-no-repeat bg-center flex items-center justify-center"
           >
             <p className="font-display text-[clamp(16px,3.74vw,46px)] tracking-wide text-paper text-center whitespace-nowrap px-[10%] [text-shadow:_0_2px_14px_rgba(0,0,0,0.95)] relative top-[1px]">
               An iconic 37-year tradition
             </p>
           </div>
 
-          {/* Eyebrow */}
-          <p className="font-display font-bold text-sm md:text-3xl lg:text-4xl tracking-[0.1em] md:tracking-[0.3em] uppercase text-pumpkin mb-3 [text-shadow:_0_2px_20px_rgba(0,0,0,0.8)] text-center">
-            Saturday 24 October 2026 &middot; 3 to 7 pm
-          </p>
-
-          {/* Title */}
-          <h1 className="font-display font-bold text-4xl md:text-8xl lg:text-9xl xl:text-[10rem] text-center leading-[0.95] tracking-tight text-paper mt-8 md:mt-[100px]">
-            Nicho Halloween
-            <br />
-            Festival
-          </h1>
-
           {/* Meta line */}
-          <p className="font-mono text-sm md:text-lg font-bold tracking-[0.1em] md:tracking-[0.25em] uppercase text-paper mb-3 text-center flex flex-wrap items-center justify-center gap-x-1 md:gap-x-0 [text-shadow:_0_2px_12px_rgba(0,0,0,0.8)]">
+          <p className="order-4 md:order-none font-mono text-sm md:text-lg font-bold tracking-[0.1em] md:tracking-[0.25em] uppercase text-paper mb-3 text-center flex flex-wrap items-center justify-center gap-x-1 md:gap-x-0 [text-shadow:_0_2px_12px_rgba(0,0,0,0.8)]">
             <span>Live music</span> <span className="text-pumpkin mx-1 md:mx-3 text-[1.2em] md:text-[3em] leading-none align-middle relative -top-[1px] md:-top-[2px]">&middot;</span> <span>Games</span>{" "}
             <span className="text-pumpkin mx-1 md:mx-3 text-[1.2em] md:text-[3em] leading-none align-middle relative -top-[1px] md:-top-[2px]">&middot;</span> <span>Haunted house</span>{" "}
             <span className="text-pumpkin mx-1 md:mx-3 text-[1.2em] md:text-[3em] leading-none align-middle relative -top-[1px] md:-top-[2px]">&middot;</span> <span>Tasty food</span>
