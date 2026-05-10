@@ -131,7 +131,7 @@ export default async function CheckoutSuccessPage({
           </p>
           <p className="font-body text-base text-ink-soft leading-relaxed">
             Bring your confirmation email to the Token Booth at the festival entrance on Saturday 24 October.
-            Show your order number, and we&apos;ll hand you your physical tokens. That&apos;s it.
+            Show your order number, and we&apos;ll hand you your physical tokens. We can&apos;t wait to see you!
           </p>
         </div>
 
