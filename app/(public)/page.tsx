@@ -13,10 +13,10 @@ export default function Home() {
     <main>
       {/* ─── Hero section (Halloween.png background) ─── */}
       <section className="relative min-h-screen flex flex-col items-center justify-center px-4 md:px-8 pt-6 md:pt-8 pb-4 overflow-hidden">
-        {/* Background image */}
+        {/* Background image: mobile-cropped version focused on yellow-hat ghost, full image on desktop */}
         <div
           aria-hidden
-          className="absolute inset-0 bg-[url('/Halloween.png')] bg-cover bg-[position:95%_center] md:bg-center pointer-events-none"
+          className="absolute inset-0 bg-[url('/Halloween-mobile.png')] md:bg-[url('/Halloween.png')] bg-cover bg-center pointer-events-none"
         />
 
         {/* Dark overlay so light text reads against the photo */}
