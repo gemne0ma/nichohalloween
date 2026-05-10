@@ -148,57 +148,102 @@ export default function FAQPage() {
                 ))}
               </div>
 
-              {/* Photo break after first two sections */}
+              {/* Photo breaks between sections, scattered like a scrapbook */}
               {si === 0 && (
-                <div className="flex justify-center my-14">
-                  <div className="-rotate-1 bg-bone p-4 pb-14 shadow-[3px_5px_16px_rgba(26,26,26,0.18),1px_2px_4px_rgba(26,26,26,0.1)] max-w-[600px] w-full">
+                <div className="flex flex-col sm:flex-row gap-6 sm:gap-10 my-14 items-start">
+                  <div className="-rotate-2 bg-bone p-3 md:p-4 pb-12 md:pb-14 shadow-[3px_5px_16px_rgba(26,26,26,0.18),1px_2px_4px_rgba(26,26,26,0.1)] max-w-[280px] sm:max-w-[340px]">
                     <img
                       src="/scene9.jpg"
-                      alt="Festival scene"
+                      alt="Festival scene at dusk"
                       className="w-full aspect-[4/3] object-cover"
                     />
-                    <p className="font-mono text-xs uppercase tracking-[0.2em] text-moss text-center mt-3">
+                    <p className="font-mono text-[9px] md:text-xs uppercase tracking-[0.2em] text-moss text-center mt-3">
                       The schoolyard, transformed
+                    </p>
+                  </div>
+                  <div className="rotate-3 bg-bone p-3 md:p-4 pb-12 md:pb-14 shadow-[3px_5px_16px_rgba(26,26,26,0.18),1px_2px_4px_rgba(26,26,26,0.1)] max-w-[240px] sm:max-w-[280px] self-end sm:mt-12">
+                    <img
+                      src="/boo.jpg"
+                      alt="Boo! A costumed kid jumps out"
+                      className="w-full aspect-[3/4] object-cover"
+                    />
+                    <p className="font-mono text-[9px] md:text-xs uppercase tracking-[0.2em] text-moss text-center mt-3">
+                      Boo!
                     </p>
                   </div>
                 </div>
               )}
 
               {si === 1 && (
-                <div className="flex justify-start my-14">
-                  <div className="rotate-1 bg-bone p-4 pb-14 shadow-[3px_5px_16px_rgba(26,26,26,0.18),1px_2px_4px_rgba(26,26,26,0.1)] max-w-[320px]">
+                <div className="flex flex-col sm:flex-row gap-6 sm:gap-10 my-14 items-start">
+                  <div className="rotate-1 bg-bone p-3 md:p-4 pb-12 md:pb-14 shadow-[3px_5px_16px_rgba(26,26,26,0.18),1px_2px_4px_rgba(26,26,26,0.1)] max-w-[260px] sm:max-w-[300px]">
                     <img
-                      src="/scene7.jpg"
-                      alt="Festival fun"
+                      src="/pram.jpg"
+                      alt="Little ones in costume being wheeled through the festival"
                       className="w-full aspect-[3/4] object-cover"
                     />
-                    <p className="font-mono text-xs uppercase tracking-[0.2em] text-moss text-center mt-3">
-                      Every year, rain or shine
+                    <p className="font-mono text-[9px] md:text-xs uppercase tracking-[0.2em] text-moss text-center mt-3">
+                      Never too young
+                    </p>
+                  </div>
+                  <div className="-rotate-2 bg-bone p-3 md:p-4 pb-12 md:pb-14 shadow-[3px_5px_16px_rgba(26,26,26,0.18),1px_2px_4px_rgba(26,26,26,0.1)] max-w-[340px] sm:max-w-[420px] w-full sm:mt-8">
+                    <img
+                      src="/londonwheel.jpg"
+                      alt="The festival ferris wheel lit up"
+                      className="w-full aspect-[4/3] object-cover"
+                    />
+                    <p className="font-mono text-[9px] md:text-xs uppercase tracking-[0.2em] text-moss text-center mt-3">
+                      The wheel. Every year.
                     </p>
                   </div>
                 </div>
               )}
 
               {si === 2 && (
-                <div className="flex flex-col sm:flex-row gap-8 my-14 items-start">
-                  <div className="rotate-1 bg-bone p-4 pb-14 shadow-[3px_5px_16px_rgba(26,26,26,0.18),1px_2px_4px_rgba(26,26,26,0.1)] max-w-[300px]">
+                <div className="flex flex-col sm:flex-row gap-6 sm:gap-10 my-14 items-start">
+                  <div className="rotate-2 bg-bone p-3 md:p-4 pb-12 md:pb-14 shadow-[3px_5px_16px_rgba(26,26,26,0.18),1px_2px_4px_rgba(26,26,26,0.1)] max-w-[260px] sm:max-w-[300px]">
                     <img
                       src="/skeleton.jpg"
                       alt="Skeleton in a peacock chair"
                       className="w-full aspect-[3/4] object-cover"
                     />
-                    <p className="font-mono text-xs uppercase tracking-[0.2em] text-moss text-center mt-3">
+                    <p className="font-mono text-[9px] md:text-xs uppercase tracking-[0.2em] text-moss text-center mt-3">
                       Keeping watch since 1989
                     </p>
                   </div>
-                  <div className="-rotate-1 bg-bone p-4 pb-14 shadow-[3px_5px_16px_rgba(26,26,26,0.18),1px_2px_4px_rgba(26,26,26,0.1)] max-w-[500px] w-full mt-6">
+                  <div className="-rotate-1 bg-bone p-3 md:p-4 pb-12 md:pb-14 shadow-[3px_5px_16px_rgba(26,26,26,0.18),1px_2px_4px_rgba(26,26,26,0.1)] max-w-[240px] sm:max-w-[260px] self-end sm:mt-16">
+                    <img
+                      src="/scare.jpg"
+                      alt="A spooky scare at the haunted house"
+                      className="w-full aspect-[3/4] object-cover"
+                    />
+                    <p className="font-mono text-[9px] md:text-xs uppercase tracking-[0.2em] text-moss text-center mt-3">
+                      You were warned
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {si === 3 && (
+                <div className="flex flex-col sm:flex-row gap-6 sm:gap-10 my-14 items-center">
+                  <div className="-rotate-1 bg-bone p-3 md:p-4 pb-12 md:pb-14 shadow-[3px_5px_16px_rgba(26,26,26,0.18),1px_2px_4px_rgba(26,26,26,0.1)] max-w-[500px] sm:max-w-[560px] w-full">
                     <img
                       src="/scene8.jpg"
                       alt="School grounds with Sydney Harbour Bridge in the background"
                       className="w-full aspect-[4/3] object-cover"
                     />
-                    <p className="font-mono text-xs uppercase tracking-[0.2em] text-moss text-center mt-3">
+                    <p className="font-mono text-[9px] md:text-xs uppercase tracking-[0.2em] text-moss text-center mt-3">
                       Balmain East. Harbour Bridge next door.
+                    </p>
+                  </div>
+                  <div className="rotate-2 bg-bone p-3 md:p-4 pb-12 md:pb-14 shadow-[3px_5px_16px_rgba(26,26,26,0.18),1px_2px_4px_rgba(26,26,26,0.1)] max-w-[200px] sm:max-w-[220px]">
+                    <img
+                      src="/scene7.jpg"
+                      alt="Festival memories"
+                      className="w-full aspect-[3/4] object-cover"
+                    />
+                    <p className="font-mono text-[9px] md:text-xs uppercase tracking-[0.2em] text-moss text-center mt-3">
+                      Every year, rain or shine
                     </p>
                   </div>
                 </div>

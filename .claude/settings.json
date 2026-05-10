@@ -16,7 +16,9 @@
       "PowerShell(Stop-Process -Force -ErrorAction SilentlyContinue)",
       "PowerShell(\"killed\")",
       "PowerShell(\"ready\")",
-      "PowerShell(winget install Stripe.StripeCLI)"
+      "PowerShell(winget install Stripe.StripeCLI)",
+      "Bash(git mv *)",
+      "PowerShell($pub = \"C:\\\\claude-projects\\\\nicho halloween\\\\public\"; if \\(Test-Path \"$pub\\\\scare.JPG\"\\) { Rename-Item -Path \"$pub\\\\scare.JPG\" -NewName \"scare_temp.jpg\"; Rename-Item -Path \"$pub\\\\scare_temp.jpg\" -NewName \"scare.jpg\"; \"renamed\" } else { \"scare.JPG not found\" })"
     ]
   }
 }

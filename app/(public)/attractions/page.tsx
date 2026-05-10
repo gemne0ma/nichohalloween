@@ -70,7 +70,7 @@ const ATTRACTIONS: Attraction[] = [
     num: "No. 08",
     title: "Willy Wonka's Candy Wonderland",
     desc: "A candy paradise. Sweets, chocolates and lollies as far as the eye can see.",
-    meta: "5 tokens per bag · all ages",
+    meta: "Various · all ages",
     gradient: "from-plum to-rust-deep",
     image: "/candy.jpg",
   },
