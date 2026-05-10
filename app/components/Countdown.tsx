@@ -24,10 +24,10 @@ function getTimeRemaining() {
 function Unit({ value, label }: { value: number; label: string }) {
   return (
     <div className="flex flex-col items-center">
-      <span className="font-display text-6xl md:text-7xl text-paper leading-none">
+      <span className="font-display text-3xl md:text-7xl text-paper leading-none">
         {value.toString().padStart(2, "0")}
       </span>
-      <span className="font-display font-bold text-lg tracking-[0.3em] uppercase text-pumpkin mt-2 [text-shadow:_0_2px_20px_rgba(0,0,0,0.8)]">
+      <span className="font-display font-bold text-xs md:text-lg tracking-[0.15em] md:tracking-[0.3em] uppercase text-pumpkin mt-1 md:mt-2 [text-shadow:_0_2px_20px_rgba(0,0,0,0.8)]">
         {label}
       </span>
     </div>
@@ -61,7 +61,7 @@ export default function Countdown() {
   }
 
   return (
-    <div className="flex gap-6 justify-center items-baseline font-mono text-ink">
+    <div className="flex gap-3 md:gap-6 justify-center items-baseline font-mono text-ink">
       <Unit value={time.days} label="days" />
       <Separator />
       <Unit value={time.hours} label="hours" />

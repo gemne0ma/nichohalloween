@@ -12,7 +12,7 @@ export default function Home() {
   return (
     <main>
       {/* ─── Hero section (Halloween.png background) ─── */}
-      <section className="relative min-h-screen flex flex-col items-center justify-center px-8 pt-6 md:pt-8 pb-4 overflow-hidden">
+      <section className="relative min-h-screen flex flex-col items-center justify-center px-4 md:px-8 pt-6 md:pt-8 pb-4 overflow-hidden">
         {/* Background image */}
         <div
           aria-hidden
@@ -28,12 +28,12 @@ export default function Home() {
         {/* Foreground content, all light text */}
         <div className="relative flex flex-col items-center drop-shadow-[0_2px_12px_rgba(0,0,0,0.5)]">
           {/* Eyebrow */}
-          <p className="font-display font-bold text-lg md:text-3xl lg:text-4xl tracking-[0.2em] md:tracking-[0.3em] uppercase text-pumpkin mb-3 [text-shadow:_0_2px_20px_rgba(0,0,0,0.8)] text-center">
+          <p className="font-display font-bold text-sm md:text-3xl lg:text-4xl tracking-[0.1em] md:tracking-[0.3em] uppercase text-pumpkin mb-3 [text-shadow:_0_2px_20px_rgba(0,0,0,0.8)] text-center">
             Saturday 24 October 2026 &middot; 3 to 7 pm
           </p>
 
           {/* Title */}
-          <h1 className="font-display font-bold text-5xl md:text-8xl lg:text-9xl xl:text-[10rem] text-center leading-[0.95] tracking-tight text-paper mt-12 md:mt-[100px]">
+          <h1 className="font-display font-bold text-4xl md:text-8xl lg:text-9xl xl:text-[10rem] text-center leading-[0.95] tracking-tight text-paper mt-8 md:mt-[100px]">
             Nicho Halloween
             <br />
             Festival
@@ -49,10 +49,10 @@ export default function Home() {
           </div>
 
           {/* Meta line */}
-          <p className="font-mono text-xs md:text-lg tracking-[0.15em] md:tracking-[0.25em] uppercase text-paper mb-3 text-center flex flex-wrap items-center justify-center gap-x-2 md:gap-x-0">
-            <span>Live music</span> <span className="text-pumpkin mx-1 md:mx-3 text-[1.5em] md:text-[3em] leading-none align-middle relative -top-[1px] md:-top-[2px]">&middot;</span> <span>Games</span>{" "}
-            <span className="text-pumpkin mx-1 md:mx-3 text-[1.5em] md:text-[3em] leading-none align-middle relative -top-[1px] md:-top-[2px]">&middot;</span> <span>Haunted house</span>{" "}
-            <span className="text-pumpkin mx-1 md:mx-3 text-[1.5em] md:text-[3em] leading-none align-middle relative -top-[1px] md:-top-[2px]">&middot;</span> <span>Tasty food</span>
+          <p className="font-mono text-[10px] md:text-lg tracking-[0.08em] md:tracking-[0.25em] uppercase text-paper mb-3 text-center flex flex-wrap items-center justify-center gap-x-1 md:gap-x-0">
+            <span>Live music</span> <span className="text-pumpkin mx-1 md:mx-3 text-[1.2em] md:text-[3em] leading-none align-middle relative -top-[1px] md:-top-[2px]">&middot;</span> <span>Games</span>{" "}
+            <span className="text-pumpkin mx-1 md:mx-3 text-[1.2em] md:text-[3em] leading-none align-middle relative -top-[1px] md:-top-[2px]">&middot;</span> <span>Haunted house</span>{" "}
+            <span className="text-pumpkin mx-1 md:mx-3 text-[1.2em] md:text-[3em] leading-none align-middle relative -top-[1px] md:-top-[2px]">&middot;</span> <span>Tasty food</span>
           </p>
 
           {/* Countdown with "Haunted sleeps to go" graphic to its left */}
