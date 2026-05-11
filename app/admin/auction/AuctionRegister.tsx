@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { createAuctionItem, updateAuctionItem, deleteAuctionItem } from "./actions";
 import { formatCents } from "@/lib/bundles";
+import ImageUpload from "@/app/admin/components/ImageUpload";
 
 type AuctionStatus = "pending" | "received" | "listed" | "sold";
 
@@ -12,6 +13,7 @@ type AuctionItem = {
   classroom: string | null;
   donor: string | null;
   estimatedValue: number | null;
+  photoUrl: string | null;
   status: AuctionStatus;
   platformListingUrl: string | null;
   notes: string | null;
@@ -35,6 +37,7 @@ export default function AuctionRegister({ items: initialItems }: { items: Auctio
   const [showCreate, setShowCreate] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const [createPhotoUrl, setCreatePhotoUrl] = useState<string | null>(null);
 
   async function handleCreate(formData: FormData) {
     startTransition(async () => {
@@ -52,12 +55,14 @@ export default function AuctionRegister({ items: initialItems }: { items: Auctio
 
   async function handleUpdate(itemId: string, formData: FormData) {
     const estimatedRaw = formData.get("estimatedValue") as string;
+    const photoUrlVal = formData.get("photoUrl") as string;
     startTransition(async () => {
       await updateAuctionItem(itemId, {
         itemName: formData.get("itemName") as string,
         classroom: (formData.get("classroom") as string) || null,
         donor: (formData.get("donor") as string) || null,
         estimatedValue: estimatedRaw ? Math.round(parseFloat(estimatedRaw) * 100) : null,
+        photoUrl: photoUrlVal || null,
         status: formData.get("status") as AuctionStatus,
         platformListingUrl: (formData.get("platformListingUrl") as string) || null,
         notes: (formData.get("notes") as string) || null,
@@ -137,6 +142,14 @@ export default function AuctionRegister({ items: initialItems }: { items: Auctio
             <label className="font-mono text-xs uppercase tracking-wider text-moss block mb-1">Notes</label>
             <textarea name="notes" rows={2} className="w-full bg-paper border border-mist px-3 py-2 font-body text-base text-ink focus:outline-none focus:border-forest resize-none" />
           </div>
+          <ImageUpload
+            category="auction"
+            festivalYear={2026}
+            compact
+            label="Photo"
+            onUploadComplete={({ publicUrl }) => setCreatePhotoUrl(publicUrl)}
+          />
+          <input type="hidden" name="photoUrl" value={createPhotoUrl ?? ""} />
           <button type="submit" disabled={isPending} className="font-mono text-xs uppercase tracking-[0.3em] bg-forest-deep text-bone px-5 py-2.5 hover:bg-rust transition-colors disabled:opacity-50">
             {isPending ? "Saving..." : "Save item"}
           </button>
@@ -222,6 +235,8 @@ function ItemRow({ item, isPending, onEdit, onDelete }: {
 function ItemEditRow({ item, isPending, onSave, onCancel }: {
   item: AuctionItem; isPending: boolean; onSave: (formData: FormData) => void; onCancel: () => void;
 }) {
+  const [photoUrl, setPhotoUrl] = useState(item.photoUrl ?? "");
+
   return (
     <form action={onSave} className="px-5 py-4 bg-paper-deep space-y-3">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -256,6 +271,15 @@ function ItemEditRow({ item, isPending, onSave, onCancel }: {
           <input name="platformListingUrl" defaultValue={item.platformListingUrl ?? ""} placeholder="32auctions or Galabid URL" className="w-full bg-paper border border-mist px-3 py-2 font-body text-sm text-ink focus:outline-none focus:border-forest" />
         </div>
       </div>
+      <ImageUpload
+        category="auction"
+        festivalYear={2026}
+        compact
+        label="Photo"
+        existingUrl={item.photoUrl || undefined}
+        onUploadComplete={({ publicUrl }) => setPhotoUrl(publicUrl)}
+      />
+      <input type="hidden" name="photoUrl" value={photoUrl} />
       <div>
         <label className="font-mono text-xs uppercase tracking-wider text-moss block mb-1">Notes</label>
         <textarea name="notes" defaultValue={item.notes ?? ""} rows={2} className="w-full bg-paper border border-mist px-3 py-2 font-body text-sm text-ink focus:outline-none focus:border-forest resize-none" />

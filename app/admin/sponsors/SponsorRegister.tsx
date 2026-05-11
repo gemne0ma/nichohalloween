@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { createSponsor, updateSponsor, deleteSponsor } from "./actions";
 import { formatCents } from "@/lib/bundles";
+import ImageUpload from "@/app/admin/components/ImageUpload";
 
 type SponsorTier = "gold" | "silver" | "bronze" | null;
 
@@ -36,6 +37,7 @@ export default function SponsorRegister({ sponsors: initialSponsors }: { sponsor
   const [showCreate, setShowCreate] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const [createLogoUrl, setCreateLogoUrl] = useState<string | null>(null);
 
   async function handleCreate(formData: FormData) {
     startTransition(async () => {
@@ -143,6 +145,14 @@ export default function SponsorRegister({ sponsors: initialSponsors }: { sponsor
             <label className="font-mono text-xs uppercase tracking-wider text-moss block mb-1">Notes</label>
             <textarea name="notes" rows={2} className="w-full bg-paper border border-mist px-3 py-2 font-body text-base text-ink focus:outline-none focus:border-forest resize-none" />
           </div>
+          <ImageUpload
+            category="sponsor"
+            festivalYear={2026}
+            compact
+            label="Logo"
+            onUploadComplete={({ publicUrl }) => setCreateLogoUrl(publicUrl)}
+          />
+          <input type="hidden" name="logoUrl" value={createLogoUrl ?? ""} />
           <button type="submit" disabled={isPending} className="font-mono text-xs uppercase tracking-[0.3em] bg-forest-deep text-bone px-5 py-2.5 hover:bg-rust transition-colors disabled:opacity-50">
             {isPending ? "Saving..." : "Save sponsor"}
           </button>
@@ -241,6 +251,8 @@ function SponsorRow({ sponsor, isPending, onEdit, onDelete }: {
 function SponsorEditRow({ sponsor, isPending, onSave, onCancel }: {
   sponsor: Sponsor; isPending: boolean; onSave: (formData: FormData) => void; onCancel: () => void;
 }) {
+  const [logoUrl, setLogoUrl] = useState(sponsor.logoUrl ?? "");
+
   return (
     <form action={onSave} className="px-5 py-4 bg-paper-deep space-y-3">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -273,10 +285,15 @@ function SponsorEditRow({ sponsor, isPending, onSave, onCancel }: {
           <input name="paidAmount" type="number" step="0.01" min="0" defaultValue={sponsor.paidAmount != null ? (sponsor.paidAmount / 100).toFixed(2) : ""} className="w-full bg-paper border border-mist px-3 py-2 font-body text-sm text-ink focus:outline-none focus:border-forest" />
         </div>
       </div>
-      <div>
-        <label className="font-mono text-xs uppercase tracking-wider text-moss block mb-1">Logo URL</label>
-        <input name="logoUrl" defaultValue={sponsor.logoUrl ?? ""} className="w-full bg-paper border border-mist px-3 py-2 font-body text-sm text-ink focus:outline-none focus:border-forest" />
-      </div>
+      <ImageUpload
+        category="sponsor"
+        festivalYear={2026}
+        compact
+        label="Logo"
+        existingUrl={sponsor.logoUrl || undefined}
+        onUploadComplete={({ publicUrl }) => setLogoUrl(publicUrl)}
+      />
+      <input type="hidden" name="logoUrl" value={logoUrl} />
       <label className="flex items-center gap-2 cursor-pointer">
         <input type="checkbox" name="thanked" defaultChecked={sponsor.thanked} className="accent-forest w-4 h-4" />
         <span className="font-mono text-xs uppercase tracking-wider text-ink">Thanked</span>

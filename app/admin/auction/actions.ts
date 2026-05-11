@@ -16,12 +16,14 @@ export async function createAuctionItem(formData: FormData) {
   const estimatedRaw = formData.get("estimatedValue") as string;
   const estimatedValue = estimatedRaw ? Math.round(parseFloat(estimatedRaw) * 100) : null;
   const notes = (formData.get("notes") as string) || null;
+  const photoUrl = (formData.get("photoUrl") as string) || null;
 
   await db.insert(auctionItems).values({
     itemName,
     classroom,
     donor,
     estimatedValue,
+    photoUrl,
     notes,
   });
 
@@ -36,6 +38,7 @@ export async function updateAuctionItem(
     classroom: string | null;
     donor: string | null;
     estimatedValue: number | null;
+    photoUrl: string | null;
     status: AuctionStatus;
     platformListingUrl: string | null;
     notes: string | null;

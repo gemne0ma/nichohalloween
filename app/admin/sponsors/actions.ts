@@ -15,6 +15,7 @@ export async function createSponsor(formData: FormData) {
   const committedRaw = formData.get("committedAmount") as string;
   const committedAmount = committedRaw ? Math.round(parseFloat(committedRaw) * 100) : null;
   const notes = (formData.get("notes") as string) || null;
+  const logoUrl = (formData.get("logoUrl") as string) || null;
 
   await db.insert(sponsors).values({
     businessName,
@@ -22,6 +23,7 @@ export async function createSponsor(formData: FormData) {
     email,
     tier: tier as "gold" | "silver" | "bronze" | null,
     committedAmount,
+    logoUrl,
     notes,
   });
 

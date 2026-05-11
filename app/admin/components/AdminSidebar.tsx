@@ -30,6 +30,7 @@ const navSections = [
       { href: "/admin/vendors", label: "Vendors" },
       { href: "/admin/sponsors", label: "Sponsors" },
       { href: "/admin/auction", label: "Auction items" },
+      { href: "/admin/media", label: "Media" },
     ],
   },
 ];

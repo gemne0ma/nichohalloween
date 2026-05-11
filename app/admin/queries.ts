@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import { tokenOrders, sponsors, tasks, auctionItems, vendors, users, tags, taskTags } from "@/db/schema";
+import { tokenOrders, sponsors, tasks, auctionItems, vendors, users, tags, taskTags, media } from "@/db/schema";
 import { eq, sql, desc, and, ne, asc, ilike, or, inArray } from "drizzle-orm";
 
 // ─── Stat tile data ─────────────────────────────────────
@@ -277,6 +277,62 @@ export async function getAllOrders(search?: string) {
       .orderBy(desc(tokenOrders.createdAt));
   }
   return db.select().from(tokenOrders).orderBy(desc(tokenOrders.createdAt));
+}
+
+// ─── Upcoming tasks across all buckets ───────────────────
+
+// ─── Media library queries ─────────────────────────────
+
+export type MediaRow = {
+  id: string;
+  filename: string;
+  r2Key: string;
+  fileType: string;
+  fileSize: number;
+  uploadedBy: string | null;
+  uploaderName: string | null;
+  uploadedAt: Date;
+  festivalYear: number;
+  category: string;
+  caption: string | null;
+  altText: string | null;
+};
+
+export async function getMediaLibrary(
+  filters?: { year?: number; category?: string }
+): Promise<MediaRow[]> {
+  let query = db
+    .select({
+      id: media.id,
+      filename: media.filename,
+      r2Key: media.r2Key,
+      fileType: media.fileType,
+      fileSize: media.fileSize,
+      uploadedBy: media.uploadedBy,
+      uploaderName: users.name,
+      uploadedAt: media.uploadedAt,
+      festivalYear: media.festivalYear,
+      category: media.category,
+      caption: media.caption,
+      altText: media.altText,
+    })
+    .from(media)
+    .leftJoin(users, eq(media.uploadedBy, users.id))
+    .orderBy(desc(media.uploadedAt))
+    .$dynamic();
+
+  const conditions = [];
+  if (filters?.year) {
+    conditions.push(eq(media.festivalYear, filters.year));
+  }
+  if (filters?.category) {
+    conditions.push(eq(media.category, filters.category as any));
+  }
+  if (conditions.length > 0) {
+    query = query.where(and(...conditions));
+  }
+
+  return query as Promise<MediaRow[]>;
 }
 
 // ─── Upcoming tasks across all buckets ───────────────────

@@ -13,6 +13,7 @@ export default async function AuctionPage() {
           classroom: item.classroom,
           donor: item.donor,
           estimatedValue: item.estimatedValue,
+          photoUrl: item.photoUrl,
           status: item.status,
           platformListingUrl: item.platformListingUrl,
           notes: item.notes,

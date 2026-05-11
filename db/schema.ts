@@ -12,6 +12,14 @@ import {
 
 // ─── Enums ───────────────────────────────────────────────
 
+export const mediaCategoryEnum = pgEnum("media_category", [
+  "gallery",
+  "sponsor",
+  "auction",
+  "vendor",
+  "other",
+]);
+
 export const taskBucketEnum = pgEnum("task_bucket", [
   "sponsorship",
   "auction",
@@ -151,6 +159,24 @@ export const attractions = pgTable("attractions", {
   createdAt: timestamp("created_at", { withTimezone: true })
     .defaultNow()
     .notNull(),
+});
+
+// ─── Media (photos, logos, documents uploaded to R2) ─────
+
+export const media = pgTable("media", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  filename: text("filename").notNull(),
+  r2Key: text("r2_key").notNull().unique(), // e.g. 2026/sponsor/logo-acme.png
+  fileType: text("file_type").notNull(), // MIME type
+  fileSize: integer("file_size").notNull(), // bytes
+  uploadedBy: text("uploaded_by").references(() => users.id),
+  uploadedAt: timestamp("uploaded_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+  festivalYear: integer("festival_year").notNull(), // e.g. 2026
+  category: mediaCategoryEnum("category").notNull(),
+  caption: text("caption"),
+  altText: text("alt_text"),
 });
 
 // ─── Tags (controlled vocabulary for task categorisation) ─
