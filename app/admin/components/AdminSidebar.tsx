@@ -71,7 +71,7 @@ export default function AdminSidebar({ userName }: { userName: string }) {
 
       {/* Mobile slide-out nav */}
       <aside
-        className={`md:hidden fixed top-0 left-0 z-50 bg-forest text-bone min-h-screen w-64 py-8 px-5 transition-transform duration-200 ${
+        className={`md:hidden fixed top-0 left-0 z-50 bg-forest text-bone h-screen w-64 py-8 px-5 overflow-y-auto transition-transform duration-200 ${
           mobileOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
