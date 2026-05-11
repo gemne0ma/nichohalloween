@@ -185,6 +185,13 @@ export default function MediaLibrary({ items, publicUrlPrefix }: Props) {
 
                 {/* Hover overlay with actions */}
                 <div className="absolute inset-0 bg-ink/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                  <a
+                    href={getPublicUrl(item.r2Key)}
+                    download={item.filename}
+                    className="px-3 py-1.5 bg-forest text-bone rounded text-xs font-mono uppercase"
+                  >
+                    Download
+                  </a>
                   <button
                     onClick={() => startEdit(item)}
                     className="px-3 py-1.5 bg-bone text-ink rounded text-xs font-mono uppercase"
