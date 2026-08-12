@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { createSponsor, updateSponsor, deleteSponsor } from "./actions";
+import { createSponsor, updateSponsor, deleteSponsor, setSponsorPublished } from "./actions";
 import { formatCents } from "@/lib/bundles";
 import ImageUpload from "@/app/admin/components/ImageUpload";
 
@@ -18,6 +18,7 @@ type Sponsor = {
   logoUrl: string | null;
   thanked: boolean;
   notes: string | null;
+  published: boolean;
 };
 
 const TIER_OPTIONS: { value: string; label: string }[] = [
@@ -43,6 +44,12 @@ export default function SponsorRegister({ sponsors: initialSponsors }: { sponsor
     startTransition(async () => {
       await createSponsor(formData);
       setShowCreate(false);
+    });
+  }
+
+  function handleTogglePublished(sponsorId: string, published: boolean) {
+    startTransition(async () => {
+      await setSponsorPublished(sponsorId, published);
     });
   }
 
@@ -93,10 +100,16 @@ export default function SponsorRegister({ sponsors: initialSponsors }: { sponsor
       </div>
 
       {/* Summary strip */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
         <div>
           <p className="font-mono text-[10px] uppercase tracking-wider text-moss">Total sponsors</p>
           <p className="font-display text-2xl text-ink">{initialSponsors.length}</p>
+        </div>
+        <div>
+          <p className="font-mono text-[10px] uppercase tracking-wider text-moss">Live on site</p>
+          <p className="font-display text-2xl text-forest">
+            {initialSponsors.filter((s) => s.published).length}
+          </p>
         </div>
         <div>
           <p className="font-mono text-[10px] uppercase tracking-wider text-moss">Committed</p>
@@ -187,6 +200,9 @@ export default function SponsorRegister({ sponsors: initialSponsors }: { sponsor
                   isPending={isPending}
                   onEdit={() => setEditingId(sponsor.id)}
                   onDelete={() => handleDelete(sponsor.id)}
+                  onTogglePublished={(published) =>
+                    handleTogglePublished(sponsor.id, published)
+                  }
                 />
               )
             )}
@@ -197,8 +213,9 @@ export default function SponsorRegister({ sponsors: initialSponsors }: { sponsor
   );
 }
 
-function SponsorRow({ sponsor, isPending, onEdit, onDelete }: {
+function SponsorRow({ sponsor, isPending, onEdit, onDelete, onTogglePublished }: {
   sponsor: Sponsor; isPending: boolean; onEdit: () => void; onDelete: () => void;
+  onTogglePublished: (published: boolean) => void;
 }) {
   return (
     <div className="px-5 py-3">
@@ -240,6 +257,24 @@ function SponsorRow({ sponsor, isPending, onEdit, onDelete }: {
         {sponsor.thanked && (
           <span className="font-mono text-xs text-forest flex-shrink-0" title="Thanked">✓</span>
         )}
+
+        {/* Public visibility. Labelled, not a bare switch, because it is the
+            one control here that changes what the world sees. */}
+        <label
+          className="flex items-center gap-1.5 flex-shrink-0 cursor-pointer py-2 px-2"
+          title={sponsor.published ? "Showing on the public sponsors page" : "Hidden from the public sponsors page"}
+        >
+          <input
+            type="checkbox"
+            checked={sponsor.published}
+            disabled={isPending}
+            onChange={(e) => onTogglePublished(e.target.checked)}
+            className="accent-rust w-4 h-4"
+          />
+          <span className={`font-mono text-[10px] uppercase tracking-wider ${sponsor.published ? "text-rust-deep" : "text-mist"}`}>
+            {sponsor.published ? "On site" : "Hidden"}
+          </span>
+        </label>
 
         <button onClick={onEdit} className="font-mono text-xs text-moss hover:text-ink transition-colors flex-shrink-0 py-2 px-2">Edit</button>
         <button onClick={onDelete} disabled={isPending} className="font-mono text-xs text-mist hover:text-rust transition-colors flex-shrink-0 py-2 px-2">×</button>

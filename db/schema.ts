@@ -125,6 +125,9 @@ export const sponsors = pgTable("sponsors", {
   logoUrl: text("logo_url"),
   thanked: boolean("thanked").default(false).notNull(),
   notes: text("notes"),
+  // Controls the public /sponsors page. Off by default: a sponsor exists in
+  // the register long before anyone agrees to being listed publicly.
+  published: boolean("published").default(false).notNull(),
   createdAt: timestamp("created_at", { withTimezone: true })
     .defaultNow()
     .notNull(),

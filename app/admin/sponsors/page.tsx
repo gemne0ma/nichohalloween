@@ -18,6 +18,7 @@ export default async function SponsorsPage() {
           logoUrl: s.logoUrl,
           thanked: s.thanked,
           notes: s.notes,
+          published: s.published,
         }))}
       />
     </div>

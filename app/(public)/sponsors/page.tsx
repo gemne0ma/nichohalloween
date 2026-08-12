@@ -1,21 +1,4 @@
-const GOLD_SPONSORS = [
-  { name: "Gold Sponsor 1", logo: null },
-  { name: "Gold Sponsor 2", logo: null },
-];
-
-const SILVER_SPONSORS = [
-  { name: "Silver Sponsor 1", logo: null },
-  { name: "Silver Sponsor 2", logo: null },
-  { name: "Silver Sponsor 3", logo: null },
-  { name: "Silver Sponsor 4", logo: null },
-];
-
-const BRONZE_SPONSORS = [
-  { name: "Bronze Sponsor 1", logo: null },
-  { name: "Bronze Sponsor 2", logo: null },
-  { name: "Bronze Sponsor 3", logo: null },
-  { name: "Bronze Sponsor 4", logo: null },
-];
+import { getPublishedSponsors, type PublicSponsor } from "./queries";
 
 function SponsorCard({
   name,
@@ -52,7 +35,46 @@ function SponsorCard({
   );
 }
 
-export default function SponsorsPage() {
+export default async function SponsorsPage() {
+  const sponsors = await getPublishedSponsors();
+
+  // Group once. A sponsor with no tier set is not shown: there is no section
+  // for it, and guessing a tier on a public page is worse than omitting it.
+  const byTier = {
+    gold: sponsors.filter((s) => s.tier === "gold"),
+    silver: sponsors.filter((s) => s.tier === "silver"),
+    bronze: sponsors.filter((s) => s.tier === "bronze"),
+  };
+
+  const sections: {
+    key: "gold" | "silver" | "bronze";
+    heading: string;
+    grid: string;
+    list: PublicSponsor[];
+  }[] = [
+    {
+      key: "gold",
+      heading: "Gold Sponsors",
+      grid: "grid grid-cols-1 sm:grid-cols-2 gap-6",
+      list: byTier.gold,
+    },
+    {
+      key: "silver",
+      heading: "Silver Sponsors",
+      grid: "grid grid-cols-2 sm:grid-cols-4 gap-6",
+      list: byTier.silver,
+    },
+    {
+      key: "bronze",
+      heading: "Bronze Sponsors",
+      grid: "grid grid-cols-2 sm:grid-cols-4 gap-6",
+      list: byTier.bronze,
+    },
+  ];
+
+  // Only sections with published sponsors render.
+  const visibleSections = sections.filter((section) => section.list.length > 0);
+
   return (
     <main className="min-h-screen bg-paper">
       {/* Hero: header left, thank-you ghost polaroid right */}
@@ -88,59 +110,30 @@ export default function SponsorsPage() {
         </div>
       </div>
 
-      <section className="max-w-[1200px] mx-auto px-6 md:px-10 pb-20">
-
-        {/* Gold Sponsors */}
-        <div className="mb-12">
-          <p className="font-mono text-xs uppercase tracking-[0.3em] text-rust-deep mb-4">
-            Gold Sponsors
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {GOLD_SPONSORS.map((sponsor) => (
-              <SponsorCard
-                key={sponsor.name}
-                name={sponsor.name}
-                logo={sponsor.logo}
-                size="gold"
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* Silver Sponsors */}
-        <div className="mb-12">
-          <p className="font-mono text-xs uppercase tracking-[0.3em] text-rust-deep mb-4">
-            Silver Sponsors
-          </p>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
-            {SILVER_SPONSORS.map((sponsor) => (
-              <SponsorCard
-                key={sponsor.name}
-                name={sponsor.name}
-                logo={sponsor.logo}
-                size="silver"
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* Bronze Sponsors */}
-        <div>
-          <p className="font-mono text-xs uppercase tracking-[0.3em] text-rust-deep mb-4">
-            Bronze Sponsors
-          </p>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
-            {BRONZE_SPONSORS.map((sponsor) => (
-              <SponsorCard
-                key={sponsor.name}
-                name={sponsor.name}
-                logo={sponsor.logo}
-                size="bronze"
-              />
-            ))}
-          </div>
-        </div>
-      </section>
+      {visibleSections.length > 0 && (
+        <section className="max-w-[1200px] mx-auto px-6 md:px-10 pb-20">
+          {visibleSections.map((section, i) => (
+            <div
+              key={section.key}
+              className={i < visibleSections.length - 1 ? "mb-12" : ""}
+            >
+              <p className="font-mono text-xs uppercase tracking-[0.3em] text-rust-deep mb-4">
+                {section.heading}
+              </p>
+              <div className={section.grid}>
+                {section.list.map((sponsor) => (
+                  <SponsorCard
+                    key={sponsor.name}
+                    name={sponsor.name}
+                    logo={sponsor.logoUrl}
+                    size={section.key}
+                  />
+                ))}
+              </div>
+            </div>
+          ))}
+        </section>
+      )}
     </main>
   );
 }
