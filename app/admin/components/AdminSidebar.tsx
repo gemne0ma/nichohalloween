@@ -4,36 +4,22 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 
-const navSections = [
-  {
-    heading: "Overview",
-    links: [
-      { href: "/admin", label: "Dashboard" },
-      { href: "/admin/orders", label: "Token orders" },
-      { href: "/admin/tasks", label: "All tasks" },
-    ],
-  },
-  {
-    heading: "Workstreams",
-    links: [
-      { href: "/admin/tasks/sponsorship", label: "Sponsorship" },
-      { href: "/admin/tasks/auction", label: "Auction" },
-      { href: "/admin/tasks/vendors", label: "Vendors" },
-      { href: "/admin/tasks/attractions", label: "Attractions" },
-      { href: "/admin/tasks/marketing", label: "Marketing" },
-      { href: "/admin/tasks/build", label: "Build" },
-    ],
-  },
-  {
-    heading: "Registers",
-    links: [
-      { href: "/admin/vendors", label: "Vendors" },
-      { href: "/admin/sponsors", label: "Sponsors" },
-      { href: "/admin/auction", label: "Auction items" },
-      { href: "/admin/media", label: "Media" },
-    ],
-  },
+// One flat list. No sections: an area of work appears exactly once.
+// The five workstream boards are reachable from All tasks via its bucket
+// filter, and their old URLs redirect there.
+const navLinks: { href: string; label: string; matchPrefix?: boolean }[] = [
+  // Dashboard is exact-match only. With prefix matching it would light up on
+  // every admin page, since every admin route starts with /admin.
+  { href: "/admin", label: "Dashboard" },
+  { href: "/admin/tasks", label: "All tasks", matchPrefix: true },
+  { href: "/admin/orders", label: "Token orders" },
+  { href: "/admin/sponsors", label: "Sponsors" },
+  { href: "/admin/vendors", label: "Vendors" },
+  // Prefix: covers /admin/auction, /prospects and /tasks.
+  { href: "/admin/auction", label: "Silent auction", matchPrefix: true },
+  { href: "/admin/media", label: "Media" },
 ];
+
 
 export default function AdminSidebar({ userName }: { userName: string }) {
   const pathname = usePathname();
@@ -141,34 +127,29 @@ function NavContent({
   onLinkClick?: () => void;
 }) {
   return (
-    <nav className="flex-1 space-y-6">
-      {navSections.map((section) => (
-        <div key={section.heading}>
-          <p className="font-mono text-xs uppercase tracking-[0.3em] text-moss mb-3">
-            {section.heading}
-          </p>
-          <ul className="space-y-1">
-            {section.links.map((link) => {
-              const isActive = pathname === link.href;
-              return (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    onClick={onLinkClick}
-                    className={`block py-1.5 px-3 text-base font-body transition-colors rounded ${
-                      isActive
-                        ? "bg-forest-deep text-paper"
-                        : "text-bone hover:text-paper hover:bg-forest-deep/50"
-                    }`}
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      ))}
+    <nav className="flex-1">
+      <ul className="space-y-1">
+        {navLinks.map((link) => {
+          const isActive = link.matchPrefix
+            ? pathname === link.href || pathname.startsWith(`${link.href}/`)
+            : pathname === link.href;
+          return (
+            <li key={link.href}>
+              <Link
+                href={link.href}
+                onClick={onLinkClick}
+                className={`block py-1.5 px-3 text-base font-body transition-colors rounded ${
+                  isActive
+                    ? "bg-forest-deep text-paper"
+                    : "text-bone hover:text-paper hover:bg-forest-deep/50"
+                }`}
+              >
+                {link.label}
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
     </nav>
   );
 }

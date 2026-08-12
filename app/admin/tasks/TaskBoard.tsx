@@ -20,6 +20,7 @@ type AdminUser = {
 
 type Task = {
   id: string;
+  bucket?: string;
   title: string;
   description: string | null;
   assignedTo: string | null;
@@ -29,6 +30,15 @@ type Task = {
   notes: string | null;
   tags: TaskTag[];
 };
+
+export const BUCKET_OPTIONS: { value: string; label: string }[] = [
+  { value: "sponsorship", label: "Sponsorship" },
+  { value: "auction", label: "Auction" },
+  { value: "vendors", label: "Vendors" },
+  { value: "attractions", label: "Attractions" },
+  { value: "marketing", label: "Marketing" },
+  { value: "build", label: "Build" },
+];
 
 const STATUS_OPTIONS: { value: TaskStatus; label: string }[] = [
   { value: "todo", label: "To do" },
@@ -50,12 +60,21 @@ export default function TaskBoard({
   tasks: initialTasks,
   adminUsers,
   allTags,
+  hideHeading = false,
+  allBuckets = false,
+  initialBucketFilter = "all",
 }: {
   bucket: string;
   bucketLabel: string;
   tasks: Task[];
   adminUsers: AdminUser[];
   allTags: TaskTag[];
+  // The auction tab supplies its own heading, so the board hides its own.
+  hideHeading?: boolean;
+  // All tasks mode: tasks span every bucket, so the board gains a bucket
+  // filter and the create form has to ask which bucket a new task belongs to.
+  allBuckets?: boolean;
+  initialBucketFilter?: string;
 }) {
   const [showCreate, setShowCreate] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -64,6 +83,7 @@ export default function TaskBoard({
   // Filters
   const [filterAssignee, setFilterAssignee] = useState<string>("all");
   const [filterTag, setFilterTag] = useState<string>("all");
+  const [filterBucket, setFilterBucket] = useState<string>(initialBucketFilter);
 
   function handleStatusChange(taskId: string, newStatus: TaskStatus) {
     startTransition(async () => {
@@ -79,7 +99,8 @@ export default function TaskBoard({
   }
 
   async function handleCreate(formData: FormData) {
-    formData.set("bucket", bucket);
+    // In all-buckets mode the form supplies its own bucket.
+    if (!allBuckets) formData.set("bucket", bucket);
     startTransition(async () => {
       await createTask(formData);
       setShowCreate(false);
@@ -102,6 +123,9 @@ export default function TaskBoard({
 
   // Apply filters
   let filtered = initialTasks;
+  if (allBuckets && filterBucket !== "all") {
+    filtered = filtered.filter((t) => t.bucket === filterBucket);
+  }
   if (filterAssignee !== "all") {
     filtered = filtered.filter((t) =>
       filterAssignee === "unassigned" ? !t.assignedTo : t.assignedTo === filterAssignee
@@ -114,20 +138,29 @@ export default function TaskBoard({
   const openTasks = filtered.filter((t) => t.status !== "done");
   const doneTasks = filtered.filter((t) => t.status === "done");
 
-  const hasFilters = filterAssignee !== "all" || filterTag !== "all";
+  const hasFilters =
+    filterAssignee !== "all" ||
+    filterTag !== "all" ||
+    (allBuckets && filterBucket !== "all");
 
   return (
     <div>
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <p className="font-mono text-xs uppercase tracking-[0.3em] text-rust-deep mb-1">
-            Workstream
-          </p>
-          <h1 className="font-display font-bold text-3xl md:text-4xl lg:text-5xl text-ink">
-            {bucketLabel}
-          </h1>
-        </div>
+      <div
+        className={`flex items-center mb-6 ${
+          hideHeading ? "justify-end" : "justify-between"
+        }`}
+      >
+        {!hideHeading && (
+          <div>
+            <p className="font-mono text-xs uppercase tracking-[0.3em] text-rust-deep mb-1">
+              Workstream
+            </p>
+            <h1 className="font-display font-bold text-3xl md:text-4xl lg:text-5xl text-ink">
+              {bucketLabel}
+            </h1>
+          </div>
+        )}
         <button
           onClick={() => setShowCreate(!showCreate)}
           className="font-mono text-[10px] md:text-xs uppercase tracking-[0.3em] bg-forest-deep text-bone px-3 md:px-5 py-2 md:py-2.5 hover:bg-rust transition-colors"
@@ -138,6 +171,26 @@ export default function TaskBoard({
 
       {/* Filter bar */}
       <div className="flex flex-wrap gap-3 mb-6">
+        {allBuckets && (
+          <div className="flex items-center gap-2">
+            <label className="font-mono text-[10px] uppercase tracking-wider text-moss">
+              Workstream
+            </label>
+            <select
+              value={filterBucket}
+              onChange={(e) => setFilterBucket(e.target.value)}
+              className="bg-bone border border-mist px-2 py-1.5 font-mono text-xs text-ink focus:outline-none focus:border-forest"
+            >
+              <option value="all">All</option>
+              {BUCKET_OPTIONS.map((b) => (
+                <option key={b.value} value={b.value}>
+                  {b.label}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
         <div className="flex items-center gap-2">
           <label className="font-mono text-[10px] uppercase tracking-wider text-moss">
             Assignee
@@ -177,7 +230,11 @@ export default function TaskBoard({
 
         {hasFilters && (
           <button
-            onClick={() => { setFilterAssignee("all"); setFilterTag("all"); }}
+            onClick={() => {
+              setFilterAssignee("all");
+              setFilterTag("all");
+              setFilterBucket("all");
+            }}
             className="font-mono text-[10px] uppercase tracking-wider text-rust hover:text-rust-deep transition-colors py-1"
           >
             Clear filters
@@ -202,6 +259,28 @@ export default function TaskBoard({
               placeholder="What needs doing?"
             />
           </div>
+          {allBuckets && (
+            <div>
+              <label className="font-mono text-xs uppercase tracking-wider text-moss block mb-1">
+                Workstream
+              </label>
+              <select
+                name="bucket"
+                required
+                defaultValue={filterBucket !== "all" ? filterBucket : ""}
+                className="w-full bg-paper border border-mist px-3 py-2 font-body text-base text-ink focus:outline-none focus:border-forest"
+              >
+                <option value="" disabled>
+                  Pick a workstream
+                </option>
+                {BUCKET_OPTIONS.map((b) => (
+                  <option key={b.value} value={b.value}>
+                    {b.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="font-mono text-xs uppercase tracking-wider text-moss block mb-1">
@@ -311,6 +390,7 @@ export default function TaskBoard({
                   key={task.id}
                   task={task}
                   isPending={isPending}
+                  showBucket={allBuckets}
                   onStatusChange={handleStatusChange}
                   onEdit={() => setEditingId(task.id)}
                   onDelete={() => handleDelete(task.id)}
@@ -336,6 +416,7 @@ export default function TaskBoard({
                 key={task.id}
                 task={task}
                 isPending={isPending}
+                showBucket={allBuckets}
                 onStatusChange={handleStatusChange}
                 onEdit={() => setEditingId(task.id)}
                 onDelete={() => handleDelete(task.id)}
@@ -369,12 +450,14 @@ function TagPill({ tag }: { tag: TaskTag }) {
 function TaskRow({
   task,
   isPending,
+  showBucket = false,
   onStatusChange,
   onEdit,
   onDelete,
 }: {
   task: Task;
   isPending: boolean;
+  showBucket?: boolean;
   onStatusChange: (id: string, status: TaskStatus) => void;
   onEdit: () => void;
   onDelete: () => void;
@@ -412,13 +495,21 @@ function TaskRow({
 
         {/* Content */}
         <div className="flex-1 min-w-0">
-          <p
-            className={`font-body text-base ${
-              isDone ? "text-moss line-through" : "text-ink"
-            }`}
-          >
-            {task.title}
-          </p>
+          <div className="flex items-baseline gap-2 flex-wrap">
+            <p
+              className={`font-body text-base ${
+                isDone ? "text-moss line-through" : "text-ink"
+              }`}
+            >
+              {task.title}
+            </p>
+            {showBucket && task.bucket && (
+              <span className="font-mono text-[10px] uppercase tracking-wider text-moss">
+                {BUCKET_OPTIONS.find((b) => b.value === task.bucket)?.label ??
+                  task.bucket}
+              </span>
+            )}
+          </div>
           {task.description && (
             <p className="font-body text-sm text-moss mt-0.5">
               {task.description}

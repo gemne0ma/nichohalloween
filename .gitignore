@@ -33,5 +33,10 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# local font trials. Site fonts live in public/, loaded via next/font/local.
+# Local font trials only. Fonts the site actually uses live in public/ and
+# are tracked, loaded via next/font/local.
+#
+# The leading slash matters. It anchors this to the repo root, so
+# public/fonts/ is NOT ignored. Do not change this to "fonts/": that would
+# match public/fonts/ too and the Vercel build would fail on a missing font.
 /fonts

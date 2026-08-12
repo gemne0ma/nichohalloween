@@ -33,7 +33,7 @@ export default function Home() {
           <div
             className="md:order-3 mb-4 md:mb-3 w-[clamp(340px,85vw,986px)] max-w-[92vw] h-[clamp(95px,28vw,448px)] md:w-[clamp(314px,62vw,986px)] md:h-[clamp(134px,27vw,448px)] bg-[url('/plank.png')] bg-[length:100%_100%] bg-no-repeat bg-center flex items-center justify-center"
           >
-            <p className="font-display text-[clamp(14px,3.74vw,46px)] tracking-wide text-paper text-center whitespace-nowrap px-[10%] [text-shadow:_0_2px_14px_rgba(0,0,0,0.95)] relative top-[1px]">
+            <p className="font-halloween text-[clamp(14px,3.74vw,46px)] tracking-wide text-paper text-center whitespace-nowrap px-[10%] [text-shadow:_0_2px_14px_rgba(0,0,0,0.95)] relative top-[1px]">
               An iconic 37-year tradition
             </p>
           </div>

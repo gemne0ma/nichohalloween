@@ -84,11 +84,7 @@ export default function AuctionRegister({ items: initialItems }: { items: Auctio
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <p className="font-mono text-xs uppercase tracking-[0.3em] text-rust-deep mb-1">Register</p>
-          <h1 className="font-display font-bold text-3xl md:text-4xl lg:text-5xl text-ink">Auction items</h1>
-        </div>
+      <div className="flex items-center justify-end mb-6">
         <button
           onClick={() => setShowCreate(!showCreate)}
           className="font-mono text-xs uppercase tracking-[0.3em] bg-forest-deep text-bone px-5 py-2.5 hover:bg-rust transition-colors"
@@ -164,7 +160,7 @@ export default function AuctionRegister({ items: initialItems }: { items: Auctio
 
         {initialItems.length === 0 ? (
           <div className="px-5 py-6">
-            <p className="font-body text-base italic text-moss">No auction items added yet. Each classroom contributes a hamper or experience.</p>
+            <p className="font-body text-base italic text-moss">No auction items added yet.</p>
           </div>
         ) : (
           <div className="divide-y divide-dotted divide-mist">

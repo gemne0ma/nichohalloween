@@ -1,16 +1,17 @@
-import { notFound } from "next/navigation";
-import { getTasksByBucket, getAdminUsers, getAllTags } from "../../queries";
-import TaskBoard from "../TaskBoard";
+import { notFound, redirect } from "next/navigation";
 
-const BUCKET_LABELS: Record<string, string> = {
-  sponsorship: "Sponsorship",
-  auction: "Auction",
-  vendors: "Vendors",
-  attractions: "Attractions",
-  marketing: "Marketing",
-  build: "Build",
-};
+const VALID_BUCKETS = [
+  "sponsorship",
+  "auction",
+  "vendors",
+  "attractions",
+  "marketing",
+  "build",
+];
 
+// The per-bucket boards are gone from the sidebar. Every old URL still
+// resolves: auction goes to its own tab, everything else lands on All tasks
+// with that workstream already selected. No task is orphaned.
 export default async function TaskBucketPage({
   params,
 }: {
@@ -18,35 +19,13 @@ export default async function TaskBucketPage({
 }) {
   const { bucket } = await params;
 
-  if (!(bucket in BUCKET_LABELS)) {
+  if (!VALID_BUCKETS.includes(bucket)) {
     notFound();
   }
 
-  const [tasks, adminUsers, allTags] = await Promise.all([
-    getTasksByBucket(bucket),
-    getAdminUsers(),
-    getAllTags(),
-  ]);
+  if (bucket === "auction") {
+    redirect("/admin/auction/tasks");
+  }
 
-  return (
-    <div className="p-4 md:p-8 lg:p-10 max-w-[900px]">
-      <TaskBoard
-        bucket={bucket}
-        bucketLabel={BUCKET_LABELS[bucket]}
-        tasks={tasks.map((t) => ({
-          id: t.id,
-          title: t.title,
-          description: t.description,
-          assignedTo: t.assignedTo,
-          assigneeName: t.assigneeName,
-          dueDate: t.dueDate,
-          status: t.status,
-          notes: t.notes,
-          tags: t.tags,
-        }))}
-        adminUsers={adminUsers}
-        allTags={allTags}
-      />
-    </div>
-  );
+  redirect(`/admin/tasks?bucket=${bucket}`);
 }

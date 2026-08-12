@@ -1,11 +1,12 @@
 import { getAllAuctionItems } from "../queries";
 import AuctionRegister from "./AuctionRegister";
+import AuctionShell from "./AuctionShell";
 
 export default async function AuctionPage() {
   const allItems = await getAllAuctionItems();
 
   return (
-    <div className="p-4 md:p-8 lg:p-10 max-w-[1000px]">
+    <AuctionShell active="items">
       <AuctionRegister
         items={allItems.map((item) => ({
           id: item.id,
@@ -19,6 +20,6 @@ export default async function AuctionPage() {
           notes: item.notes,
         }))}
       />
-    </div>
+    </AuctionShell>
   );
 }

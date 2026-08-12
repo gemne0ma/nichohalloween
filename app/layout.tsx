@@ -17,6 +17,15 @@ const alpino = localFont({
   display: "swap",
 });
 
+// Hero plank line only ("An iconic 37-year tradition"). Class: font-halloween.
+// Deliberately scoped to that one line. It is a decorative face and does not
+// hold up at heading sizes.
+const halloween = localFont({
+  src: "../public/fonts/halloween.ttf",
+  variable: "--font-halloween",
+  display: "swap",
+});
+
 // Tagline / accent serif.
 const telma = localFont({
   src: "../public/Telma_Complete/Fonts/WEB/fonts/Telma-Variable.woff2",
@@ -38,7 +47,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${trenchSlab.variable} ${alpino.variable} ${telma.variable}`}
+      className={`${trenchSlab.variable} ${alpino.variable} ${telma.variable} ${halloween.variable}`}
     >
       <body>
         <ClerkProvider>

@@ -28,6 +28,7 @@ const config: Config = {
         body: ["var(--font-alpino)", "sans-serif"],
         mono: ["var(--font-alpino)", "sans-serif"],
         telma: ["var(--font-telma)", "serif"],
+        halloween: ["var(--font-halloween)", "serif"],
       },
     },
   },
