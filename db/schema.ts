@@ -56,6 +56,17 @@ export const bundleTypeEnum = pgEnum("bundle_type", [
   "BUNDLE_200",
 ]);
 
+// Outreach pipeline for businesses we ask to donate auction lots.
+// Separate from auction_status, which tracks the item once it exists.
+export const prospectStatusEnum = pgEnum("prospect_status", [
+  "not_contacted",
+  "contacted",
+  "waiting_on_reply",
+  "agreed_to_donate",
+  "item_received",
+  "declined",
+]);
+
 // ─── Tables ──────────────────────────────────────────────
 
 // Synced from Clerk on admin login. Anyone authenticated is admin.
@@ -187,6 +198,38 @@ export const tags = pgTable("tags", {
   slug: text("slug").notNull().unique(), // e.g. "vendors"
   color: text("color"), // optional hex for UI pill colour
   createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+});
+
+// ─── Auction prospects (business outreach tracker) ───────
+
+// Private. Businesses the committee approaches for auction donations.
+// Contact details and internal notes on local businesses, so this never
+// renders on a public page. Rows are never deleted: 'declined' closes
+// a business out and keeps the record of having asked.
+export const auctionProspects = pgTable("auction_prospects", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  businessName: text("business_name").notNull(),
+  status: prospectStatusEnum("status").default("not_contacted").notNull(),
+  suburb: text("suburb"),
+  contactName: text("contact_name"),
+  contactEmail: text("contact_email"),
+  contactPhone: text("contact_phone"),
+  notes: text("notes"),
+  // What they have donated, and what it is worth. Cents, never a float.
+  item: text("item"),
+  itemValueCents: integer("item_value_cents"),
+  // Who is chasing it. Defaults to whoever created the row, reassignable.
+  owner: text("owner").references(() => users.id),
+  doNotContact: boolean("do_not_contact").default(false).notNull(),
+  // Stamped by the server on every status change, not editable by hand.
+  lastContactedAt: timestamp("last_contacted_at", { withTimezone: true }),
+  createdBy: text("created_by").references(() => users.id),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
     .defaultNow()
     .notNull(),
 });
