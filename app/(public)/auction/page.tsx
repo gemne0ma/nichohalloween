@@ -19,9 +19,9 @@ export default function AuctionPage() {
               Silent Auction
             </h1>
             <p className="font-body text-xl md:text-2xl text-paper/70">
-              Every year our families and local businesses donate something
-              worth having, and every dollar raised goes straight back into the
-              school. Bidding runs online, so you can join in from the couch.
+              Every year our families and local businesses donate items and
+              every dollar raised goes straight back to our school - you can
+              bid from the comfort of your own couch
             </p>
           </div>
 
@@ -56,18 +56,12 @@ export default function AuctionPage() {
             What to expect
           </p>
           <h2 className="font-display text-4xl md:text-5xl text-ink mb-6 leading-tight">
-            The catalogue lands in October
+            Items coming soon!
           </h2>
-          <p className="font-body text-lg text-ink-soft mb-4">
+          <p className="font-body text-lg text-ink-soft mb-8">
             Every classroom puts together a set of lots, and local businesses
             add vouchers, stays, services and the occasional thing nobody
-            expects. We publish the full catalogue once the lots are in, ahead
-            of the festival on Saturday 24 October.
-          </p>
-          <p className="font-body text-lg text-ink-soft mb-8">
-            Bidding opens online before the day and closes on the Sunday
-            evening after the festival. You do not need to be at the festival
-            to bid, though it is a lot more fun if you are.
+            expects.
           </p>
 
           <div className="border-t border-dotted border-mist pt-6">
