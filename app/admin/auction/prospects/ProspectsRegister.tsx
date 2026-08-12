@@ -251,6 +251,57 @@ export default function ProspectsRegister({
       .reduce((sum, p) => sum + (p.itemValueCents ?? 0), 0),
   };
 
+  // Exports whatever is currently on screen, so filters and search double as
+  // a report builder. Same browser-side approach as the orders register: no
+  // route, no library, no data leaving the page that was not already here.
+  function handleExportCSV() {
+    const esc = (v: string | null) =>
+      v == null ? "" : `"${String(v).replace(/"/g, '""')}"`;
+
+    const headers = [
+      "Business",
+      "Status",
+      "Owner",
+      "Suburb",
+      "Contact name",
+      "Contact email",
+      "Contact phone",
+      "Item",
+      "Item value ($)",
+      "Do not contact",
+      "Notes",
+      "Last change",
+      "Added by",
+      "Added on",
+    ];
+
+    const rows = visible.map((p) => [
+      esc(p.businessName),
+      esc(statusLabel(p.status)),
+      esc(p.ownerName),
+      esc(p.suburb),
+      esc(p.contactName),
+      esc(p.contactEmail),
+      esc(p.contactPhone),
+      esc(p.item),
+      p.itemValueCents ? (p.itemValueCents / 100).toFixed(2) : "",
+      p.doNotContact ? "YES" : "",
+      esc(p.notes),
+      p.lastContactedAt ? formatDate(p.lastContactedAt) : "",
+      esc(p.createdByName),
+      p.createdAt ? formatDate(new Date(p.createdAt)) : "",
+    ]);
+
+    const csv = [headers.join(","), ...rows.map((r) => r.join(","))].join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `nicho-auction-prospects-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
   function handleStatusChange(prospectId: string, status: ProspectStatus) {
     startTransition(async () => {
       await updateProspectStatus(prospectId, status);
@@ -284,6 +335,14 @@ export default function ProspectsRegister({
             className="font-mono text-xs uppercase tracking-[0.3em] border border-ink text-ink px-5 py-2.5 hover:bg-paper-deep transition-colors"
           >
             {showBulk ? "Cancel" : "Bulk add"}
+          </button>
+          <button
+            onClick={handleExportCSV}
+            disabled={visible.length === 0}
+            title="Downloads the rows currently shown, filters and search included"
+            className="font-mono text-xs uppercase tracking-[0.3em] border border-ink text-ink px-5 py-2.5 hover:bg-paper-deep transition-colors disabled:opacity-40"
+          >
+            Export CSV
           </button>
         </div>
       </div>
