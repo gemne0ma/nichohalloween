@@ -1,3 +1,7 @@
+> **SUPERSEDED. Historical only.** This file was written on 8 May 2026 and describes a half-built site. Much of it is now wrong, including the "critical" sponsor tier bug, which is fixed.
+> **For current state, read `SESSION_HANDOVER.md`.** Then `CLAUDE.md`.
+> Kept because the design-system tables and mockup notes further down are still useful.
+
 # Nicho Halloween Festival. Week 2 Handoff
 
 **Date:** 8 May 2026

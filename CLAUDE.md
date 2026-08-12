@@ -2,6 +2,8 @@
 
 This is the project brief Claude reads at the start of every session. Read it before suggesting any change. Update it when scope changes.
 
+**Last verified against the repo: 12 August 2026**, at commit `e7414fe`. Sections 2, 4, 5, 6, 7, 8, 9, 11 and 13 were corrected that day, after a full read of `db/schema.ts`, `package.json`, the route tree and the git log. Where this file and the code disagree, the code is right. Say so and fix the file.
+
 ---
 
 ## 1. What this project is
@@ -23,7 +25,7 @@ That's it. No event-night app, no QR scanning, no door check-in. On the night, a
 
 | Decision | Locked answer |
 |---|---|
-| **Stack** | Next.js 14 (App Router) on Vercel. Neon Postgres. Clerk for auth. Stripe Checkout for payments. Resend for email. Tailwind CSS. TypeScript throughout. |
+| **Stack** | Next.js 16 (App Router) on Vercel. React 19. Neon Postgres. Clerk 7 for auth. Stripe Checkout for payments. Resend for email. Cloudflare R2 for file storage. Tailwind CSS 3. TypeScript throughout. |
 | **Payments** | Stripe Checkout (hosted). Site never touches card data. **Festival runs its own dedicated Stripe account in P&C's name**, separate from the school's Wix Payments setup which is used for everything else (school P&C general site, other school ticketing). Two parallel payment streams, both into the same P&C bank account, treasurer reconciles each separately. Confirmed with treasurer 6 May. |
 | **Token model** | Physical tokens. Site sells bundles, customer gets plain confirmation email with order number. On the night, customer shows email at token booth, volunteer crosses off the printed list, hands over physical tokens. **No QR codes. No scanning. No event-night app.** |
 | **POS at stalls** | Square, off-the-shelf. Reconciled by CSV after the event. **Do not build POS.** |
@@ -35,11 +37,28 @@ That's it. No event-night app, no QR scanning, no door check-in. On the night, a
 
 If asked to change anything in this table, **stop and confirm** with the user before proceeding.
 
+**Version note (corrected 12 August 2026).** Earlier versions of this table said "Next.js 14". That was never true of the shipped code. Commit `10c96c7` on 7 May 2026 moved the project to Next.js 16, React 19 and Clerk 7, before any real feature work landed. `package.json` pins `next: ^16.2.5`, `react: ^19.2.6`, `@clerk/nextjs: ^7.3.2`. Trust `package.json`, not prose.
+
+### `middleware.ts` is deprecated in Next 16. We are not renaming it before the festival.
+
+Next 16 deprecated the `middleware` file convention in favour of `proxy`, and every build prints a warning about it. **Leave the rename until after 24 October 2026.**
+
+The reasoning:
+
+- `middleware.ts` is what gates every `/admin` route against the `ADMIN_EMAILS` allowlist. It works, it is deployed, it has been running in production since May.
+- A deprecation warning is not a breakage. Next 16 still runs the file, and the build output confirms it: `ƒ Proxy (Middleware)`.
+- Renaming touches the auth path. The downside of getting it wrong is locked-out committee members or, worse, an exposed admin dashboard, during the weeks when sponsors and ticket buyers are actually using the site.
+- There is no deadline pressure. The rename can happen in November alongside any other upkeep.
+
+**This applies to the middleware-to-proxy rename specifically, not to dependencies generally.** `package.json` pins `next: ^16.2.5`, so patch and minor updates within 16.x are permitted and will be picked up by a plain `npm install`. Nothing here forbids that. What it forbids is renaming the auth entry point while the site is taking money.
+
+If a future session offers to "fix the deprecation warning", say no and point at this section.
+
 ---
 
 ## 2a. Stack rationale (so future-you doesn't relitigate)
 
-**This is a React app, built with Next.js 14 (App Router).** That word "Next.js" is React under the hood. We're not in HTML-and-jQuery territory.
+**This is a React app, built with Next.js 16 (App Router).** That word "Next.js" is React under the hood. We're not in HTML-and-jQuery territory.
 
 The reasoning, recorded once, so we don't redo it:
 
@@ -50,7 +69,7 @@ The reasoning, recorded once, so we don't redo it:
 - **Vercel deployment is `git push`.** Free tier covers this, edge network so it's fast in Sydney.
 - **Claude Code's training data is rich on Next.js.** Suggestions will be high quality. SvelteKit, Remix, Astro all viable; Next.js wins on ecosystem depth.
 
-**The mockup at `/mnt/user-data/outputs/nicho_mockup.html` is plain HTML on purpose.** It's a visual prototype, not the site. You rebuild each screen as a React component in Next.js, using the mockup as the design reference. Don't try to port the HTML file directly. Treat it like a Figma file.
+**The mockup at `nicho_mockup.html` (project root) is plain HTML on purpose.** It's a visual prototype, not the site. You rebuild each screen as a React component in Next.js, using the mockup as the design reference. Don't try to port the HTML file directly. Treat it like a Figma file.
 
 **Things to expect that will feel slightly weird at first**:
 
@@ -92,33 +111,42 @@ These have been explicitly excluded from v1. If they come up mid-build, say no, 
 
 ## 4. Tech stack reference
 
+These are the versions actually pinned in `package.json` as at 12 August 2026.
+
 ```
-Frontend:    Next.js 14 (App Router), TypeScript, Tailwind CSS
-Backend:     Next.js API routes / Server Actions
-Database:    Neon Postgres
-ORM:         Drizzle (preferred) or Prisma
-Auth:        Clerk
-Payments:    Stripe Checkout + webhooks
-Email:       Resend
-File storage: Vercel Blob (for sponsor logos, attraction photos, auction item photos)
+Frontend:    Next.js 16.2.5 (App Router), React 19.2.6, TypeScript 5, Tailwind CSS 3.4.17
+Backend:     Next.js Route Handlers / Server Actions
+Database:    Neon Postgres (ap-southeast-2, Sydney)
+ORM:         Drizzle 0.36.4, drizzle-kit 0.28.1
+Auth:        Clerk 7.3.2
+Payments:    Stripe 17.4.0 (Checkout + webhooks)
+Email:       Resend 4.1.0
+File storage: Cloudflare R2, via @aws-sdk/client-s3 (S3-compatible API)
 Deployment:  Vercel (auto-deploy from main branch)
-Analytics:   Vercel Analytics (free tier)
-CSV export:  json2csv or papaparse (for token orders printout)
+CSV export:  Hand-rolled in the browser, no library
 ```
 
-Cost: under $20/year fixed + Stripe fees (1.75% + 30c per AU transaction).
+**File storage is Cloudflare R2, not Vercel Blob.** Decided 11 May, built the same day. Zero egress fees and Cloudflare already holds the DNS. Uploads go browser-direct to R2 via presigned PUT URLs, which sidesteps Vercel's 4.5MB serverless body limit. See `lib/r2.ts`.
+
+**CSV export needs no library.** `json2csv` and `papaparse` were both considered and neither was installed. The orders export is about fifteen lines of string-joining in `app/admin/orders/OrdersList.tsx`, running in the browser off data already on the page. Don't add a dependency for this.
+
+Cost: under $20/year fixed + Stripe fees (1.75% + 30c per AU transaction). R2 sits inside the free tier at this volume.
 
 ---
 
-## 5. Data model (seven tables)
+## 5. Data model (ten tables)
 
 Get this right and the rest is paint.
 
+The original seven are below, followed by the three added on 11 May 2026 (`media`, `tags`, `task_tags`). `db/schema.ts` is the source of truth.
+
 ```typescript
 users
-  // Synced from Clerk. Single role: admin. Anyone authenticated is admin.
-  id            uuid (Clerk user ID)
+  // Synced from Clerk on every admin page load. See lib/sync-user.ts.
+  // Single role: admin, gated by the ADMIN_EMAILS allowlist.
+  id            text (Clerk user ID)
   email         text
+  name          text        // display name, for assignee dropdowns. Added 11 May.
   created_at    timestamptz
 
 tasks
@@ -126,7 +154,8 @@ tasks
   bucket        enum('sponsorship' | 'auction' | 'vendors' | 'attractions' | 'marketing' | 'build')
   title         text
   description   text
-  owner_id      uuid fk -> users.id
+  owner_id      uuid fk -> users.id     // who created it
+  assigned_to   uuid fk -> users.id     // who has to do it. Added 11 May.
   due_date      date
   status        enum('todo' | 'in_progress' | 'blocked' | 'done')
   notes         text
@@ -193,7 +222,38 @@ attractions
   location      text
   image_url     text
   sponsor_id    uuid nullable fk -> sponsors.id
+
+// ── Added 11 May 2026 ──
+
+media
+  // Every file uploaded to Cloudflare R2. See lib/r2.ts and app/admin/media/.
+  id              uuid pk
+  filename        text
+  r2_key          text unique   // e.g. 2026/sponsor/1746950400-logo-acme.png
+  file_type       text          // MIME type
+  file_size       integer       // bytes
+  uploaded_by     text fk -> users.id
+  uploaded_at     timestamptz
+  festival_year   integer       // e.g. 2026, so 2027 can filter cleanly
+  category        enum('gallery' | 'sponsor' | 'auction' | 'vendor' | 'other')
+  caption         text
+  alt_text        text
+
+tags
+  // Controlled vocabulary for task categorisation. Seven seeded by db/seed-tags.ts.
+  id            uuid pk
+  name          text unique
+  slug          text
+  color         text          // hex from the site palette
+  created_at    timestamptz
+
+task_tags
+  // Join table. Composite PK, cascade deletes both ways.
+  task_id       uuid fk -> tasks.id
+  tag_id        uuid fk -> tags.id
 ```
+
+**Sponsor tiers are `gold | silver | bronze`.** The old `pumpkin/goblin/witch/horseman` enum was corrected in the database and in `db/schema.ts`. `HANDOFF_WEEK2.md` flags this as a critical outstanding bug. It is fixed. Ignore that entry.
 
 Bundles are an enum, hardcoded in the app. **Do not make bundles configurable in v1.** Pricing carries a **15% pre-purchase discount** (the carrot to drive online sales) versus at-the-festival full price. The discount is baked into the displayed price; we don't show "was/now" pricing.
 
@@ -214,30 +274,47 @@ The website only sells at the pre-purchase price (no full-price online option). 
 
 ## 6. Routes / page structure
 
+Built and live unless marked otherwise. This list matches the `next build` route output as at 12 August 2026.
+
 ```
-/                              public homepage
-/attractions                   public attractions list
-/tokens                        public token bundles + buy flow (15% pre-purchase discount)
-/auction                       public silent auction showcase (links out to 32auctions)
-/sponsors                      public sponsor wall
-/map                           public site map (downloadable PDF + visible inline)
-/faq                           public FAQ
-/checkout/success              post-Stripe success page (shows order number, mentions email)
-/checkout/cancel               post-Stripe cancel page
+/                              public homepage                          BUILT
+/attractions                   public attractions list                  BUILT
+/tokens                        public token bundles + buy flow          BUILT
+/auction                       public silent auction showcase           BUILT
+/sponsors                      public sponsor wall                      BUILT
+/faq                           public FAQ, native details/summary       BUILT
+/map                           public site map                          PLACEHOLDER, awaiting the PDF
+/checkout/success              post-Stripe success, shows order number  BUILT
+/checkout/cancel               post-Stripe cancel                       BUILT
 
-/login                         Clerk login (public-accessible entry to admin)
+/sign-in                       Clerk sign-in (catch-all route)          BUILT
+/sign-up                       Clerk sign-up (catch-all route)          BUILT
+/unauthorised                  logged in but not on ADMIN_EMAILS        BUILT
 
-/admin                         admin dashboard home (auth required)
-/admin/tasks                   tasks board, all buckets
-/admin/tasks/[bucket]          tasks board, single bucket
-/admin/vendors                 vendors register
-/admin/sponsors                sponsors register
-/admin/auction                 auction items register
-/admin/orders                  token orders list, with CSV export button
+/admin                         admin dashboard home                     BUILT
+/admin/tasks                   tasks board, all buckets                 BUILT
+/admin/tasks/[bucket]          tasks board, single bucket               BUILT
+/admin/vendors                 vendors register                         BUILT
+/admin/sponsors                sponsors register                        BUILT
+/admin/auction                 auction items register                   BUILT
+/admin/orders                  token orders, search + CSV export        BUILT
+/admin/media                   R2 media library                         BUILT
 
-/api/stripe/webhook            Stripe webhook handler (POST)
-/api/orders/export             returns CSV of all token orders (auth required)
+/api/checkout                  creates the Stripe Checkout session      BUILT
+/api/stripe/webhook            Stripe webhook handler (POST)            BUILT
+/api/upload/presign            returns a presigned R2 PUT URL           BUILT
+/api/upload/save               writes the media row after upload        BUILT
 ```
+
+Two corrections to earlier versions of this list:
+
+- **There is no `/login` route.** Clerk's sign-in lives at `/sign-in`.
+- **There is no `/api/orders/export` route.** CSV export is a client-side function in `app/admin/orders/OrdersList.tsx` that builds the file from data already loaded on the page. Simpler, and it never needed to be a route.
+
+Not built, and the only two public pages outstanding:
+
+- **`/gallery`**, the public photo gallery reading `media` rows tagged `gallery` for a festival year. Third and lowest priority of the R2 work; the admin half shipped without it.
+- **`/map`** proper. The page exists but is a 19-line placeholder with no PDF and no download button. Blocked on someone producing the actual site map.
 
 ---
 
@@ -262,12 +339,13 @@ plum:         '#4A2942'   // for moments
 mist:         '#A8AC9F'   // dotted dividers, subtle borders
 ```
 
-Fonts (load via next/font):
+Fonts. **The shipped fonts are not the ones originally specced.** IM Fell English SC, Cormorant Garamond and Special Elite were the early direction and were never used. What's actually loaded, self-hosted from `public/` via `next/font/local`:
 
 ```typescript
-// IM Fell English SC for display headings
-// Cormorant Garamond for body
-// Special Elite for typewriter-style metadata, eyebrows, ticket numbers, dashboard data
+// TrenchSlab Variable  -> font-display. Headings, titles, big numbers.
+// Alpino Variable      -> font-body and font-mono. Body text, plus eyebrows
+//                         and metadata in uppercase with wide tracking.
+// Telma Variable       -> font-telma. Accent italic, taglines.
 ```
 
 **Hard rules**:
@@ -282,67 +360,80 @@ Fonts (load via next/font):
 
 ## 8. Build sequence
 
-Build in this order. Don't reorder without good reason. **5 weeks of build + buffer week. Ship by mid-June.**
+**Status as at 12 August 2026: Weeks 1 to 5 are complete. The build is in the buffer/polish phase.**
 
-### Week 1: Foundations
-- [ ] Scaffold Next.js + TypeScript + Tailwind
-- [ ] Connect Neon Postgres, set up Drizzle, run migrations
-- [ ] Install Clerk, single admin role, create test users
-- [ ] Install Stripe SDK, Resend SDK
-- [ ] Set up `/login` route via Clerk
-- [ ] Deploy to Vercel
-- [ ] Define design tokens in Tailwind config, load fonts via next/font
-- [ ] Write `globals.css` with palette and base styles
-- **Goal**: log in, see "Hello {name}". Visual look right.
+The original plan ran five weeks plus a buffer, shipping mid-June. That happened, and then some. Everything below is checked off against the actual repo, not against memory. Two items were dropped or deferred and are marked as such.
 
-### Week 2: Public site
-- [ ] Build homepage from mockup (`/`)
-- [ ] Build attractions page (`/attractions`)
-- [ ] Build auction showcase page (`/auction`) with mock data
-- [ ] Build sponsors page (`/sponsors`)
-- [ ] Build map page (`/map`) with downloadable PDF + visible inline
-- [ ] Build FAQ page (`/faq`) with the lifted-and-refreshed FAQ list
-- [ ] Mobile-responsive testing on real phones (iOS + Android)
-- **Goal**: full public site looks like the mockup, mock data only.
+The remaining work is the buffer-week list at the bottom, plus the two outstanding pages named in section 6 (`/gallery` and a real `/map`).
 
-### Week 3: Tickets + Stripe (HIGHEST RISK)
-- [ ] Build tokens page (`/tokens`) with bundle cards
-- [ ] Wire up "Buy" button to create Stripe Checkout session
-- [ ] Build `/api/stripe/webhook` handler
-  - [ ] Verify webhook signature
-  - [ ] Insert into `token_orders` table
-  - [ ] Generate sequential human-readable order number (NHF-0001 etc)
-  - [ ] Send confirmation email via Resend with order number, name, bundle, event details
-  - [ ] Log every webhook attempt for debugging
-- [ ] Build `/checkout/success` and `/checkout/cancel` pages
-- [ ] **Test end-to-end with real $1 transactions, multiple times**
-- [ ] Build "resend confirmation email" admin button for failures
-- **Goal**: real money flows in, real email arrives. Don't move on until rock-solid.
+### Week 1: Foundations . DONE
+- [x] Scaffold Next.js + TypeScript + Tailwind
+- [x] Connect Neon Postgres, set up Drizzle, push schema
+- [x] Install Clerk, single admin role via `ADMIN_EMAILS` allowlist
+- [x] Install Stripe SDK, Resend SDK
+- [x] Clerk auth routes at `/sign-in` and `/sign-up` (not `/login`)
+- [x] Deploy to Vercel
+- [x] Define design tokens in Tailwind config, load fonts via next/font/local
+- [x] Write `globals.css` with palette and base styles
+- **Goal met.** Note: fonts landed as TrenchSlab, Alpino and Telma, self-hosted from `public/`. The IM Fell / Cormorant / Special Elite trio named in section 7 was never used.
 
-### Week 4: Admin dashboard shell
-- [ ] Build `/admin` layout with sidebar navigation
-- [ ] Build dashboard home with stat tiles, this-week tasks, sponsor pipeline (from mockup)
-- [ ] Build tasks board for ONE bucket end-to-end (`/admin/tasks/sponsorship`)
-  - [ ] List tasks
-  - [ ] Create task
-  - [ ] Edit task (inline)
-  - [ ] Mark done (optimistic UI)
-  - [ ] Delete task (with confirm)
-- **Goal**: Tasks pattern proven. Other buckets clone from this.
+### Week 2: Public site . DONE, except the map
+- [x] Build homepage from mockup (`/`), plus a long tail of mobile hero work
+- [x] Build attractions page (`/attractions`)
+- [x] Build auction showcase page (`/auction`) with mock data
+- [x] Build sponsors page (`/sponsors`)
+- [x] Build FAQ page (`/faq`), native `<details>`/`<summary>` accordion, scrapbook photos
+- [x] Build tokens page (`/tokens`)
+- [x] Mobile nav menu in `SiteNav`
+- [ ] **Build map page (`/map`) with downloadable PDF.** Still a placeholder. Blocked on the artwork.
+- **Goal met apart from the map.** Mobile testing on real devices happened for the homepage; the rest was checked in dev tools only.
 
-### Week 5: Remaining registers
-- [ ] Tasks for all six buckets
-- [ ] Vendors register (`/admin/vendors`) - same CRUD pattern
-- [ ] Sponsors register (`/admin/sponsors`) - same pattern + logo upload to Vercel Blob
-- [ ] Auction items register (`/admin/auction`) - same pattern + photo upload + platform_listing_url
-- [ ] Token orders list (`/admin/orders`) - search by name/email, **CSV export button** (this is what becomes the printed list on the night)
-- [ ] Wire stat tiles on dashboard home to real counts
-- **Goal**: full admin functionality, no placeholders.
+**The tokens page has diverged from the mockup.** The mockup called for a dark forest panel with a roman-numeral explainer. What shipped is a ticket-stub design: perforated rust stubs, drop shadows, hover lift. Gemma's call, made while building.
 
-### Buffer week (was Week 6, now buffer)
+Read the two sources for what they are. **The live site records what is built. The mockup records the original design intent.** Where they disagree, that is a live question for Gemma, not a bug to auto-fix. Raise it, don't silently reconcile it in either direction.
+
+### Week 3: Tickets + Stripe (HIGHEST RISK) . DONE, live with real money
+- [x] Build tokens page (`/tokens`) with bundle cards
+- [x] Wire up "Buy" button to create Stripe Checkout session (`/api/checkout`)
+- [x] Build `/api/stripe/webhook` handler
+  - [x] Verify webhook signature
+  - [x] Insert into `token_orders` table
+  - [x] Generate sequential human-readable order number (NHF-0001 etc)
+  - [x] Send confirmation email via Resend with order number, name, bundle, event details
+  - [x] Log every webhook attempt for debugging
+- [x] Build `/checkout/success` and `/checkout/cancel` pages
+- [x] **Tested end-to-end with real transactions**
+- [x] "Resend confirmation email" admin action (`resendConfirmationEmail` in `app/admin/orders/actions.ts`)
+- **Goal met.** Production webhook points at `https://nichohalloween.com.au/api/stripe/webhook`. Sender is `hello@nichohalloween.com.au` on a verified Resend domain.
+
+### Week 4: Admin dashboard shell . DONE
+- [x] Build `/admin` layout with sidebar navigation
+- [x] Build dashboard home with stat tiles and task buckets
+- [x] Tasks board proven end-to-end: list, create, inline edit, mark done, delete
+- **Goal met.** The pattern was then cloned across every other register.
+
+### Week 5: Remaining registers . DONE
+- [x] Tasks for all six buckets, at `/admin/tasks` and `/admin/tasks/[bucket]`
+- [x] Vendors register (`/admin/vendors`)
+- [x] Sponsors register (`/admin/sponsors`), logo upload via R2
+- [x] Auction items register (`/admin/auction`), photo upload + `platform_listing_url`
+- [x] Token orders list (`/admin/orders`), search + CSV export button
+- [x] Media library (`/admin/media`), not in the original plan
+- **Goal met.** Every register is real CRUD against Postgres, no placeholders.
+
+### Beyond the original plan, shipped 11 May
+
+- [x] **Task assignment, tagging and filtering.** `assigned_to` on tasks, `tags` + `task_tags` join tables, seven seeded tags, filter bar by assignee and tag, coloured tag pills.
+- [x] **Task assignment emails.** Fires via Resend only when the assignee changes, and never when assigning to yourself. Fire-and-forget, so email failures can't block a save.
+- [x] **Clerk user auto-sync.** `lib/sync-user.ts` upserts the current user on every admin page load, so committee members populate assignee dropdowns without manual setup.
+- [x] **Cloudflare R2 uploads and media library.** Presigned PUT URLs so the browser uploads direct to R2, client-side EXIF stripping via canvas redraw, 25MB cap, `media` table, library with year and category filters, caption and alt-text editing, download and delete.
+
+### Buffer week . IN PROGRESS, this is the remaining work
 - [ ] Real photography uploaded
 - [ ] Real sponsor logos
 - [ ] Real auction items entered
+- [ ] Public gallery page (`/gallery`), the last piece of the R2 work
+- [ ] Real site map PDF, replacing the `/map` placeholder
 - [ ] Copy edit pass
 - [ ] Accessibility pass (keyboard nav, focus states, alt text, colour contrast)
 - [ ] Security pass (auth on every admin route, webhook signature verification, no secrets in client code)
@@ -352,6 +443,16 @@ Build in this order. Don't reorder without good reason. **5 weeks of build + buf
 ---
 
 ## 9. Critical risks to mitigate during build
+
+### Admin auth is three layers deep (build note, not a risk)
+
+Worth knowing before touching any of it, because the layers look redundant and aren't:
+
+1. **`middleware.ts`** runs `clerkMiddleware`, matches `/admin(.*)` and `/api/orders(.*)`, checks the signed-in email against `ADMIN_EMAILS`, and either redirects to `/unauthorised` or returns a 403 for API routes. The Stripe webhook is explicitly exempt because it authenticates by signature, not by session.
+2. **`app/admin/layout.tsx`** calls `currentUser()` and redirects to `/sign-in` if absent. Also where `syncUser` runs.
+3. **`requireAdmin()` in `lib/auth.ts`** is called at the top of every server action, because server actions can be invoked directly and must not trust that middleware ran.
+
+Removing any one of these leaves a real hole. See also the `middleware.ts` note in section 2.
 
 ### Stripe webhook reliability
 **The single biggest failure mode.** If a webhook fails, someone pays and gets no ticket.
@@ -420,13 +521,15 @@ Gemma is the user. She is the founder of Neoma, a Sydney AI capability and workf
 
 Update this list as decisions land. Strike through, don't delete.
 
-- [ ] Domain name (probably `nichohalloween.com.au`)
-- [ ] Email sender address (`tickets@...`, `hello@...`)
 - [ ] Token equivalent dollar value at stalls (1 token = $1.00 implied from 100-pack-at-$100; confirm stall pricing aligns. E.g. inflatable = 4 tokens means $4 to enter.)
-- [ ] Auction platform (evaluating 32auctions, Galabid, Trellis. Assigned to Gemma.)
-- [ ] Social media links in homepage footer (Facebook, Instagram, others TBC). Need URLs from committee.
+- [ ] Auction platform (evaluating 32auctions, Galabid, Trellis. Assigned to Gemma.) Still open, and it now blocks the "Place a bid" buttons on `/auction`, which have nowhere to point.
+- [ ] Site map artwork, which blocks the `/map` page.
 
 **Resolved:**
+- ~~Domain name~~ Resolved. **`nichohalloween.com.au`**, live, Cloudflare DNS in front of Vercel hosting.
+- ~~Email sender address~~ Resolved. **`hello@nichohalloween.com.au`**, domain verified in Resend with DKIM and SPF in Cloudflare DNS.
+- ~~Social media links in footer~~ Resolved 10 May, shipped in commit `1f8366d`.
+- ~~File storage provider~~ Resolved 11 May. **Cloudflare R2**, not Vercel Blob. Zero egress fees, and Cloudflare already holds the DNS.
 - ~~Sponsor tier names~~ Resolved 8 May. **Gold / Silver / Bronze.** (Earlier drafts had Pumpkin/Goblin/Witch/Horseman and Platinum/Gold/Bronze. Gold/Silver/Bronze is confirmed.)
 - ~~Token bundle structure~~ Resolved 6 May. Match the historical model: 25/50/100/200 packs with 15% pre-purchase discount.
 - ~~Sponsor tier pricing~~ Suggested: Gold $6,600 / Silver $3,500 / Bronze $1,800 (based on 2025 actuals). Confirm with treasurer before sponsor outreach in June.
@@ -508,13 +611,16 @@ If a question comes up that isn't covered here, add it. The list is allowed to g
 
 ## 13. Reference files
 
+Paths corrected 12 August 2026. These files live in the project root, not under `/mnt/user-data/`, which was a sandbox path from the original planning sessions and doesn't exist on Gemma's machine.
+
 | File | Purpose |
 |---|---|
-| `/mnt/user-data/outputs/nicho_visual_direction.pdf` | Aesthetic direction, palette, typography rules, dos and don'ts |
-| `/mnt/user-data/outputs/nicho_spec_v1.docx` | Full spec doc, working brief, decisions log |
-| `/mnt/user-data/outputs/nicho_mockup.html` | **Visual source of truth.** All screens. Match this. |
-| `/mnt/user-data/outputs/halloween_festival_plan.docx` | The committee's working plan, organised by workstream |
-| `/mnt/user-data/uploads/Mix__Séance_Board___Halloween__1_.png` | The festival poster. The brief. |
+| `nicho_mockup.html` | The original design intent, all screens. The live site records what is built. Where the two disagree, ask Gemma. |
+| `nicho_spec_v1.docx` | Full spec doc, working brief, decisions log |
+| `nicho_week1_build_prompts.docx` | The Week 1 build prompts, kept for reference |
+| `SESSION_HANDOVER.md` | Running log of what shipped, session by session. **Read this one for current state.** |
+| `HANDOFF_WEEK2.md` | Week 2 handoff, written 8 May. Historical. Its design-system tables are still useful. |
+| `public/Halloween.png` | The festival poster, used as the homepage hero |
 
 ---
 

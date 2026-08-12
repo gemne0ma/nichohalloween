@@ -1,10 +1,46 @@
-# Session Handover. 11 May 2026
+# Session Handover. Last updated 12 August 2026
 
-Read this at the start of the next Cowork session. It covers everything completed in the 10-11 May session, what's in flight, and what's queued.
+Read this at the start of the next session. It covers what's shipped, what's outstanding, and the state of the working environment.
+
+**Current state: repo at commit `e7414fe`, working tree clean, production build passing on macOS.**
 
 ---
 
-## What got shipped this session
+## Read this first. August 2026 status
+
+Three months passed between the 11 May session and the 12 August one. Nothing was built in between. The August session was spent recovering the project, not extending it.
+
+**What happened on 12 August:**
+
+- The local working copy was found gutted. Every source file under `app/`, `db/`, `lib/` and `public/` was gone, leaving empty directories. The local `.git` had been stripped of its objects, refs and HEAD, so nothing was recoverable locally. Everything was timestamped 3 July 12:59, which reads as one bulk operation rather than hand deletion.
+- The same event hit the parent `claude-projects/node_modules`, which is down to a single file across the whole tree. **The Neoma site in that folder still needs its own `npm install` and has not been checked.**
+- The code was recovered by cloning `https://github.com/gemne0ma/nichohalloween.git` and restoring the working tree. `.env.local` survived locally and was preserved. Nothing was lost: the only local file not in the repo was `.env.local`, and the only tracked file that differed was `tsconfig.json`, by a single Windows CRLF line ending.
+- The project moved from Windows to macOS, so `npm install` was re-run to get the right platform binaries. `@esbuild/win32-x64` is gone, replaced by `@esbuild/darwin-arm64`, plus `@img/sharp-darwin-arm64` and `@next/swc-darwin-arm64`.
+- **`drizzle-kit push` now works from this machine.** The Windows esbuild binary was what blocked it. Known issue 4 in the May version of this file is resolved.
+
+**One fix was needed to get the build green.** `claude-projects/node_modules/@types/yauzl` was left as an empty directory by the same deletion. TypeScript treats any folder under `@types` as an implicit type library, looks for `index.d.ts`, finds nothing, and fails the build with `Cannot find type definition file for 'yauzl'`. Removing the empty directory fixed it. If the error comes back after an `npm install` in the parent folder, that's the cause.
+
+**The docs were corrected on 12 August**, because `CLAUDE.md` and this file both understated what was built and named the wrong Next.js version. Both now match the repo.
+
+---
+
+## Everything built to date
+
+The full picture, verified against the repo on 12 August rather than carried over from memory.
+
+**Public site.** Homepage with countdown and poster hero, attractions, tokens with live Stripe buy flow, auction showcase with mock lots, sponsors, FAQ as a native `<details>` accordion with scrapbook photos, checkout success and cancel. Mobile nav menu works. `/map` is still a 19-line placeholder.
+
+**Payments.** Live and taking real money since May. `/api/checkout` creates the session, `/api/stripe/webhook` verifies the signature, writes the `token_orders` row, generates the sequential `NHF-0001` order number and sends the Resend confirmation. Admin can resend a confirmation from `/admin/orders`.
+
+**Admin.** Dashboard home, tasks board across all six buckets with assignment, tags and filtering, plus vendors, sponsors, auction items, token orders with search and CSV export, and the R2 media library. Every register is real CRUD against Postgres.
+
+**Auth.** Three layers, all of them load-bearing: `middleware.ts` for the `ADMIN_EMAILS` allowlist, `app/admin/layout.tsx` for the session check and user sync, and `requireAdmin()` at the top of every server action.
+
+**Database.** Ten tables. The original seven plus `media`, `tags` and `task_tags`. Sponsor tiers are `gold | silver | bronze`; the old `pumpkin/goblin/witch/horseman` enum is long gone, whatever `HANDOFF_WEEK2.md` says.
+
+---
+
+## What got shipped in the 10-11 May session
 
 ### 1. Stripe payments pipeline (end-to-end, production)
 
@@ -118,34 +154,52 @@ When a task is assigned to someone (create or edit), the assignee gets a branded
 
 ---
 
-## What's queued next (from the admin brief)
+## Feature 2: Photo and file uploads (Cloudflare R2). SHIPPED 11 May
 
-### Feature 2: Photo and file uploads (Cloudflare R2)
+This was listed as "queued next" in the May version of this file. It was built the same day, in commits `fab640c` and `c976eb5`. Two of the three priorities from `nicho_admin_brief_for_cowork.docx` are done.
 
-Full brief is in `nicho_admin_brief_for_cowork.docx` (uploaded to this session's uploads folder). Summary:
+**Built:**
 
-- **Storage**: Cloudflare R2 (not Vercel Blob). Zero egress fees, Gemma already has Cloudflare configured for DNS/email.
-- **Upload flow**: presigned URLs so browser uploads directly to R2 (avoids Vercel's 4.5MB serverless limit)
-- **New `media` table**: id, filename, r2_key, file_type, file_size, uploaded_by, uploaded_at, festival_year, category (gallery/sponsor/auction/vendor/other), caption, alt_text
-- **Admin media library**: browse, filter by year and category, edit captions/alt-text, delete
-- **Image serving**: Next.js `<Image>` component pointing at R2 (sufficient at this scale, no need for Cloudflare Images)
-- **EXIF stripping**: client-side before upload (privacy, GPS coordinates)
-- **Auto-generate thumbnails** for the admin library
-- **Public gallery page**: responsive grid of images tagged 'gallery' for a given festival year
-- **Suggested bucket structure**: `festival-year/category/filename` (e.g. `2025/gallery/`, `2026/sponsors/`)
-- **Max file size**: 25MB per file
-- **File types**: JPG, PNG, WebP, HEIC, PDF
+- **Storage on Cloudflare R2** via the S3-compatible API (`@aws-sdk/client-s3`). Client and helpers in `lib/r2.ts`.
+- **Presigned PUT uploads.** `/api/upload/presign` returns a URL valid for 10 minutes, the browser uploads direct to R2, then `/api/upload/save` writes the `media` row. Vercel's 4.5MB body limit never comes into it.
+- **`media` table**, exactly as specced: filename, r2_key, file_type, file_size, uploaded_by, uploaded_at, festival_year, category, caption, alt_text.
+- **Client-side EXIF stripping** in `app/admin/components/ImageUpload.tsx`, by redrawing the image to a canvas and re-exporting via `toBlob()`. GPS coordinates never leave the browser. PDFs skip this step.
+- **Admin media library** at `/admin/media`, 313 lines in `MediaLibrary.tsx`. Filter by year and category, edit captions and alt text, download, delete.
+- **Key structure** `{festivalYear}/{category}/{timestamp}-{filename}`, with the timestamp preventing collisions and filenames sanitised to lowercase alphanumerics.
+- **25MB cap**, enforced client-side before the presigned URL is requested.
 
-Priority order from the brief: admin upload interface first, then admin media library, then public gallery page last.
+**Not built, and the only piece of this feature still outstanding:**
+
+- **Public gallery page (`/gallery`).** A responsive grid of `media` rows with category `gallery`, filtered by festival year. It was the lowest of the three priorities and never started. There is no `/gallery` route.
+
+**Quietly dropped:** auto-generated thumbnails for the library. The library renders full images through Next's `<Image>`, which is fine at current volume. Revisit if the library gets slow, not before.
+
+---
+
+## What's actually next
+
+Nothing large is outstanding. The remaining work is content and polish, not features.
+
+1. **Public gallery page** (`/gallery`), per above.
+2. **Real `/map` page.** Blocked on someone producing the site map artwork. The page is a placeholder with no PDF and no download button.
+3. **Auction platform decision.** Still open, and it now blocks the "Place a bid" buttons on `/auction`, which have nowhere to point. Assigned to Gemma.
+4. **Real content.** Photography, sponsor logos, auction items. The upload tooling is built and waiting.
+5. **Buffer-week passes** from `CLAUDE.md` section 8: copy edit, accessibility, security, treasurer sign-off, soft launch.
+
+Sales open September. The event is 24 October.
 
 ---
 
 ## Known issues / things to check
 
-1. **Sandy's user record**: Sandy logged in before the `syncUser` code was deployed. She needs to visit any admin page once more to appear in assignee dropdowns.
-2. **Plank sizing on mobile**: went through several rounds. Current values (85vw wide, 28vw tall) are better but Gemma hasn't confirmed she's happy with the latest push. Check on next session.
-3. **No drizzle migrations folder**: using `drizzle-kit push` (direct schema sync) rather than migration files. Fine for now, but if multiple people start making schema changes, consider switching to `drizzle-kit generate` for versioned migrations.
-4. **esbuild platform mismatch in sandbox**: `drizzle-kit push` can't run in the Cowork Linux sandbox because `node_modules` has `@esbuild/win32-x64`. Schema changes need to be pushed from Gemma's local machine or via direct SQL (the Python/psycopg2 approach works but needs network access the sandbox doesn't have to Neon).
+1. **`middleware.ts` is deprecated in Next 16.** Every build prints a warning telling you to rename it to `proxy`. **Deliberately not doing this before the festival.** It gates admin auth, it works in production, and a deprecation warning is not a breakage. Revisit in November. This covers the rename only, not dependency updates in general. Full reasoning in `CLAUDE.md` section 2.
+2. **Sandy's user record**: Sandy logged in before the `syncUser` code was deployed. She needs to visit any admin page once more to appear in assignee dropdowns. Unverified since May, and three months have passed, so she may well have visited by now. Check the assignee dropdown before chasing it.
+3. **Plank sizing on mobile**: went through several rounds in May. Current values (85vw wide, 28vw tall) were never signed off by Gemma. Still unconfirmed.
+4. **No drizzle migrations folder**: using `drizzle-kit push` (direct schema sync) rather than migration files. There is one hand-written `db/migrate-media.sql` from the R2 work. Fine at this scale, but if schema changes get more frequent, switch to `drizzle-kit generate` for versioned migrations.
+5. **Parent `node_modules` is gutted.** `claude-projects/node_modules` has one file in the entire tree, from the same 3 July deletion. The Neoma site in that folder will not build until it gets its own `npm install`. Untouched so far except for removing the empty `@types/yauzl` directory that was breaking this project's build.
+6. **The lockfile warning on every build.** Next detects both `claude-projects/package-lock.json` and this project's own, and picks the parent as the workspace root. Harmless, but it means the inferred root is wrong. Silenced by setting `turbopack.root` in `next.config.mjs` if it ever becomes annoying.
+7. **14 npm vulnerabilities** (8 high) reported after the August `npm install`. Not triaged. Plain `npm audit fix` is worth a look before the site takes real traffic in September. `npm audit fix --force` bumps majors and should wait until after the festival.
+8. **`nicho_admin_brief_for_cowork.docx` is not in the repo.** It's referenced throughout this file as the source for Features 1 and 2 but lives only in an old Cowork uploads folder. If the gallery page gets built from it, get a copy into the project root first.
 
 ---
 
@@ -158,16 +212,27 @@ Priority order from the brief: admin upload interface first, then admin media li
 | EXIF stripping: server-side vs client-side | **Client-side before upload** | Files go straight to R2 via presigned URL, so server never sees the raw file. Client-side stripping means GPS data never leaves the browser. |
 | Task notification emails | **Fire-and-forget, only on assignee change, only to others** | Don't block task saves on email failures. Don't spam yourself. Don't spam on no-op edits. |
 
+### Decisions made 12 August 2026
+
+| Decision | Answer | Rationale |
+|---|---|---|
+| Recover from GitHub vs rebuild | **Clone and restore from `origin/main`** | The remote was intact and three commits ahead of what the docs described. Nothing local was worth keeping except `.env.local`. |
+| Rename `middleware.ts` to `proxy.ts` for Next 16 | **No, not before 24 October** | It gates admin auth and works in production. A warning is not a breakage. Getting it wrong means locked-out admins or an exposed dashboard during ticket sales. Scoped to this rename only. `package.json` pins `^16.2.5`, so 16.x patch and minor updates remain fine. |
+| Fix for the `yauzl` type error | **Delete the empty `@types/yauzl` directory** | It was deletion debris, not a real dependency. Cheaper and less invasive than adding an explicit `types` array to `tsconfig.json`. |
+
 ---
 
 ## Environment / deployment notes
 
+- **Repo**: `https://github.com/gemne0ma/nichohalloween.git`, single `main` branch
 - **Domain**: `nichohalloween.com.au` (live, Cloudflare DNS, Vercel hosting)
 - **Stripe**: production keys in Vercel env vars. Webhook endpoint: `https://nichohalloween.com.au/api/stripe/webhook`
 - **Resend**: domain verified, sending from `hello@nichohalloween.com.au`
 - **Clerk**: `ADMIN_EMAILS` env var controls who gets admin access (comma-separated)
+- **Cloudflare R2**: needs `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_BUCKET_NAME`, `R2_PUBLIC_URL`
 - **Deploy**: `git push` to main auto-deploys to Vercel
 - **Database**: Neon Postgres, `ap-southeast-2` (Sydney). Connection string in `DATABASE_URL` env var.
+- **Local machine**: macOS as of the August session, previously Windows. `.env.local` is gitignored and exists only on Gemma's machine. **It is not in the repo and not backed up anywhere.** If that file is lost, every key has to be reissued from Stripe, Clerk, Resend, Neon and Cloudflare.
 
 ---
 
