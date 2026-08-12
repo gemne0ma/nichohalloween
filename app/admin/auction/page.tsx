@@ -1,25 +1,8 @@
-import { getAllAuctionItems } from "../queries";
-import AuctionRegister from "./AuctionRegister";
-import AuctionShell from "./AuctionShell";
+import { redirect } from "next/navigation";
 
-export default async function AuctionPage() {
-  const allItems = await getAllAuctionItems();
-
-  return (
-    <AuctionShell active="items">
-      <AuctionRegister
-        items={allItems.map((item) => ({
-          id: item.id,
-          itemName: item.itemName,
-          classroom: item.classroom,
-          donor: item.donor,
-          estimatedValue: item.estimatedValue,
-          photoUrl: item.photoUrl,
-          status: item.status,
-          platformListingUrl: item.platformListingUrl,
-          notes: item.notes,
-        }))}
-      />
-    </AuctionShell>
-  );
+// The Items tab is gone. Business outreach is where donations are tracked
+// now, so /admin/auction lands there. The URL is kept so the sidebar entry,
+// bookmarks and the matchPrefix active state all still work.
+export default function AuctionPage() {
+  redirect("/admin/auction/prospects");
 }

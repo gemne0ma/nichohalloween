@@ -4,10 +4,9 @@ import Link from "next/link";
 import { useRef, useState } from "react";
 import type { AuctionTabCounts } from "./counts";
 
-export type AuctionTabKey = "items" | "outreach" | "tasks";
+export type AuctionTabKey = "outreach" | "tasks";
 
 const TABS: { key: AuctionTabKey; label: string; href: string }[] = [
-  { key: "items", label: "Items", href: "/admin/auction" },
   { key: "outreach", label: "Business outreach", href: "/admin/auction/prospects" },
   { key: "tasks", label: "Tasks", href: "/admin/auction/tasks" },
 ];
@@ -53,7 +52,8 @@ export default function AuctionTabs({
     <div
       role="tablist"
       aria-label="Silent auction sections"
-      className="flex items-stretch w-full border-b border-ink mb-6"
+      // Wraps to a second line on narrow screens rather than scrolling.
+      className="flex flex-wrap items-center gap-2 md:gap-3 mb-6"
     >
       {TABS.map((tab, i) => {
         const isActive = tab.key === active;
@@ -73,20 +73,16 @@ export default function AuctionTabs({
             tabIndex={i === focusIndex ? 0 : -1}
             onKeyDown={(e) => handleKeyDown(e, i)}
             onFocus={() => setFocusIndex(i)}
-            className={`flex-1 min-w-0 text-center px-2 md:px-5 py-2.5 md:py-3 leading-tight transition-colors focus:outline-none focus-visible:underline ${
+            // Border on both states, so the pill does not resize when it
+            // becomes active.
+            className={`inline-flex items-baseline rounded-full border border-rust px-4 md:px-5 py-2 leading-tight transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-paper ${
               isActive
-                ? // Folder tab: bordered left, top and right, no bottom, pulled
-                  // down a pixel so it sits on the rule and covers it.
-                  "font-display text-base md:text-lg text-ink bg-paper border border-ink border-b-0 -mb-px"
-                : "font-body text-sm md:text-base text-ink-soft border border-transparent border-b-0 hover:bg-paper-deep hover:text-ink"
+                ? "bg-rust text-bone font-display text-base md:text-lg"
+                : "bg-transparent text-rust hover:bg-rust/10 font-body text-sm md:text-base"
             }`}
           >
-            <span className="break-words">{tab.label}</span>
-            <span
-              className={`font-mono text-[10px] ml-1.5 md:ml-2 align-middle ${
-                isActive ? "text-rust-deep" : "text-moss"
-              }`}
-            >
+            <span>{tab.label}</span>
+            <span className="ml-2 text-[0.8em] opacity-70 tabular-nums">
               {count}
             </span>
           </Link>
