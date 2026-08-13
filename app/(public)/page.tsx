@@ -44,7 +44,12 @@ export default function Home() {
           </p>
 
           {/* Title */}
-          <h1 className="md:order-2 font-display font-bold text-4xl md:text-8xl lg:text-9xl xl:text-[10rem] text-center leading-[0.95] tracking-tight text-paper mt-2 md:mt-[100px] mb-4 md:mb-0">
+          {/* Sizes are 68% of the originals: 2.25/6/8/10rem, cut 20% then a
+              further 15%. Explicit rem rather than Tailwind steps so the ratio
+              is exact. leading-[0.95] already sets line height, so nothing is
+              lost by dropping the preset line heights that came with
+              text-4xl etc. */}
+          <h1 className="md:order-2 font-display font-bold text-[1.53rem] md:text-[4.08rem] lg:text-[5.44rem] xl:text-[6.8rem] text-center leading-[0.95] tracking-tight text-paper mt-2 md:mt-[100px] mb-4 md:mb-0">
             Nicho Halloween
             <br />
             Festival
