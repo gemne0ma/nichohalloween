@@ -29,7 +29,7 @@ That's it. No event-night app, no QR scanning, no door check-in. On the night, a
 | **Payments** | Stripe Checkout (hosted). Site never touches card data. **Festival runs its own dedicated Stripe account in P&C's name**, separate from the school's Wix Payments setup which is used for everything else (school P&C general site, other school ticketing). Two parallel payment streams, both into the same P&C bank account, treasurer reconciles each separately. Confirmed with treasurer 6 May. |
 | **Token model** | Physical tokens. Site sells bundles, customer gets plain confirmation email with order number. On the night, customer shows email at token booth, volunteer crosses off the printed list, hands over physical tokens. **No QR codes. No scanning. No event-night app.** |
 | **POS at stalls** | Square, off-the-shelf. Reconciled by CSV after the event. **Do not build POS.** |
-| **Silent auction** | Hybrid. Read-only showcase page on our site. Bidding lives on an external platform (TBD, evaluating 32auctions, Galabid, Trellis). Bidders click "Place a bid", open external platform in new tab. **Do not build bidding.** |
+| **Silent auction** | Hybrid. Read-only showcase page on our site. **Bidding lives on Air Auctioneer.** Resolved 13 August 2026. Bidders click "Place a bid", open Air Auctioneer in a new tab. The lot catalogue lives there, not here: classroom lots are uploaded to Air Auctioneer by hand, not tracked in this admin. **Do not build bidding.** |
 | **Aesthetic** | "Country Almanac" mood. Cream/forest/rust palette. IM Fell English SC display, Cormorant Garamond body, Special Elite mono. Real photography. **No purple gradients, no clip-art, no neon, no cartoon Halloween.** |
 | **Roles** | One: `admin`. Public is unauthenticated. No volunteer role. No door check-in. |
 | **Domain** | TBC. Probably `nichohalloween.com.au`. Buy through Vercel or Cloudflare. **Festival site is standalone, not hosted on or linked to the school's Wix site.** Confirmed with treasurer 6 May. |
@@ -106,6 +106,12 @@ These have been explicitly excluded from v1. If they come up mid-build, say no, 
 - Mobile app. The site is mobile-responsive, that's enough.
 - Real-time token balance tracking.
 - Multi-event support. This site runs one festival, this year. 2027 is a fork.
+  **Amended 13 August 2026, one carve-out:** `auction_prospects` is explicitly a
+  multi-year record. The point of tracking business outreach is that a future
+  committee can see who donated before, who declined, and who must never be
+  contacted again. So that table may carry history across festivals, and its
+  data must survive the 2027 fork. Everything else stays single-event: no
+  festival switcher, no year scoping on tasks, vendors, sponsors or orders.
 
 ---
 
@@ -549,10 +555,11 @@ Gemma is the user. She is the founder of Neoma, a Sydney AI capability and workf
 Update this list as decisions land. Strike through, don't delete.
 
 - [ ] Token equivalent dollar value at stalls (1 token = $1.00 implied from 100-pack-at-$100; confirm stall pricing aligns. E.g. inflatable = 4 tokens means $4 to enter.)
-- [ ] Auction platform (evaluating 32auctions, Galabid, Trellis. Assigned to Gemma.) Still open, and it now blocks the "Place a bid" buttons on `/auction`, which have nowhere to point.
+
 - [ ] Site map artwork, which blocks the `/map` page.
 
 **Resolved:**
+- ~~Auction platform~~ Resolved 13 August 2026. **Air Auctioneer.** Bidding and the lot catalogue both live there. `/auction` links out.
 - ~~Domain name~~ Resolved. **`nichohalloween.com.au`**, live, Cloudflare DNS in front of Vercel hosting.
 - ~~Email sender address~~ Resolved. **`hello@nichohalloween.com.au`**, domain verified in Resend with DKIM and SPF in Cloudflare DNS.
 - ~~Social media links in footer~~ Resolved 10 May, shipped in commit `1f8366d`.
