@@ -4,10 +4,11 @@ import Link from "next/link";
 import { useRef, useState } from "react";
 import type { AuctionTabCounts } from "./counts";
 
-export type AuctionTabKey = "outreach" | "tasks";
+export type AuctionTabKey = "outreach" | "classrooms" | "tasks";
 
 const TABS: { key: AuctionTabKey; label: string; href: string }[] = [
   { key: "outreach", label: "Business outreach", href: "/admin/auction/prospects" },
+  { key: "classrooms", label: "Classrooms", href: "/admin/auction/classrooms" },
   { key: "tasks", label: "Tasks", href: "/admin/auction/tasks" },
 ];
 

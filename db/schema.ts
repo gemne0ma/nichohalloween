@@ -215,6 +215,23 @@ export const tags = pgTable("tags", {
     .notNull(),
 });
 
+// ─── Classroom lot quotas ────────────────────────────────
+
+// Each classroom owes 10 lots at a minimum of $100 each. The lots go
+// straight to Air Auctioneer and are not tracked here. This table exists to
+// answer one question in October: has each classroom delivered?
+export const classroomLots = pgTable("classroom_lots", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  name: text("name").notNull().unique(), // K-1, Y2, 3-4, 5-6
+  sortOrder: integer("sort_order").default(0).notNull(),
+  targetItems: integer("target_items").default(10).notNull(),
+  itemsReceived: integer("items_received").default(0).notNull(),
+  notes: text("notes"),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+});
+
 // ─── Auction prospects (business outreach tracker) ───────
 
 // Private. Businesses the committee approaches for auction donations.
