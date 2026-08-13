@@ -215,6 +215,29 @@ export const tags = pgTable("tags", {
     .notNull(),
 });
 
+// ─── Prospect activity log ───────────────────────────────
+
+// Append only. One row per thing that happened to a business: added,
+// status changed, or somebody typed a note. Nothing here is ever updated or
+// deleted, which is what lets it serve as history years later. See the
+// multi-event carve-out in CLAUDE.md section 3.
+export const prospectActivity = pgTable(
+  "prospect_activity",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    prospectId: uuid("prospect_id")
+      .notNull()
+      .references(() => auctionProspects.id, { onDelete: "cascade" }),
+    // manual | status_change | created
+    kind: text("kind").default("manual").notNull(),
+    body: text("body").notNull(),
+    actorId: text("actor_id").references(() => users.id),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  }
+);
+
 // ─── Classroom lot quotas ────────────────────────────────
 
 // Each classroom owes 10 lots at a minimum of $100 each. The lots go

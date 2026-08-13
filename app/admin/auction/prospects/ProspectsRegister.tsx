@@ -6,12 +6,13 @@ import {
   updateProspect,
   updateProspectStatus,
   updateProspectItemValue,
+  addProspectActivity,
   bulkAddProspects,
   findSimilarProspects,
   type DuplicateMatch,
   type BulkAddResult,
 } from "./actions";
-import type { ProspectRow, ProspectStatus } from "./queries";
+import type { ProspectRow, ProspectStatus, ActivityEntry } from "./queries";
 
 type AdminUser = { id: string; name: string | null; email: string };
 
@@ -134,9 +135,12 @@ const labelClasses =
 export default function ProspectsRegister({
   prospects,
   adminUsers,
+  activity,
 }: {
   prospects: ProspectRow[];
   adminUsers: AdminUser[];
+  // Keyed by prospect id. Empty or missing means nothing logged yet.
+  activity: Record<string, ActivityEntry[]>;
 }) {
   const [showCreate, setShowCreate] = useState(false);
   const [showBulk, setShowBulk] = useState(false);
@@ -549,6 +553,7 @@ export default function ProspectsRegister({
                     <TableRow
                       key={p.id}
                       prospect={p}
+                      activity={activity[p.id] ?? []}
                       isFirst={i === 0}
                       isPending={isPending}
                       isExpanded={expandedId === p.id}
@@ -577,6 +582,7 @@ export default function ProspectsRegister({
                 <MobileCard
                   key={p.id}
                   prospect={p}
+                  activity={activity[p.id] ?? []}
                   isFirst={i === 0}
                   isPending={isPending}
                   isExpanded={expandedId === p.id}
@@ -1056,9 +1062,11 @@ function NotesDot({ hasNotes }: { hasNotes: boolean }) {
 
 function ExpandedDetails({
   prospect,
+  activity,
   onEditStart,
 }: {
   prospect: ProspectRow;
+  activity: ActivityEntry[];
   onEditStart: () => void;
 }) {
   const fields: { label: string; value: string | null }[] = [
@@ -1110,12 +1118,95 @@ function ExpandedDetails({
       >
         Edit details
       </button>
+
+      <ActivityLog prospectId={prospect.id} activity={activity} />
+    </div>
+  );
+}
+
+// ─── Activity log ────────────────────────────────────────
+
+// Append only. Entries are never edited or deleted: a mistake gets a
+// correcting entry, which is what makes this trustworthy as history.
+function ActivityLog({
+  prospectId,
+  activity,
+}: {
+  prospectId: string;
+  activity: ActivityEntry[];
+}) {
+  const [draft, setDraft] = useState("");
+  const [isPending, startTransition] = useTransition();
+
+  function submit(e: React.FormEvent) {
+    e.preventDefault();
+    const body = draft.trim();
+    if (!body) return;
+    startTransition(async () => {
+      await addProspectActivity(prospectId, body);
+      setDraft("");
+    });
+  }
+
+  return (
+    <div className="pt-4 border-t border-dotted border-mist">
+      <p className="font-mono text-[10px] uppercase tracking-wider text-moss mb-3">
+        History
+      </p>
+
+      {activity.length === 0 ? (
+        <p className="font-body text-sm italic text-mist mb-3">
+          Nothing logged yet.
+        </p>
+      ) : (
+        <ol className="space-y-2 mb-4">
+          {activity.map((entry) => (
+            <li key={entry.id} className="flex gap-3">
+              <span className="font-mono text-[10px] text-moss tabular-nums whitespace-nowrap pt-0.5 w-[62px] flex-shrink-0">
+                {new Date(entry.createdAt).toLocaleDateString("en-AU", {
+                  day: "2-digit",
+                  month: "short",
+                })}
+              </span>
+              <span
+                className={`font-body text-sm ${
+                  entry.kind === "manual" ? "text-ink" : "text-moss italic"
+                }`}
+              >
+                {entry.body}
+                {entry.actorName && (
+                  <span className="text-mist"> &middot; {entry.actorName}</span>
+                )}
+              </span>
+            </li>
+          ))}
+        </ol>
+      )}
+
+      <form onSubmit={submit} className="flex gap-2">
+        <input
+          type="text"
+          value={draft}
+          onChange={(e) => setDraft(e.target.value)}
+          onClick={(e) => e.stopPropagation()}
+          placeholder="What happened? e.g. left a voicemail"
+          className="flex-1 bg-paper border border-mist px-3 py-2 font-body text-sm text-ink placeholder:text-mist focus:outline-none focus:border-forest"
+        />
+        <button
+          type="submit"
+          disabled={isPending || !draft.trim()}
+          className="font-mono text-xs uppercase tracking-[0.2em] bg-forest-deep text-bone px-4 py-2 hover:bg-rust transition-colors disabled:opacity-40"
+        >
+          {isPending ? "Adding..." : "Add"}
+        </button>
+      </form>
     </div>
   );
 }
 
 type RowProps = {
   prospect: ProspectRow;
+  activity: ActivityEntry[];
   isFirst: boolean;
   isPending: boolean;
   isExpanded: boolean;
@@ -1133,6 +1224,7 @@ type RowProps = {
 
 function TableRow({
   prospect,
+  activity,
   isFirst,
   isPending,
   isExpanded,
@@ -1220,7 +1312,11 @@ function TableRow({
                 onCancel={onEditCancel}
               />
             ) : (
-              <ExpandedDetails prospect={prospect} onEditStart={onEditStart} />
+              <ExpandedDetails
+                prospect={prospect}
+                activity={activity}
+                onEditStart={onEditStart}
+              />
             )}
           </td>
         </tr>
@@ -1233,6 +1329,7 @@ function TableRow({
 
 function MobileCard({
   prospect,
+  activity,
   isFirst,
   isPending,
   isExpanded,
@@ -1341,7 +1438,11 @@ function MobileCard({
               onCancel={onEditCancel}
             />
           ) : (
-            <ExpandedDetails prospect={prospect} onEditStart={onEditStart} />
+            <ExpandedDetails
+                prospect={prospect}
+                activity={activity}
+                onEditStart={onEditStart}
+              />
           )}
         </div>
       )}

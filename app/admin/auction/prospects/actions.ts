@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/db";
-import { auctionProspects, sponsors } from "@/db/schema";
+import { auctionProspects, prospectActivity, sponsors } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { requireAdmin } from "@/lib/auth";
@@ -106,16 +106,26 @@ export async function createProspect(input: ProspectInput) {
     throw new Error("Business name is required");
   }
 
-  await db.insert(auctionProspects).values({
-    businessName,
-    suburb: input.suburb?.trim() || null,
-    contactName: input.contactName?.trim() || null,
-    contactEmail: input.contactEmail?.trim() || null,
-    contactPhone: input.contactPhone?.trim() || null,
-    notes: input.notes?.trim() || null,
-    // Whoever adds it is chasing it until someone reassigns.
-    owner: userId,
-    createdBy: userId,
+  const [created] = await db
+    .insert(auctionProspects)
+    .values({
+      businessName,
+      suburb: input.suburb?.trim() || null,
+      contactName: input.contactName?.trim() || null,
+      contactEmail: input.contactEmail?.trim() || null,
+      contactPhone: input.contactPhone?.trim() || null,
+      notes: input.notes?.trim() || null,
+      // Whoever adds it is chasing it until someone reassigns.
+      owner: userId,
+      createdBy: userId,
+    })
+    .returning({ id: auctionProspects.id });
+
+  await db.insert(prospectActivity).values({
+    prospectId: created.id,
+    kind: "created",
+    body: "Added to the outreach list",
+    actorId: userId,
   });
 
   revalidatePath(PATH);
@@ -181,13 +191,26 @@ export async function bulkAddProspects(raw: string): Promise<BulkAddResult> {
   }
 
   if (toCreate.length > 0) {
-    await db.insert(auctionProspects).values(
-      toCreate.map((businessName) => ({
-        businessName,
-        owner: userId,
-        createdBy: userId,
+    const created = await db
+      .insert(auctionProspects)
+      .values(
+        toCreate.map((businessName) => ({
+          businessName,
+          owner: userId,
+          createdBy: userId,
+        }))
+      )
+      .returning({ id: auctionProspects.id });
+
+    await db.insert(prospectActivity).values(
+      created.map((c) => ({
+        prospectId: c.id,
+        kind: "created",
+        body: "Added to the outreach list in a bulk paste",
+        actorId: userId,
       }))
     );
+
     revalidatePath(PATH);
   }
 
@@ -201,11 +224,28 @@ export async function bulkAddProspects(raw: string): Promise<BulkAddResult> {
 
 // Inline status change from the list. Stamps last_contacted_at, which is why
 // status is not editable through updateProspect.
+const STATUS_LABELS: Record<ProspectStatus, string> = {
+  not_contacted: "Not contacted",
+  contacted: "Contacted",
+  waiting_on_reply: "Waiting on reply",
+  agreed_to_donate: "Agreed to donate",
+  item_received: "Item received",
+  declined: "Declined",
+};
+
 export async function updateProspectStatus(
   prospectId: string,
   status: ProspectStatus
 ) {
-  await requireAdmin();
+  const userId = await requireAdmin();
+
+  // Read the old value first so the log entry says what actually changed,
+  // rather than just where it ended up.
+  const [before] = await db
+    .select({ status: auctionProspects.status })
+    .from(auctionProspects)
+    .where(eq(auctionProspects.id, prospectId))
+    .limit(1);
 
   await db
     .update(auctionProspects)
@@ -215,6 +255,17 @@ export async function updateProspectStatus(
       updatedAt: new Date(),
     })
     .where(eq(auctionProspects.id, prospectId));
+
+  // No entry when nothing moved: re-selecting the same status is a no-op,
+  // not history.
+  if (before && before.status !== status) {
+    await db.insert(prospectActivity).values({
+      prospectId,
+      kind: "status_change",
+      body: `Status changed from ${STATUS_LABELS[before.status as ProspectStatus]} to ${STATUS_LABELS[status]}`,
+      actorId: userId,
+    });
+  }
 
   revalidatePath(PATH);
 }
@@ -260,6 +311,22 @@ export async function updateProspect(
     .update(auctionProspects)
     .set({ ...data, businessName: data.businessName.trim(), updatedAt: new Date() })
     .where(eq(auctionProspects.id, prospectId));
+
+  revalidatePath(PATH);
+}
+
+// Somebody typed this. The only way a human writes to the log.
+export async function addProspectActivity(prospectId: string, body: string) {
+  const userId = await requireAdmin();
+  const text = body.trim();
+  if (!text) return;
+
+  await db.insert(prospectActivity).values({
+    prospectId,
+    kind: "manual",
+    body: text,
+    actorId: userId,
+  });
 
   revalidatePath(PATH);
 }
