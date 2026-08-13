@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/db";
-import { auctionProspects } from "@/db/schema";
+import { auctionProspects, sponsors } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { requireAdmin } from "@/lib/auth";
@@ -21,8 +21,12 @@ export type ProspectInput = {
 export type DuplicateMatch = {
   id: string;
   businessName: string;
-  status: ProspectStatus;
+  // A prospect match carries its outreach status. A sponsor match has none,
+  // it is a different relationship entirely.
+  source: "prospect" | "sponsor";
+  status: ProspectStatus | null;
   addedBy: string | null;
+  sponsorTier: string | null;
 };
 
 // Strip the noise that makes two spellings of the same business look different:
@@ -58,15 +62,40 @@ export async function findSimilarProspects(
 
   // A few hundred rows at most, so filtering in JS beats fighting SQL for
   // fuzzy matching. Revisit if this ever holds thousands.
-  const all = await getAllProspects();
-  return all
+  //
+  // Checks sponsors too. The same pub can be approached for sponsorship by
+  // one committee member and for a lot by another, on the same afternoon,
+  // and neither would know. Cheap to check, embarrassing to miss.
+  const [allProspects, allSponsors] = await Promise.all([
+    getAllProspects(),
+    db
+      .select({ id: sponsors.id, businessName: sponsors.businessName, tier: sponsors.tier })
+      .from(sponsors),
+  ]);
+
+  const prospectMatches: DuplicateMatch[] = allProspects
     .filter((p) => isSimilar(p.businessName, name))
     .map((p) => ({
       id: p.id,
       businessName: p.businessName,
+      source: "prospect" as const,
       status: p.status,
       addedBy: p.createdByName,
+      sponsorTier: null,
     }));
+
+  const sponsorMatches: DuplicateMatch[] = allSponsors
+    .filter((sp) => isSimilar(sp.businessName, name))
+    .map((sp) => ({
+      id: sp.id,
+      businessName: sp.businessName,
+      source: "sponsor" as const,
+      status: null,
+      addedBy: null,
+      sponsorTier: sp.tier,
+    }));
+
+  return [...prospectMatches, ...sponsorMatches];
 }
 
 export async function createProspect(input: ProspectInput) {

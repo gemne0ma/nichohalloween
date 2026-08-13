@@ -739,19 +739,28 @@ function CreateForm({
           </p>
           <ul className="space-y-1 mb-3">
             {duplicates.map((d) => (
-              <li key={d.id} className="font-body text-sm text-ink">
+              <li key={`${d.source}-${d.id}`} className="font-body text-sm text-ink">
                 <span className="font-semibold">{d.businessName}</span>
-                <span className="text-moss">
-                  {" "}
-                  &middot; {statusLabel(d.status)}
-                  {d.addedBy ? ` · added by ${d.addedBy}` : ""}
-                </span>
+                {d.source === "sponsor" ? (
+                  <span className="text-moss">
+                    {" "}
+                    &middot; already a sponsor
+                    {d.sponsorTier ? ` (${d.sponsorTier})` : ""}
+                  </span>
+                ) : (
+                  <span className="text-moss">
+                    {" "}
+                    &middot; {d.status ? statusLabel(d.status) : "in outreach"}
+                    {d.addedBy ? ` · added by ${d.addedBy}` : ""}
+                  </span>
+                )}
               </li>
             ))}
           </ul>
           <p className="font-body text-sm italic text-moss">
-            Add it anyway if this is a different business, or cancel and update
-            the existing row.
+            Add it anyway if this is a different business. If it is already a
+            sponsor, check with whoever owns that relationship before asking
+            them for a lot as well.
           </p>
         </div>
       )}
