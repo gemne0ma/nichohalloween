@@ -29,9 +29,12 @@ export default function Home() {
         {/* DOM order = mobile: Plank → Date → Title → Meta → Countdown */}
         {/* Desktop via md:order: Date(1) → Title(2) → Plank(3) → Meta(4) → Countdown(5) */}
         <div className="relative flex flex-col items-center drop-shadow-[0_2px_12px_rgba(0,0,0,0.5)]">
-          {/* Subtitle on a wooden plank */}
+          {/* Subtitle on a wooden plank. Desktop only: the plank is the
+              background image and the line sits on it, so hiding the text
+              alone would leave an empty sign. hidden md:flex, not md:block,
+              because the flex centring is what positions the text. */}
           <div
-            className="md:order-3 mb-4 md:mb-3 w-[clamp(340px,85vw,986px)] max-w-[92vw] h-[clamp(95px,28vw,448px)] md:w-[clamp(314px,62vw,986px)] md:h-[clamp(134px,27vw,448px)] bg-[url('/plank.png')] bg-[length:100%_100%] bg-no-repeat bg-center flex items-center justify-center"
+            className="hidden md:flex md:order-3 mb-4 md:mb-3 w-[clamp(340px,85vw,986px)] max-w-[92vw] h-[clamp(95px,28vw,448px)] md:w-[clamp(314px,62vw,986px)] md:h-[clamp(134px,27vw,448px)] bg-[url('/plank.png')] bg-[length:100%_100%] bg-no-repeat bg-center items-center justify-center"
           >
             <p className="font-halloween text-[clamp(14px,3.74vw,46px)] tracking-wide text-paper text-center whitespace-nowrap px-[10%] [text-shadow:_0_2px_14px_rgba(0,0,0,0.95)] relative top-[1px]">
               An iconic 37-year tradition
@@ -44,12 +47,13 @@ export default function Home() {
           </p>
 
           {/* Title */}
-          {/* Sizes are 68% of the originals: 2.25/6/8/10rem, cut 20% then a
-              further 15%. Explicit rem rather than Tailwind steps so the ratio
-              is exact. leading-[0.95] already sets line height, so nothing is
-              lost by dropping the preset line heights that came with
-              text-4xl etc. */}
-          <h1 className="md:order-2 font-display font-bold text-[1.53rem] md:text-[4.08rem] lg:text-[5.44rem] xl:text-[6.8rem] text-center leading-[0.95] tracking-tight text-paper mt-2 md:mt-[100px] mb-4 md:mb-0">
+          {/* Mobile and desktop are sized independently on purpose.
+              Desktop stays at 68% of the original, which is what Gemma
+              signed off. Mobile goes back to its original 2.25rem: at
+              1.53rem the title was only 1.7x the 14px meta line beneath it
+              and stopped reading as a heading. Desktop had headroom to give
+              away, a 390px phone does not. */}
+          <h1 className="md:order-2 font-display font-bold text-[2.25rem] md:text-[4.08rem] lg:text-[5.44rem] xl:text-[6.8rem] text-center leading-[0.95] tracking-tight text-paper mt-2 md:mt-[100px] mb-4 md:mb-0">
             Nicho Halloween
             <br />
             Festival
@@ -62,12 +66,18 @@ export default function Home() {
             <span className="text-pumpkin mx-1 md:mx-3 text-[1.2em] md:text-[3em] leading-none align-middle relative -top-[1px] md:-top-[2px]">&middot;</span> <span>Tasty food</span>
           </p>
 
-          {/* Countdown with "Haunted sleeps to go" graphic */}
-          <div className="md:order-5 flex flex-col md:flex-row items-center gap-4 md:gap-6">
+          {/* Countdown with "Haunted sleeps to go" graphic.
+              Order is unchanged, graphic above the numbers. The mobile gap is
+              tightened so the graphic sits on top of the countdown rather
+              than floating apart from it. Desktop is untouched. */}
+          <div className="md:order-5 flex flex-col md:flex-row items-center gap-0 md:gap-6">
             <img
               src="/text.png"
               alt="Haunted sleeps to go"
-              className="w-[160px] md:w-[360px] h-auto -rotate-[15deg]"
+              /* -mb-3 on mobile only. The 15deg tilt leaves empty space inside
+                 the image's upright bounding box, so a negative margin pulls
+                 the countdown up into it. Desktop keeps its natural spacing. */
+              className="w-[160px] md:w-[360px] h-auto -rotate-[15deg] -mb-3 md:mb-0"
             />
             <Countdown />
           </div>
