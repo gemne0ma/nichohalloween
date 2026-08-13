@@ -463,6 +463,33 @@ Removing any one of these leaves a real hole. See also the `middleware.ts` note 
 - Build admin "resend confirmation email" button that takes a Stripe session ID, looks up the order, resends the email
 - Test failure modes deliberately (kill the webhook handler, then resend from Stripe dashboard)
 
+### Gotcha: the Stripe webhook endpoint and the SDK are on different API versions
+
+**This is deliberate. Do not "fix" it before the festival.**
+
+- The live webhook endpoint in the Stripe dashboard is pinned to `2026-07-29.dahlia`.
+- The SDK in `lib/stripe.ts` is pinned to `2025-02-24.acacia` (`stripe@17.7.0`).
+
+The endpoint pin decides the shape of the event payload Stripe delivers, so the
+webhook already receives Dahlia-shaped Checkout Sessions and reads them with
+Acacia-generation types. That is safe here because **none of the fields we read
+changed** across Basil, Clover or Dahlia: `id`, `metadata`, `amount_total`,
+`customer_details.email`, `customer_details.name`, `custom_fields`. Checked
+against the changelogs on 13 August 2026.
+
+The Checkout fields that were removed in those releases are `shipping_details`
+(Basil) and `currency_conversion` (Clover). We read neither.
+
+**Bump in November, after the festival:** `stripe@22.5.0`, which pins
+`2026-07-29.dahlia` and matches the endpoint. That is five majors in one jump,
+so do it on its own with a real test purchase afterwards, not in a busy week.
+
+**`ui_mode` enum values changed in Dahlia.** `hosted`, `embedded` and `custom`
+were removed in favour of `hosted_page`, `embedded_page` and `elements`.
+Setting an old value now fails the API call. Our `checkout.sessions.create`
+never passes `ui_mode`, which is why this has not bitten us. **Do not copy
+`ui_mode` from an older Stripe example or blog post.**
+
 ### Event-night operations
 **With door check-in dropped, the failure mode shrinks dramatically. No app on the night.**
 
