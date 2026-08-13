@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
 import { db } from "@/db";
 import { tokenOrders } from "@/db/schema";
-import { eq, sql } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { sendOrderConfirmation } from "@/lib/email";
 import type { BundleType } from "@/lib/bundles";
 import { BUNDLES } from "@/lib/bundles";
@@ -63,19 +63,23 @@ export async function POST(req: NextRequest) {
       session.customer_details?.name ??
       "Unknown";
 
-    // Generate sequential order number: NHF-0001, NHF-0002, etc.
-    const orderNumber = await generateOrderNumber();
+    // The order number comes from the database. order_number defaults to
+    // nextval() on token_order_number_seq, so two deliveries arriving at the
+    // same moment cannot be handed the same NHF-XXXX. Read it back rather
+    // than computing it here.
+    const [inserted] = await db
+      .insert(tokenOrders)
+      .values({
+        stripeSessionId: session.id,
+        purchaserEmail,
+        purchaserName,
+        bundleType,
+        tokensPurchased: tokens,
+        amountPaid,
+      })
+      .returning({ orderNumber: tokenOrders.orderNumber });
 
-    // Insert the order
-    await db.insert(tokenOrders).values({
-      stripeSessionId: session.id,
-      purchaserEmail,
-      purchaserName,
-      bundleType,
-      tokensPurchased: tokens,
-      amountPaid,
-      orderNumber,
-    });
+    const orderNumber = inserted.orderNumber;
 
     console.log(
       `Webhook: order ${orderNumber} created. ${tokens} tokens for ${purchaserEmail}`
@@ -100,16 +104,4 @@ export async function POST(req: NextRequest) {
   }
 
   return NextResponse.json({ received: true });
-}
-
-// Generate the next sequential order number.
-// Uses a count query, so NHF-0001, NHF-0002, etc.
-// Safe for this volume (max ~500 orders). For higher volume you'd use a
-// Postgres sequence, but that's overkill here.
-async function generateOrderNumber(): Promise<string> {
-  const result = await db
-    .select({ count: sql<number>`count(*)` })
-    .from(tokenOrders);
-  const nextNum = (Number(result[0].count) || 0) + 1;
-  return `NHF-${String(nextNum).padStart(4, "0")}`;
 }

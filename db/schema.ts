@@ -9,6 +9,7 @@ import {
   pgEnum,
   primaryKey,
 } from "drizzle-orm/pg-core";
+import { sql } from "drizzle-orm";
 
 // ─── Enums ───────────────────────────────────────────────
 
@@ -157,7 +158,16 @@ export const tokenOrders = pgTable("token_orders", {
   bundleType: bundleTypeEnum("bundle_type").notNull(),
   tokensPurchased: integer("tokens_purchased").notNull(),
   amountPaid: integer("amount_paid").notNull(), // cents
-  orderNumber: text("order_number").notNull(), // human-readable, e.g. NHF-0247
+  // Issued by the database, not by application code. The default calls
+  // nextval() on token_order_number_seq, so two concurrent webhook
+  // deliveries can never be handed the same number. Unique is the backstop.
+  // Insert without it and read it back with .returning().
+  orderNumber: text("order_number")
+    .notNull()
+    .unique()
+    .default(
+      sql`'NHF-' || lpad(nextval('token_order_number_seq')::text, 4, '0')`
+    ), // human-readable, e.g. NHF-0247
   createdAt: timestamp("created_at", { withTimezone: true })
     .defaultNow()
     .notNull(),
