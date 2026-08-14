@@ -55,20 +55,6 @@ export async function updateSponsor(
   revalidatePath("/admin");
 }
 
-// Public visibility. Separate from updateSponsor so a one-click toggle in
-// the list cannot accidentally write any other field.
-export async function setSponsorPublished(sponsorId: string, published: boolean) {
-  await requireAdmin();
-  await db
-    .update(sponsors)
-    .set({ published })
-    .where(eq(sponsors.id, sponsorId));
-
-  revalidatePath("/admin/sponsors");
-  // The public page is what this actually changes.
-  revalidatePath("/sponsors");
-}
-
 export async function deleteSponsor(sponsorId: string) {
   await requireAdmin();
   await db.delete(sponsors).where(eq(sponsors.id, sponsorId));

@@ -126,8 +126,11 @@ export const sponsors = pgTable("sponsors", {
   logoUrl: text("logo_url"),
   thanked: boolean("thanked").default(false).notNull(),
   notes: text("notes"),
-  // Controls the public /sponsors page. Off by default: a sponsor exists in
-  // the register long before anyone agrees to being listed publicly.
+  // Vestigial as of 14 August 2026. The public /sponsors page is hardcoded
+  // now, so nothing reads this. Kept rather than dropped: the column costs
+  // nothing, and dropping it would throw away the data if we ever go back to
+  // a database-driven sponsor wall. Do not add UI for it without first
+  // rewiring the public page.
   published: boolean("published").default(false).notNull(),
   createdAt: timestamp("created_at", { withTimezone: true })
     .defaultNow()
