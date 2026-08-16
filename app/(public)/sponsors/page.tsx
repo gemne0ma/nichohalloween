@@ -26,6 +26,13 @@ type Sponsor = {
   // matches it, otherwise you get a coloured rectangle sitting inside a white
   // one, which reads as a mistake rather than a brand.
   plateBg?: string;
+  // Some logos are supplied with a lot of empty canvas around the mark, so
+  // object-contain fits the whitespace rather than the artwork and they read
+  // smaller than everyone else. Scales the image only, not the layout box.
+  logoScale?: number;
+  // Nudge the logo within its plate, in CSS pixels. Negative is up. Useful
+  // when the mark sits off-centre on its own canvas.
+  logoOffsetY?: number;
 };
 
 const SPONSORS: Sponsor[] = [
@@ -41,9 +48,11 @@ const SPONSORS: Sponsor[] = [
     name: "Aussie Home Loans",
     url: "https://www.aussie.com.au",
     tier: "silver",
-    logo: "/images/sponsor-logos/aussie-home-loans.jpeg",
-    width: 499,
-    height: 615,
+    logo: "/images/sponsor-logos/aussiebalmain.webp",
+    width: 1080,
+    height: 1080,
+    // Sampled from the file, uniform across all eight edge samples.
+    plateBg: "#4B1F68",
   },
   {
     name: "Prestige Auto",
@@ -52,14 +61,22 @@ const SPONSORS: Sponsor[] = [
     logo: "/images/sponsor-logos/prestige-auto.jpeg",
     width: 325,
     height: 325,
+    // Averaged across the whole border, which varies by only 3 levels, so
+    // the plate meets the image with no visible seam.
+    plateBg: "#192E5B",
   },
   {
     name: "Ballast Point Architects + Builders",
     url: "https://ballastpoint.com.au/",
     tier: "bronze",
-    logo: "/images/sponsor-logos/ballast-point.png",
-    width: 440,
-    height: 454,
+    // Trimmed to the type. The supplied file was a rounded square with the
+    // mark in the lower left and 56% of the canvas empty above it, plus solid
+    // black corners where transparency should have been. Cropping to the
+    // artwork means it fills its box at natural size, so no scale or nudge is
+    // needed and nothing bleeds past the plate.
+    logo: "/images/sponsor-logos/ballast-point-trimmed.png",
+    width: 342,
+    height: 210,
   },
   {
     name: "Balmain Vet",
@@ -76,6 +93,8 @@ const SPONSORS: Sponsor[] = [
     logo: "/images/sponsor-logos/vision-personal-training.jpeg",
     width: 447,
     height: 447,
+    // Perfectly uniform across the border, spread of zero.
+    plateBg: "#EB0029",
   },
   {
     name: "The Little Marionette",
@@ -185,6 +204,24 @@ function SponsorCard({ sponsor }: { sponsor: Sponsor }) {
           width={sponsor.width}
           height={sponsor.height}
           className="relative max-h-full w-auto max-w-full object-contain"
+          // translate is declared before scale on purpose. CSS applies these
+          // right to left, so the element is scaled first and then shifted by
+          // a true 20px. The other order would scale the shift too, moving it
+          // 28px instead.
+          style={
+            sponsor.logoScale || sponsor.logoOffsetY
+              ? {
+                  transform: [
+                    sponsor.logoOffsetY
+                      ? `translateY(${sponsor.logoOffsetY}px)`
+                      : null,
+                    sponsor.logoScale ? `scale(${sponsor.logoScale})` : null,
+                  ]
+                    .filter(Boolean)
+                    .join(" "),
+                }
+              : undefined
+          }
         />
       </div>
 
