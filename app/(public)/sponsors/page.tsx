@@ -149,6 +149,20 @@ function SponsorCard({ sponsor }: { sponsor: Sponsor }) {
         style={{ backgroundColor: sponsor.plateBg ?? "#FFFFFF" }}
       >
         {isGold && (
+          // Top right, tilted the opposite way to the ghost so the two lean
+          // into each other rather than sitting parallel. Same rules as him:
+          // desktop only, decorative, and never intercepting a click.
+          <Image
+            src="/images/sponsor-logos/gold-sponsor-badge.png"
+            alt=""
+            aria-hidden
+            width={1536}
+            height={1024}
+            className="hidden md:block pointer-events-none select-none absolute top-[-6%] right-[-2%] h-[44%] w-auto rotate-[6deg] origin-top-right"
+          />
+        )}
+
+        {isGold && (
           // Desktop only: at 390px there is no room for a ghost and a logo
           // side by side. Anchored to the bottom and pulled left so his
           // kicking leg breaks past the card edge, which is the point of him.
