@@ -21,6 +21,11 @@ type Sponsor = {
   // Real pixel dimensions, so next/image reserves the right space.
   width: number;
   height: number;
+  // Logos are supplied on a baked-in background. Five are white, so the plate
+  // is white by default. Where a logo arrives on its own colour, the plate
+  // matches it, otherwise you get a coloured rectangle sitting inside a white
+  // one, which reads as a mistake rather than a brand.
+  plateBg?: string;
 };
 
 const SPONSORS: Sponsor[] = [
@@ -72,6 +77,16 @@ const SPONSORS: Sponsor[] = [
     width: 447,
     height: 447,
   },
+  {
+    name: "The Little Marionette",
+    url: "https://thelittlemarionette.com/",
+    tier: "bronze",
+    logo: "/images/sponsor-logos/littlem.webp",
+    width: 2266,
+    height: 1238,
+    // Sampled from the file itself, not guessed.
+    plateBg: "#B7D5DF",
+  },
 ];
 
 // Gold carries the most weight because it paid for it. 40pt on the gold name
@@ -97,7 +112,9 @@ const TIER_STYLES: Record<
   bronze: {
     name: "text-[16pt] md:text-[22pt]",
     plate: "h-[120px] md:h-[150px]",
-    grid: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8",
+    // Four bronze sponsors, so two by two rather than three across leaving a
+    // widow on the second row.
+    grid: "grid grid-cols-1 sm:grid-cols-2 gap-8",
     heading: "Bronze Sponsors",
   },
 };
@@ -123,11 +140,13 @@ function SponsorCard({ sponsor }: { sponsor: Sponsor }) {
       // rather than floating in a halo. rust is #B85C2E, the same accent as
       // the pills and CTAs.
       className="group bg-bone shadow-[0_2px_20px_rgba(184,92,46,0.22)] hover:shadow-[0_8px_34px_rgba(184,92,46,0.45)] transition-all duration-300 hover:-translate-y-1 flex flex-col focus:outline-none focus-visible:ring-2 focus-visible:ring-rust focus-visible:ring-offset-2 focus-visible:ring-offset-paper">
-      {/* White plate behind the logo. Every logo is supplied on a baked white
-          background, so a cream tile would show a white rectangle inside it.
-          A deliberate white plate reads cleaner than fighting the assets. */}
+      {/* Plate behind the logo, white unless the sponsor supplies otherwise.
+          Logos arrive with their background baked in, so the plate matches it:
+          a cream tile would show a white rectangle inside it, and a white tile
+          would show The Little Marionette's blue one. */}
       <div
-        className={`${style.plate} relative bg-white flex items-center justify-center p-6 md:p-8`}
+        className={`${style.plate} relative flex items-center justify-center p-6 md:p-8`}
+        style={{ backgroundColor: sponsor.plateBg ?? "#FFFFFF" }}
       >
         {isGold && (
           // Desktop only: at 390px there is no room for a ghost and a logo
