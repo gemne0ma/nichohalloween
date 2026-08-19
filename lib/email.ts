@@ -11,6 +11,8 @@ type OrderEmailParams = {
   orderNumber: string;
   tokens: number;
   amountPaid: number; // cents
+  // "2 x 25, 1 x 200" when the order held more than one bundle.
+  summary?: string | null;
 };
 
 export async function sendOrderConfirmation({
@@ -19,12 +21,13 @@ export async function sendOrderConfirmation({
   orderNumber,
   tokens,
   amountPaid,
+  summary,
 }: OrderEmailParams) {
   const { error } = await resend.emails.send({
     from: FROM_ADDRESS,
     to,
     subject: `Your Nicho Halloween tokens are confirmed. ${orderNumber}`,
-    html: buildConfirmationHtml({ name, orderNumber, tokens, amountPaid }),
+    html: buildConfirmationHtml({ name, orderNumber, tokens, amountPaid, summary }),
   });
 
   if (error) {
@@ -39,6 +42,7 @@ function buildConfirmationHtml({
   orderNumber,
   tokens,
   amountPaid,
+  summary,
 }: Omit<OrderEmailParams, "to">) {
   return `
 <!DOCTYPE html>
@@ -89,6 +93,14 @@ function buildConfirmationHtml({
                         <td style="padding:6px 0; font-size:13px; color:#5A6B4F; font-family:'Courier New', monospace; text-transform:uppercase; letter-spacing:1px;">Tokens</td>
                         <td style="padding:6px 0; font-size:17px; color:#1A1A1A; font-family:Georgia, serif; text-align:right;">${tokens}</td>
                       </tr>
+                      ${
+                        summary && summary.includes(",")
+                          ? `<tr>
+                        <td style="padding:6px 0; font-size:13px; color:#5A6B4F; font-family:'Courier New', monospace; text-transform:uppercase; letter-spacing:1px;">Bundles</td>
+                        <td style="padding:6px 0; font-size:15px; color:#1A1A1A; font-family:Georgia, serif; text-align:right;">${escapeHtml(summary)}</td>
+                      </tr>`
+                          : ""
+                      }
                       <tr>
                         <td style="padding:6px 0; font-size:13px; color:#5A6B4F; font-family:'Courier New', monospace; text-transform:uppercase; letter-spacing:1px;">Amount paid</td>
                         <td style="padding:6px 0; font-size:17px; color:#1A1A1A; font-family:Georgia, serif; text-align:right;">${formatCents(amountPaid)}</td>

@@ -47,9 +47,30 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ received: true });
     }
 
-    // Extract data from session
-    const bundleType = session.metadata?.bundleType as BundleType;
-    const tokens = Number(session.metadata?.tokens);
+    // Extract data from session. With a cart an order can hold several
+    // bundles, so tokens is the total and summary is the readable breakdown.
+    // bundleType is set only when the order was a single bundle.
+    const rawBundleType = session.metadata?.bundleType;
+    const bundleType =
+      rawBundleType && rawBundleType in BUNDLES
+        ? (rawBundleType as BundleType)
+        : null;
+
+    const summary = session.metadata?.summary ?? null;
+    // Prefer the total Stripe was told about. Fall back to recomputing from
+    // the breakdown, so a missing field cannot silently write zero tokens.
+    let tokens = Number(session.metadata?.tokens);
+    if (!Number.isFinite(tokens) || tokens <= 0) {
+      const breakdown = session.metadata?.breakdown ?? "";
+      tokens = breakdown
+        .split(",")
+        .filter(Boolean)
+        .reduce((sum, part) => {
+          const [key, qty] = part.split(":");
+          const bundle = BUNDLES[key as BundleType];
+          return bundle ? sum + bundle.tokens * Number(qty || 0) : sum;
+        }, 0);
+    }
     const amountPaid = session.amount_total ?? 0;
     const purchaserEmail =
       session.customer_details?.email ?? "unknown@example.com";
@@ -74,6 +95,7 @@ export async function POST(req: NextRequest) {
         purchaserEmail,
         purchaserName,
         bundleType,
+        bundleSummary: summary,
         tokensPurchased: tokens,
         amountPaid,
       })
@@ -82,7 +104,7 @@ export async function POST(req: NextRequest) {
     const orderNumber = inserted.orderNumber;
 
     console.log(
-      `Webhook: order ${orderNumber} created. ${tokens} tokens for ${purchaserEmail}`
+      `Webhook: order ${orderNumber} created. ${tokens} tokens (${summary ?? "n/a"}) for ${purchaserEmail}`
     );
 
     // Send confirmation email (don't let email failure break the webhook)
@@ -93,6 +115,7 @@ export async function POST(req: NextRequest) {
         orderNumber,
         tokens,
         amountPaid,
+        summary,
       });
       console.log(`Webhook: confirmation email sent to ${purchaserEmail}`);
     } catch (emailErr) {

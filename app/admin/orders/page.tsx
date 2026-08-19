@@ -19,6 +19,7 @@ export default async function OrdersPage({
           purchaserName: o.purchaserName,
           purchaserEmail: o.purchaserEmail,
           bundleType: o.bundleType,
+          bundleSummary: o.bundleSummary,
           tokensPurchased: o.tokensPurchased,
           amountPaid: o.amountPaid,
           createdAt: o.createdAt.toISOString(),

@@ -23,30 +23,67 @@ const ARTWORK_DESCRIPTION: Record<number, string> = {
   200: "A ghost in an orange hat beside a lantern and a pumpkin, next to a weathered paper sign",
 };
 
+// Matches MAX_QTY_PER_LINE in app/api/checkout/route.ts. The server enforces
+// it, this just stops the button going past it.
+const MAX_QTY = 20;
+
 export default function TokensPage() {
   const bundleEntries = Object.entries(BUNDLES) as [BundleType, (typeof BUNDLES)[BundleType]][];
-  const [loading, setLoading] = useState<BundleType | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [cart, setCart] = useState<Partial<Record<BundleType, number>>>({});
 
-  async function handleBuy(bundleType: BundleType) {
-    setLoading(bundleType);
+  function setQty(bundleType: BundleType, qty: number) {
+    const clamped = Math.max(0, Math.min(MAX_QTY, qty));
+    setCart((c) => {
+      const next = { ...c };
+      if (clamped === 0) delete next[bundleType];
+      else next[bundleType] = clamped;
+      return next;
+    });
+  }
+
+  const lines = bundleEntries
+    .filter(([type]) => (cart[type] ?? 0) > 0)
+    .map(([type, bundle]) => ({
+      type,
+      bundle,
+      qty: cart[type] as number,
+      tokens: bundle.tokens * (cart[type] as number),
+      cents: bundle.prePurchaseCents * (cart[type] as number),
+    }));
+
+  const totalTokens = lines.reduce((n, l) => n + l.tokens, 0);
+  const totalCents = lines.reduce((n, l) => n + l.cents, 0);
+  const totalAtFestival = lines.reduce(
+    (n, l) => n + l.bundle.atFestivalCents * l.qty,
+    0
+  );
+
+  async function handleCheckout() {
+    if (lines.length === 0) return;
+    setLoading(true);
     try {
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ bundleType }),
+        // Quantities only. Prices are read from BUNDLES on the server, never
+        // sent from here.
+        body: JSON.stringify({
+          items: lines.map((l) => ({ bundleType: l.type, quantity: l.qty })),
+        }),
       });
       const data = await res.json();
       if (data.url) {
         window.location.href = data.url;
       } else {
         console.error("Checkout error:", data.error);
-        alert("Something went wrong. Please try again.");
-        setLoading(null);
+        alert(data.error ?? "Something went wrong. Please try again.");
+        setLoading(false);
       }
     } catch (err) {
       console.error("Checkout error:", err);
       alert("Something went wrong. Please try again.");
-      setLoading(null);
+      setLoading(false);
     }
   }
 
@@ -97,7 +134,11 @@ export default function TokensPage() {
           {bundleEntries.map(([bundleType, bundle], i) => (
             <article
               key={bundleType}
-              className={`ticket-slide ticket-slide-${i} bg-bone border border-ink overflow-hidden shadow-[0_2px_12px_rgba(26,26,26,0.12),0_1px_3px_rgba(26,26,26,0.08)] hover:shadow-[0_4px_20px_rgba(26,26,26,0.18),0_2px_6px_rgba(26,26,26,0.1)] transition-all hover:-translate-y-1 flex flex-col`}
+              // Rounded and glowing rather than boxed. pumpkin #D87A3F is the
+              // brighter of the two oranges in the palette, so the glow reads
+              // warm against cream without tipping into the rust used for
+              // links and CTAs.
+              className={`ticket-slide ticket-slide-${i} bg-bone rounded-3xl overflow-hidden shadow-[0_2px_24px_rgba(216,122,63,0.30)] hover:shadow-[0_10px_40px_rgba(216,122,63,0.55)] transition-all duration-300 hover:-translate-y-1 flex flex-col`}
             >
               {/* Artwork. Explicit width and height so the space is reserved
                   before it loads and the card does not jump. */}
@@ -111,7 +152,7 @@ export default function TokensPage() {
               />
 
               {/* Purchase panel. Everything below comes from BUNDLES. */}
-              <div className="p-6 border-t border-ink flex flex-col flex-1">
+              <div className="p-6 flex flex-col flex-1">
                 <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-rust-deep mb-2">
                   {bundle.label}
                 </p>
@@ -126,21 +167,102 @@ export default function TokensPage() {
                 </div>
 
                 <p className="font-body text-sm italic text-moss mb-5">
-                  {formatCents(bundle.atFestivalCents)} at the festival, so you
-                  save {formatCents(bundle.atFestivalCents - bundle.prePurchaseCents)}.
+                  {formatCents(bundle.atFestivalCents)} at the festival, you&apos;re
+                  saving {formatCents(bundle.atFestivalCents - bundle.prePurchaseCents)}!
                 </p>
 
-                <button
-                  onClick={() => handleBuy(bundleType)}
-                  disabled={loading !== null}
-                  aria-label={`Buy the ${bundle.label} bundle for ${formatCents(bundle.prePurchaseCents)}`}
-                  className="mt-auto w-full bg-forest-deep text-bone font-mono text-xs uppercase tracking-[0.3em] py-4 hover:bg-rust transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {loading === bundleType ? "Redirecting..." : "Buy now"}
-                </button>
+                {/* Quantity stepper. Starts at zero, so there is no separate
+                    "add to cart" step to forget. */}
+                <div className="mt-auto flex items-stretch rounded-full overflow-hidden border border-mist">
+                  <button
+                    onClick={() => setQty(bundleType, (cart[bundleType] ?? 0) - 1)}
+                    disabled={loading || (cart[bundleType] ?? 0) === 0}
+                    aria-label={`Remove one ${bundle.label} bundle`}
+                    className="w-14 py-4 font-mono text-lg text-ink hover:bg-paper-deep transition-colors disabled:opacity-30 disabled:hover:bg-transparent"
+                  >
+                    &minus;
+                  </button>
+
+                  <div className="flex-1 flex items-center justify-center border-x border-mist">
+                    <span
+                      aria-live="polite"
+                      className="font-display font-bold text-2xl text-ink tabular-nums"
+                    >
+                      {cart[bundleType] ?? 0}
+                    </span>
+                    <span className="sr-only">
+                      {bundle.label} bundles in your order
+                    </span>
+                  </div>
+
+                  <button
+                    onClick={() => setQty(bundleType, (cart[bundleType] ?? 0) + 1)}
+                    disabled={loading || (cart[bundleType] ?? 0) >= MAX_QTY}
+                    aria-label={`Add one ${bundle.label} bundle`}
+                    className="w-14 py-4 font-mono text-lg bg-forest-deep text-bone hover:bg-rust transition-colors disabled:opacity-40"
+                  >
+                    +
+                  </button>
+                </div>
               </div>
             </article>
           ))}
+        </div>
+
+        {/* Order summary. Always present so the checkout does not appear from
+            nowhere, but only actionable once something is chosen. */}
+        <div className="mt-10 bg-bone rounded-3xl p-6 md:p-8 shadow-[0_2px_24px_rgba(216,122,63,0.30)]">
+          <p className="font-mono text-xs uppercase tracking-[0.3em] text-rust-deep mb-4">
+            Your order
+          </p>
+
+          {lines.length === 0 ? (
+            <p className="font-body text-base italic text-moss">
+              Choose your bundles above. You can mix them, for example two
+              25-token bundles and one 200.
+            </p>
+          ) : (
+            <>
+              <ul className="mb-5 divide-y divide-dotted divide-mist">
+                {lines.map((l) => (
+                  <li
+                    key={l.type}
+                    className="flex items-baseline justify-between gap-4 py-2"
+                  >
+                    <span className="font-body text-base text-ink">
+                      {l.qty} &times; {l.bundle.label}
+                      <span className="text-moss"> ({l.tokens} tokens)</span>
+                    </span>
+                    <span className="font-mono text-sm text-ink tabular-nums">
+                      {formatCents(l.cents)}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+
+              <div className="flex items-baseline justify-between gap-4 border-t border-dotted border-mist pt-4 mb-1">
+                <span className="font-display font-bold text-2xl text-ink">
+                  {totalTokens} tokens
+                </span>
+                <span className="font-display font-bold text-3xl text-ink tabular-nums">
+                  {formatCents(totalCents)}
+                </span>
+              </div>
+
+              <p className="font-body text-sm italic text-moss mb-6">
+                {formatCents(totalAtFestival)} at the festival, you&apos;re saving{" "}
+                {formatCents(totalAtFestival - totalCents)}!
+              </p>
+
+              <button
+                onClick={handleCheckout}
+                disabled={loading}
+                className="w-full rounded-full bg-forest-deep text-bone font-mono text-sm uppercase tracking-[0.3em] py-5 hover:bg-rust transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {loading ? "Redirecting..." : `Checkout . ${formatCents(totalCents)}`}
+              </button>
+            </>
+          )}
         </div>
 
         <p className="font-body text-sm italic text-moss text-center mt-10">

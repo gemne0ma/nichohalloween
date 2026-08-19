@@ -10,7 +10,8 @@ type Order = {
   orderNumber: string;
   purchaserName: string;
   purchaserEmail: string;
-  bundleType: string;
+  bundleType: string | null;
+  bundleSummary: string | null;
   tokensPurchased: number;
   amountPaid: number;
   createdAt: string;
@@ -60,7 +61,7 @@ export default function OrdersList({
       o.orderNumber,
       `"${o.purchaserName.replace(/"/g, '""')}"`,
       o.purchaserEmail,
-      o.bundleType,
+      `"${(o.bundleSummary ?? o.bundleType ?? "").replace(/"/g, '""')}"`,
       String(o.tokensPurchased),
       (o.amountPaid / 100).toFixed(2),
       new Date(o.createdAt).toLocaleDateString("en-AU", {

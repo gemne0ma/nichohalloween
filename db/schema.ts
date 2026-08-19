@@ -158,7 +158,15 @@ export const tokenOrders = pgTable("token_orders", {
   stripeSessionId: text("stripe_session_id").unique(),
   purchaserEmail: text("purchaser_email").notNull(),
   purchaserName: text("purchaser_name").notNull(),
-  bundleType: bundleTypeEnum("bundle_type").notNull(),
+  // Set only when the order contains a single bundle type. Null for mixed
+  // carts, which is why it is no longer NOT NULL. Read bundle_summary for
+  // anything human-facing.
+  bundleType: bundleTypeEnum("bundle_type"),
+  // Human readable breakdown, e.g. "2 x 25, 1 x 200". Nothing queries it: it
+  // exists for the printed booth list and the admin table.
+  bundleSummary: text("bundle_summary"),
+  // Total across every bundle in the order. This is the number the volunteer
+  // hands over on the night.
   tokensPurchased: integer("tokens_purchased").notNull(),
   amountPaid: integer("amount_paid").notNull(), // cents
   // Issued by the database, not by application code. The default calls
