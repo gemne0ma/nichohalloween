@@ -75,8 +75,8 @@ const SECTIONS = [
 
 // Images placed between sections as polaroid breaks
 const PHOTO_BREAKS = [
-  { src: "/skeleton.jpg", caption: "Keeping watch since 1989", rotate: "-rotate-2", position: "justify-end" },
-  { src: "/snackshappytom.jpg", caption: "Fairy floss. Popcorn. Sorted.", rotate: "rotate-1", position: "justify-start" },
+  { src: "/skeleton.webp", caption: "Keeping watch since 1989", rotate: "-rotate-2", position: "justify-end" },
+  { src: "/snackshappytom.webp", caption: "Fairy floss. Popcorn. Sorted.", rotate: "rotate-1", position: "justify-start" },
   { src: "/scene2.jpg", caption: "The schoolyard, transformed", rotate: "-rotate-1", position: "justify-center" },
 ];
 
@@ -104,7 +104,7 @@ export default function FAQPage() {
           <div className="md:w-1/2 flex justify-center md:justify-end">
             <div className="rotate-2 bg-bone p-4 pb-14 shadow-[4px_8px_24px_rgba(26,26,26,0.3),2px_3px_6px_rgba(26,26,26,0.15)] max-w-[320px]">
               <img
-                src="/snackshappytom.jpg"
+                src="/snackshappytom.webp"
                 alt="Happy kid with fairy floss and popcorn at the festival"
                 className="w-full aspect-[3/4] object-cover"
               />
@@ -153,7 +153,7 @@ export default function FAQPage() {
                 <div className="flex flex-col sm:flex-row gap-6 sm:gap-10 my-14 items-start">
                   <div className="-rotate-2 bg-bone p-3 md:p-4 pb-12 md:pb-14 shadow-[3px_5px_16px_rgba(26,26,26,0.18),1px_2px_4px_rgba(26,26,26,0.1)] max-w-[280px] sm:max-w-[340px]">
                     <img
-                      src="/scene9.jpg"
+                      src="/scene9.webp"
                       alt="Festival scene at dusk"
                       className="w-full aspect-[4/3] object-cover"
                     />
@@ -163,7 +163,7 @@ export default function FAQPage() {
                   </div>
                   <div className="rotate-3 bg-bone p-3 md:p-4 pb-12 md:pb-14 shadow-[3px_5px_16px_rgba(26,26,26,0.18),1px_2px_4px_rgba(26,26,26,0.1)] max-w-[240px] sm:max-w-[280px] self-end sm:mt-12">
                     <img
-                      src="/boo.jpg"
+                      src="/boo.webp"
                       alt="Boo! A costumed kid jumps out"
                       className="w-full aspect-[3/4] object-cover"
                     />
@@ -178,7 +178,7 @@ export default function FAQPage() {
                 <div className="flex flex-col sm:flex-row gap-6 sm:gap-10 my-14 items-start">
                   <div className="-rotate-2 bg-bone p-3 md:p-4 pb-12 md:pb-14 shadow-[3px_5px_16px_rgba(26,26,26,0.18),1px_2px_4px_rgba(26,26,26,0.1)] max-w-[280px] sm:max-w-[340px]">
                     <img
-                      src="/londonwheel.jpg"
+                      src="/londonwheel.webp"
                       alt="The London Wheel of Fortune at the festival"
                       className="w-full aspect-[3/4] object-cover"
                     />
@@ -188,7 +188,7 @@ export default function FAQPage() {
                   </div>
                   <div className="rotate-1 bg-bone p-3 md:p-4 pb-12 md:pb-14 shadow-[3px_5px_16px_rgba(26,26,26,0.18),1px_2px_4px_rgba(26,26,26,0.1)] max-w-[340px] sm:max-w-[420px] w-full sm:mt-8">
                     <img
-                      src="/pram.jpg"
+                      src="/pram.webp"
                       alt="Prams lined up at the festival"
                       className="w-full aspect-[4/3] object-cover"
                     />
@@ -203,7 +203,7 @@ export default function FAQPage() {
                 <div className="flex flex-col sm:flex-row gap-6 sm:gap-10 my-14 items-start">
                   <div className="rotate-2 bg-bone p-3 md:p-4 pb-12 md:pb-14 shadow-[3px_5px_16px_rgba(26,26,26,0.18),1px_2px_4px_rgba(26,26,26,0.1)] max-w-[260px] sm:max-w-[300px]">
                     <img
-                      src="/skeleton.jpg"
+                      src="/skeleton.webp"
                       alt="Skeleton in a peacock chair"
                       className="w-full aspect-[3/4] object-cover"
                     />
@@ -213,7 +213,7 @@ export default function FAQPage() {
                   </div>
                   <div className="-rotate-1 bg-bone p-3 md:p-4 pb-12 md:pb-14 shadow-[3px_5px_16px_rgba(26,26,26,0.18),1px_2px_4px_rgba(26,26,26,0.1)] max-w-[240px] sm:max-w-[260px] self-end sm:mt-16">
                     <img
-                      src="/scare.jpg"
+                      src="/scare.webp"
                       alt="A spooky scare at the haunted house"
                       className="w-full aspect-[3/4] object-cover"
                     />
@@ -228,7 +228,7 @@ export default function FAQPage() {
                 <div className="flex flex-col sm:flex-row gap-6 sm:gap-10 my-14 items-center">
                   <div className="-rotate-1 bg-bone p-3 md:p-4 pb-12 md:pb-14 shadow-[3px_5px_16px_rgba(26,26,26,0.18),1px_2px_4px_rgba(26,26,26,0.1)] max-w-[500px] sm:max-w-[560px] w-full">
                     <img
-                      src="/scene8.jpg"
+                      src="/scene8.webp"
                       alt="School grounds with Sydney Harbour Bridge in the background"
                       className="w-full aspect-[4/3] object-cover"
                     />
@@ -238,7 +238,7 @@ export default function FAQPage() {
                   </div>
                   <div className="rotate-2 bg-bone p-3 md:p-4 pb-12 md:pb-14 shadow-[3px_5px_16px_rgba(26,26,26,0.18),1px_2px_4px_rgba(26,26,26,0.1)] max-w-[200px] sm:max-w-[220px]">
                     <img
-                      src="/scene7.jpg"
+                      src="/scene7.webp"
                       alt="Festival memories"
                       className="w-full aspect-[3/4] object-cover"
                     />

@@ -29,7 +29,7 @@ export default function AuctionPage() {
           <div className="md:w-1/2 flex justify-center md:justify-end relative z-20 md:mt-[-40px] md:mb-[-60px]">
             <div className="-rotate-2 bg-bone p-4 pb-14 shadow-[4px_8px_24px_rgba(26,26,26,0.3),2px_3px_6px_rgba(26,26,26,0.15)] max-w-[380px]">
               <img
-                src="/auctiony.png"
+                src="/auctiony.webp"
                 alt="Ghost auctioneer with gavel"
                 className="w-full"
               />

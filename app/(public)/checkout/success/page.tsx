@@ -65,7 +65,7 @@ export default async function CheckoutSuccessPage({
         {/* Ghost celebration polaroid */}
         <div className="inline-block rotate-1 bg-bone p-3 pb-10 shadow-[3px_5px_16px_rgba(26,26,26,0.18),1px_2px_4px_rgba(26,26,26,0.1)] mb-10 max-w-[200px]">
           <img
-            src="/payup.png"
+            src="/payup.webp"
             alt="Ghost celebrating"
             className="w-full"
           />

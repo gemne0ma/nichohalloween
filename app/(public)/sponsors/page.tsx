@@ -295,7 +295,7 @@ export default function SponsorsPage() {
           <div className="md:w-1/2 flex justify-center md:justify-end">
             <div className="-rotate-2 bg-bone p-4 pb-14 shadow-[4px_8px_24px_rgba(26,26,26,0.3),2px_3px_6px_rgba(26,26,26,0.15)] max-w-[340px]">
               <img
-                src="/thanks.png"
+                src="/thanks.webp"
                 alt="Ghost in a yellow hat holding a Thank You sign"
                 className="w-full aspect-[3/4] object-cover"
               />

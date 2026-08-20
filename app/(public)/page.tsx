@@ -2,21 +2,21 @@ import Countdown from "../components/Countdown";
 import Link from "next/link";
 
 const GHOSTS = [
-  { src: "/auctiony.png", alt: "Ghost auctioneer with gavel", label: "Silent auction", href: "/auction", rotate: "-rotate-2" },
-  { src: "/tokens2.png", alt: "Ghost handing out festival tokens", label: "Get your tokens", href: "/tokens", rotate: "rotate-1" },
-  { src: "/payup.png", alt: "Two ghosts at the general store cash register", label: "General store", href: "/attractions", rotate: "-rotate-1" },
-  { src: "/thanks.png", alt: "Ghost holding a thank you sign", label: "Our sponsors", href: "/sponsors", rotate: "rotate-2" },
+  { src: "/auctiony.webp", alt: "Ghost auctioneer with gavel", label: "Silent auction", href: "/auction", rotate: "-rotate-2" },
+  { src: "/tokens2.webp", alt: "Ghost handing out festival tokens", label: "Get your tokens", href: "/tokens", rotate: "rotate-1" },
+  { src: "/payup.webp", alt: "Two ghosts at the general store cash register", label: "General store", href: "/attractions", rotate: "-rotate-1" },
+  { src: "/thanks.webp", alt: "Ghost holding a thank you sign", label: "Our sponsors", href: "/sponsors", rotate: "rotate-2" },
 ];
 
 export default function Home() {
   return (
     <main>
-      {/* ─── Hero section (Halloween.png background) ─── */}
+      {/* ─── Hero section (halloween.webp background) ─── */}
       <section className="relative min-h-screen flex flex-col items-center justify-start pt-16 md:justify-center md:pt-8 px-4 md:px-8 pb-4 overflow-hidden">
         {/* Background image: mobile-cropped version focused on yellow-hat ghost, full image on desktop */}
         <div
           aria-hidden
-          className="absolute inset-0 bg-[url('/Halloween-mobile.png')] md:bg-[url('/Halloween.png')] bg-cover bg-center pointer-events-none"
+          className="absolute inset-0 bg-[url('/halloween-mobile.webp')] md:bg-[url('/halloween.webp')] bg-cover bg-center pointer-events-none"
         />
 
         {/* Dark overlay: lighter on mobile so ghost reads better in lower half */}
@@ -34,7 +34,7 @@ export default function Home() {
               alone would leave an empty sign. hidden md:flex, not md:block,
               because the flex centring is what positions the text. */}
           <div
-            className="hidden md:flex md:order-3 mb-4 md:mb-3 w-[clamp(340px,85vw,986px)] max-w-[92vw] h-[clamp(95px,28vw,448px)] md:w-[clamp(314px,62vw,986px)] md:h-[clamp(134px,27vw,448px)] bg-[url('/plank.png')] bg-[length:100%_100%] bg-no-repeat bg-center items-center justify-center"
+            className="hidden md:flex md:order-3 mb-4 md:mb-3 w-[clamp(340px,85vw,986px)] max-w-[92vw] h-[clamp(95px,28vw,448px)] md:w-[clamp(314px,62vw,986px)] md:h-[clamp(134px,27vw,448px)] bg-[url('/plank.webp')] bg-[length:100%_100%] bg-no-repeat bg-center items-center justify-center"
           >
             <p className="font-halloween text-[clamp(14px,3.74vw,46px)] tracking-wide text-paper text-center whitespace-nowrap px-[10%] [text-shadow:_0_2px_14px_rgba(0,0,0,0.95)] relative top-[1px]">
               An iconic 37-year tradition
@@ -72,7 +72,7 @@ export default function Home() {
               than floating apart from it. Desktop is untouched. */}
           <div className="md:order-5 flex flex-col md:flex-row items-center gap-0 md:gap-6">
             <img
-              src="/text.png"
+              src="/text.webp"
               alt="Haunted sleeps to go"
               /* -mb-3 on mobile only. The 15deg tilt leaves empty space inside
                  the image's upright bounding box, so a negative margin pulls

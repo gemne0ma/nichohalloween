@@ -108,7 +108,7 @@ export default function TokensPage() {
         <div className="flex flex-col md:flex-row gap-12 md:gap-16 items-center mb-14 md:mb-16">
           <div className="md:w-2/5 flex-shrink-0 flex justify-center">
             <div className="-rotate-2 bg-bone p-4 pb-14 shadow-[3px_5px_16px_rgba(26,26,26,0.18),1px_2px_4px_rgba(26,26,26,0.1)] max-w-[420px]">
-              <img src="/payup.png" alt="Ghost in sunglasses" className="w-full" />
+              <img src="/payup.webp" alt="Ghost in sunglasses" className="w-full" />
               <p className="font-mono text-xs uppercase tracking-[0.2em] text-moss text-center mt-3">
                 Be there or be square!
               </p>

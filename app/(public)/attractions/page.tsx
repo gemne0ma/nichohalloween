@@ -90,7 +90,7 @@ export default function AttractionsPage() {
       {/* Hero image */}
       <div className="relative w-full h-[500px] md:h-[600px] overflow-hidden">
         <img
-          src="/scene3.png"
+          src="/scene3.webp"
           alt="Festival scene at Nicholson Street Public School"
           className="absolute inset-0 w-full h-full object-cover object-[center_65%]"
         />
@@ -137,7 +137,7 @@ export default function AttractionsPage() {
           >
             <div className="bg-bone p-3 pb-10 shadow-[4px_6px_16px_rgba(26,26,26,0.15)] rotate-2 group-hover:shadow-[6px_8px_24px_rgba(26,26,26,0.22)] transition-shadow w-[260px] md:w-[310px]">
               <img
-                src="/tokens2.png"
+                src="/tokens2.webp"
                 alt="Festival tokens, pre-purchase and save 15%"
                 className="w-full aspect-[4/3] object-cover"
               />
