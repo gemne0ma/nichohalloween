@@ -5,11 +5,19 @@ import { createPortal } from "react-dom";
 
 type Props = {
   image?: string;
+  // Extra photos shown alongside the cover when the lightbox is opened. The
+  // card itself always shows `image`, so the grid stays uniform.
+  extraImages?: string[];
   gradient: string;
   title: string;
 };
 
-export default function AttractionImage({ image, gradient, title }: Props) {
+export default function AttractionImage({
+  image,
+  extraImages,
+  gradient,
+  title,
+}: Props) {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -52,12 +60,30 @@ export default function AttractionImage({ image, gradient, title }: Props) {
             onClick={() => setOpen(false)}
             className="fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-6 cursor-zoom-out"
           >
-            <img
-              src={image}
-              alt={title}
-              className="max-h-[90vh] max-w-[90vw] object-contain"
+            {/* One photo fills the screen. Several sit side by side on
+                desktop and stack on mobile, which beats a carousel when there
+                are only two or three. */}
+            <div
+              className="flex flex-col md:flex-row items-center justify-center gap-4 max-h-[90vh] max-w-[92vw] overflow-auto"
               onClick={(e) => e.stopPropagation()}
-            />
+            >
+              {[image, ...(extraImages ?? [])].map((src, i) => (
+                <img
+                  key={src}
+                  src={src}
+                  alt={
+                    extraImages?.length
+                      ? `${title}, photo ${i + 1} of ${extraImages.length + 1}`
+                      : title
+                  }
+                  className={
+                    extraImages?.length
+                      ? "max-h-[42vh] md:max-h-[80vh] max-w-full md:max-w-[45vw] object-contain"
+                      : "max-h-[90vh] max-w-[90vw] object-contain"
+                  }
+                />
+              ))}
+            </div>
             <button
               type="button"
               onClick={() => setOpen(false)}

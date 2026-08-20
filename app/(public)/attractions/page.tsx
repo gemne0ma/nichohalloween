@@ -7,6 +7,7 @@ type Attraction = {
   meta: string;
   gradient: string;
   image?: string;
+  extraImages?: string[];
 };
 
 const ATTRACTIONS: Attraction[] = [
@@ -28,14 +29,32 @@ const ATTRACTIONS: Attraction[] = [
   },
   {
     num: "No. 03",
-    title: "Inflatables",
-    desc: "Head to our lower court, for all the bouncing high jinks! We've got a gravity defying slide, and a ninja warrior obstacle course - show your pals who's boss!",
-    meta: "5 tokens · ages 5+",
+    title: "Cameron the Kiddiepillar",
+    desc: "Cameron the Kiddiepillar is a popular giant, colourful, caterpillar-shaped inflatable obstacle course and tunnel designed for toddlers and young children. Kids enter through his open mouth, crawl past pop-up obstacles and small ramps inside his belly, and exit down a slide at his tail. He is built with mesh side windows so parents can watch their children play from start to finish.",
+    meta: "5 tokens · ages 3 to 5",
     gradient: "from-plum to-forest-deep",
-    image: "/inflatable.jpg",
+    image: "/images/attractions/cameron.webp",
   },
   {
     num: "No. 04",
+    title: "The Firetruck Jumping Castle",
+    desc: "The Firetruck jumping castle is a versatile inflatable with a bouncing area, climbing wall, and slide that kids will have a fantastic time enjoying!",
+    meta: "5 tokens · all ages",
+    gradient: "from-rust to-plum",
+    image: "/images/attractions/firetruck-1.webp",
+    // Opening the card shows both firetruck photos.
+    extraImages: ["/images/attractions/firetruck-2.webp"],
+  },
+  {
+    num: "No. 05",
+    title: "Carnival Obstacle Course",
+    desc: "Our carnival inflatable obstacle course is a large, themed bouncing structure featuring climbing walls, dual slides, tunnels, and pop-up barriers.",
+    meta: "5 tokens · ages 5+",
+    gradient: "from-forest to-plum",
+    image: "/images/attractions/carnival.webp",
+  },
+  {
+    num: "No. 06",
     title: "Coffee and Snacks galore!",
     desc: "Adults, we gotchu. We wouldn't dream of not caffinating you as your little ones beg you for another turn on the slide! Not only will you get delicious  Little Marionette coffee, but we have snacks and food galore. You won't be going home hungry, that's for sure.",
     meta: "2 tokens · all ages",
@@ -43,7 +62,7 @@ const ATTRACTIONS: Attraction[] = [
     image: "/edcoffee.jpg",
   },
   {
-    num: "No. 05",
+    num: "No. 07",
     title: "Potion Making",
     desc: "Fizzing brew and spooky spells galore at our Witchcraft Workshop. Take home some potions to cast some spells, and make your wishes come true!",
     meta: "3 tokens · all ages",
@@ -51,7 +70,7 @@ const ATTRACTIONS: Attraction[] = [
     image: "/potions.jpg",
   },
   {
-    num: "No. 06",
+    num: "No. 08",
     title: "The Pumpkin Patch",
     desc: "",
     meta: "5 tokens per bag · all ages",
@@ -59,7 +78,7 @@ const ATTRACTIONS: Attraction[] = [
     image: "/pump2.jpg",
   },
   {
-    num: "No. 07",
+    num: "No. 09",
     title: "Mini Monsters",
     desc: "The under-5s zone. Gentle games, face painting, craft tables and zero scares. A safe haven for the littlest festival-goers.",
     meta: "2 tokens · under 5s",
@@ -67,7 +86,7 @@ const ATTRACTIONS: Attraction[] = [
     image: "/potions2.jpg",
   },
   {
-    num: "No. 08",
+    num: "No. 10",
     title: "Willy Wonka's Candy Wonderland",
     desc: "A candy paradise. Sweets, chocolates and lollies as far as the eye can see.",
     meta: "Various · all ages",
@@ -75,7 +94,7 @@ const ATTRACTIONS: Attraction[] = [
     image: "/candy.jpg",
   },
   {
-    num: "No. 09",
+    num: "No. 11",
     title: "Tombolas",
     desc: "A festival favourite! buy a raffle, get the corresponding tombola. Luck of the draw!",
     meta: "2 tokens · all ages",
@@ -155,6 +174,7 @@ export default function AttractionsPage() {
               {/* Image placeholder */}
               <AttractionImage
                 image={attraction.image}
+                extraImages={attraction.extraImages}
                 gradient={attraction.gradient}
                 title={attraction.title}
               />
