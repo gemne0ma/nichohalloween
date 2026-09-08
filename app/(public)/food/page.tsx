@@ -61,7 +61,7 @@ const SWEETS: Item[] = [
   { name: "Fairy floss", image: "/images/food/fairy-floss.webp" },
   { name: "Snow cones", image: "/images/food/snow-cones.webp" },
   { name: "Popcorn", image: "/images/food/popcorn.webp" },
-  { name: "Gelato", image: "/images/food/gelato.webp" },
+  { name: "Ben & Jerry's ice cream", image: "/images/food/ben-and-jerrys.webp" },
 ];
 
 const CAKE_STALL: Item[] = [
