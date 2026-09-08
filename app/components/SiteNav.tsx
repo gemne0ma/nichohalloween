@@ -8,6 +8,7 @@ const navLinks = [
   { href: "/", label: "Home" },
   { href: "/welcome", label: "Welcome" },
   { href: "/attractions", label: "Attractions" },
+  { href: "/food", label: "Food & Drink" },
   { href: "/tokens", label: "Tokens" },
   { href: "/auction", label: "Silent Auction" },
   { href: "/sponsors", label: "Sponsors" },
@@ -26,13 +27,16 @@ export default function SiteNav() {
           Nicho Halloween
         </span>
 
-        {/* Desktop nav links */}
-        <div className="hidden md:flex items-center gap-6">
+        {/* Desktop nav links. Gaps and tracking are tighter than the rest of
+            the site's uppercase metadata because this row has to hold nine
+            links plus the Admin button on one line. Sized to fit "Where your
+            money goes" once that page lands, so adding it causes no reflow. */}
+        <div className="hidden md:flex items-center gap-3 lg:gap-5">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className={`font-mono text-sm uppercase tracking-[0.15em] transition-colors ${
+              className={`font-mono text-[13px] uppercase tracking-[0.1em] lg:tracking-[0.15em] whitespace-nowrap transition-colors ${
                 pathname === link.href
                   ? "text-pumpkin"
                   : "text-paper/80 hover:text-paper"
@@ -43,7 +47,7 @@ export default function SiteNav() {
           ))}
           <Link
             href="/admin"
-            className="font-mono text-sm uppercase tracking-[0.15em] text-rust border border-rust px-3 py-1.5 hover:bg-rust hover:text-paper transition-colors"
+            className="font-mono text-[13px] uppercase tracking-[0.1em] lg:tracking-[0.15em] whitespace-nowrap text-rust border border-rust px-3 py-1.5 hover:bg-rust hover:text-paper transition-colors"
           >
             Admin
           </Link>
