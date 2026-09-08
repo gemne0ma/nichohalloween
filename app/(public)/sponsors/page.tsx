@@ -55,6 +55,18 @@ const SPONSORS: Sponsor[] = [
     plateBg: "#4B1F68",
   },
   {
+    name: "Woolworths Balmain",
+    url: "https://www.woolworths.com.au/",
+    tier: "silver",
+    // Trimmed to the artwork. The supplied file was 72% empty white canvas,
+    // so object-contain would have fitted the whitespace rather than the mark
+    // and Woolworths would have read smaller than the two sponsors either
+    // side of it. No scale or nudge needed once cropped.
+    logo: "/images/sponsor-logos/woolworths.png",
+    width: 881,
+    height: 728,
+  },
+  {
     name: "Prestige Auto",
     url: "https://prestigeautotraders.com.au/",
     tier: "silver",
@@ -125,7 +137,11 @@ const TIER_STYLES: Record<
   silver: {
     name: "text-[20pt] md:text-[28pt]",
     plate: "h-[150px] md:h-[200px]",
-    grid: "grid grid-cols-1 sm:grid-cols-2 gap-8",
+    // Three silver sponsors, so three across on large screens rather than a
+    // pair with a lone card stranded underneath. They end up narrower than
+    // the bronze cards, which is why the taller plate and the larger name
+    // matter: those are what keep silver reading above bronze, not width.
+    grid: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8",
     heading: "Silver Sponsors",
   },
   bronze: {
