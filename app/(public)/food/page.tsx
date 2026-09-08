@@ -18,7 +18,7 @@ const ROCKET_BOY = {
     },
     {
       src: "/images/food/rocketboy-pizza-2.webp",
-      alt: "The Smokey Chick pizza from Rocket Boy",
+      alt: "Margherita pizza from Rocket Boy",
     },
   ],
 };
