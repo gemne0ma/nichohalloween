@@ -9,7 +9,8 @@ export const metadata = {
 // on a white plate for the same reason the sponsor logos do, otherwise you get
 // a white rectangle inside a cream card.
 const ROCKET_BOY = {
-  logo: "/images/food/rocketboy-logo.webp",
+  // PNG, not WebP, because it carries an alpha channel.
+  logo: "/images/food/rocketboy-logo.png",
   photos: [
     {
       src: "/images/food/rocketboy-pizza-1.webp",
@@ -147,9 +148,9 @@ export default function FoodPage() {
             Food &amp; Drink
           </h1>
           <p className="font-body text-xl md:text-2xl text-paper/70 max-w-2xl">
-            Italian-made pizza from a guest of honour, a sausage sizzle out of
-            our own kitchen, and a cake stall run the way school fetes have
-            always run them.
+            Italian-made pizza and proper coffee from our guest stalls, a
+            sausage sizzle out of our own kitchen, and a cake stall run the way
+            school fetes have always run them.
           </p>
         </div>
       </div>
@@ -158,7 +159,7 @@ export default function FoodPage() {
         {/* Rocket Boy. Given his own section because he is an outside vendor
             with his own stall, not something the P&C kitchen is cooking. */}
         <div className="mb-16">
-          <SectionHeading>Our guest stall</SectionHeading>
+          <SectionHeading>Our guest stalls</SectionHeading>
 
           <div className="bg-bone border-t-4 border-rust shadow-[0_2px_20px_rgba(26,26,26,0.12)] overflow-hidden flex flex-col md:flex-row">
             {/* Both pizzas, stacked down the left. Two photos of the same
@@ -177,18 +178,19 @@ export default function FoodPage() {
             </div>
 
             <div className="md:w-1/2 flex flex-col justify-center p-8 md:p-10">
-              {/* His mark, at his own aspect ratio on the white it was drawn
-                  for. Sized by height so the wordmark stays legible rather
-                  than stretching to whatever the column happens to be. */}
-              <div className="bg-white inline-flex self-start p-4 md:p-5 mb-6 shadow-[0_2px_12px_rgba(26,26,26,0.10)]">
-                <Image
-                  src={ROCKET_BOY.logo}
-                  alt="Rocket Boy, pizza made better"
-                  width={704}
-                  height={284}
-                  className="h-[52px] md:h-[64px] w-auto"
-                />
-              </div>
+              {/* No plate. His mark is an orange wordmark and a green leaf on
+                  flat white, so the white is knocked out and the logo sits
+                  directly on the bone. A white panel here read as pasted on,
+                  and white against bone is too small a step to look like a
+                  decision. Sized by height so the wordmark stays legible
+                  rather than stretching to whatever the column happens to be. */}
+              <Image
+                src={ROCKET_BOY.logo}
+                alt="Rocket Boy, pizza made better"
+                width={704}
+                height={284}
+                className="h-[52px] md:h-[64px] w-auto self-start mb-6"
+              />
 
               <h2 className="font-display text-4xl md:text-5xl text-ink tracking-wide leading-tight mb-4">
                 Rocket Boy
@@ -197,6 +199,57 @@ export default function FoodPage() {
                 Rocket Boy will be spinning out delicious Italian-made pizza,
                 fresh from the oven. Vegetarian and non options both available.
               </p>
+            </div>
+          </div>
+
+          {/* The Little Marionette, built to exactly the same shape as Rocket
+              Boy so the two read as a matched pair of outside stalls. Photos
+              mirrored to the right so the page alternates rather than running
+              two identical layouts down the screen. */}
+          <div className="mt-8 bg-bone border-t-4 border-rust shadow-[0_2px_20px_rgba(26,26,26,0.12)] overflow-hidden flex flex-col md:flex-row">
+            {/* Their blue runs the full column rather than sitting behind the
+                logo as a panel. Unlike Rocket Boy's, this mark cannot be
+                knocked out: the puppet's body is filled with the same blue as
+                the background, so removing it leaves the figure looking
+                half-erased. Bleeding the colour instead makes it deliberate.
+                #B7D5DF is sampled from the file, the same value the sponsor
+                page uses for their plate. */}
+            <div
+              className="md:w-1/2 flex flex-col justify-center p-8 md:p-10 md:order-1"
+              style={{ backgroundColor: "#B7D5DF" }}
+            >
+              <Image
+                src="/images/sponsor-logos/littlem.webp"
+                alt="The Little Marionette"
+                width={2266}
+                height={1238}
+                className="h-[64px] md:h-[84px] w-auto self-start mb-6"
+              />
+
+              <h2 className="font-display text-4xl md:text-5xl text-ink tracking-wide leading-tight mb-4">
+                The Little Marionette
+              </h2>
+              <p className="font-body text-lg text-ink-soft leading-relaxed">
+                The Little Marionette will be serving up delicious fresh coffee,
+                to help recaffeinate parents.
+              </p>
+            </div>
+
+            <div className="md:w-1/2 flex flex-col md:order-2">
+              <Image
+                src="/images/food/coffee-1.webp"
+                alt="Espresso pouring into a Little Marionette cup"
+                width={760}
+                height={570}
+                className="w-full aspect-[4/3] object-cover"
+              />
+              <Image
+                src="/images/food/coffee-2.webp"
+                alt="A coffee with latte art, on a marble table"
+                width={760}
+                height={570}
+                className="w-full aspect-[4/3] object-cover"
+              />
             </div>
           </div>
         </div>
