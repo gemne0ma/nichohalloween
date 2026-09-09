@@ -142,9 +142,16 @@ export default function AuctionPage() {
       {/* Status strip */}
       <div className="bg-bone border-b border-dotted border-mist">
         <div className="max-w-[1200px] mx-auto px-6 md:px-10 py-4">
-          <span className="font-mono text-xs uppercase tracking-[0.2em] text-rust">
+          {/* Goes to the catalogue root rather than any single lot, since this
+              strip is about the auction as a whole. */}
+          <a
+            href={AIR_AUCTIONEER}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-mono text-xs uppercase tracking-[0.2em] text-rust hover:text-rust-deep underline underline-offset-4 decoration-dotted transition-colors"
+          >
             Bidding is open on Air Auctioneer
-          </span>
+          </a>
         </div>
       </div>
 
