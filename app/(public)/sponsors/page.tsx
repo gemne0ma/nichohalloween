@@ -99,16 +99,6 @@ const SPONSORS: Sponsor[] = [
     height: 445,
   },
   {
-    name: "Vision Personal Training",
-    url: "https://www.visionpersonaltraining.com/",
-    tier: "bronze",
-    logo: "/images/sponsor-logos/vision-personal-training.jpeg",
-    width: 447,
-    height: 447,
-    // Perfectly uniform across the border, spread of zero.
-    plateBg: "#EB0029",
-  },
-  {
     name: "The Little Marionette",
     url: "https://thelittlemarionette.com/",
     tier: "bronze",
@@ -147,9 +137,11 @@ const TIER_STYLES: Record<
   bronze: {
     name: "text-[16pt] md:text-[22pt]",
     plate: "h-[120px] md:h-[150px]",
-    // Four bronze sponsors, so two by two rather than three across leaving a
-    // widow on the second row.
-    grid: "grid grid-cols-1 sm:grid-cols-2 gap-8",
+    // Three bronze sponsors since Vision dropped out, so three across rather
+    // than a 2x2 with a lone card on the second row. Same shape as silver
+    // now, which is fine: the tiers are told apart by plate height and name
+    // size, not by how many fit on a row.
+    grid: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8",
     heading: "Bronze Sponsors",
   },
 };
