@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 export const metadata = {
-  title: "Silent Auction . Nicho Halloween Festival",
+  title: "Bresic Whitney's Silent Auction . Nicho Halloween Festival",
 };
 
 // Bidding happens on Air Auctioneer, not here. This page is a showcase so
@@ -117,8 +117,14 @@ export default function AuctionPage() {
             <p className="font-mono text-sm uppercase tracking-[0.3em] text-pumpkin mb-3">
               Bid on something special
             </p>
-            <h1 className="font-display font-bold text-6xl md:text-7xl text-bone mb-4 tracking-tight leading-none">
-              Silent Auction
+            {/* One heading, set on two lines. The sponsor name sits smaller
+                above so "Silent Auction" keeps the display size it had, and
+                the whole thing stays a single h1 for screen readers. */}
+            <h1 className="font-display font-bold text-bone mb-4 tracking-tight leading-none">
+              <span className="block text-3xl md:text-4xl text-paper/80 mb-2">
+                Bresic Whitney&apos;s
+              </span>
+              <span className="block text-6xl md:text-7xl">Silent Auction</span>
             </h1>
             <p className="font-body text-xl md:text-2xl text-paper/70">
               Every year our families and local businesses donate items and
@@ -161,17 +167,59 @@ export default function AuctionPage() {
       </div>
 
       <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-16 md:py-20">
-        <div className="max-w-2xl mb-12">
-          <p className="font-mono text-xs uppercase tracking-[0.3em] text-rust-deep mb-4">
-            What&apos;s up for grabs
-          </p>
-          <h2 className="font-display text-4xl md:text-5xl text-ink mb-6 leading-tight">
-            This year&apos;s lots
-          </h2>
-          <p className="font-body text-lg text-ink-soft">
-            Local businesses have been extraordinarily generous. Have a look at
-            what is on offer, then head to Air Auctioneer to place your bid.
-          </p>
+        {/* Heading left, sponsor right. items-end sits the logo on the same
+            baseline as the last line of the intro copy, so it reads as part of
+            the section rather than dropped on top of it. Stacks on mobile,
+            where there is no room for two columns. */}
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-10 mb-12">
+          <div className="max-w-2xl">
+            <p className="font-mono text-xs uppercase tracking-[0.3em] text-rust-deep mb-4">
+              What&apos;s up for grabs
+            </p>
+            <h2 className="font-display text-4xl md:text-5xl text-ink mb-6 leading-tight">
+              This year&apos;s lots
+            </h2>
+            <p className="font-body text-lg text-ink-soft">
+              Local businesses have been extraordinarily generous. Have a look
+              at what is on offer, then head to Air Auctioneer to place your
+              bid.
+            </p>
+          </div>
+
+          {/* Bresic Whitney sponsor the auction for 2026. They are still
+              listed as gold on /sponsors: this is in addition to that, not
+              instead of it.
+
+              The logo is supplied as a JPEG with white baked in, so it sits on
+              a white plate. Same reasoning as the sponsor wall: the plate
+              matches the logo's own background, otherwise you get a white
+              rectangle inside a cream one.
+
+              object-cover in a 4:1 box crops the empty canvas above and below
+              the wordmark, which only fills about the middle sixth of the
+              square file. object-contain would fit the whitespace instead and
+              the mark would come out roughly 10px tall. If the logo file is
+              ever replaced, re-check this crop. */}
+          <div className="md:shrink-0 md:text-right">
+            <p className="font-mono text-xs uppercase tracking-[0.3em] text-moss mb-3">
+              Proudly sponsored by
+            </p>
+            <a
+              href="https://bresicwhitney.com.au/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Visit the Bresic Whitney website, opens in a new tab"
+              className="inline-block bg-white px-5 py-3 shadow-[0_2px_20px_rgba(184,92,46,0.22)] hover:shadow-[0_8px_34px_rgba(184,92,46,0.45)] transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-rust focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
+            >
+              <Image
+                src="/images/sponsor-logos/bresic-whitney.jpg"
+                alt="Bresic Whitney"
+                width={900}
+                height={900}
+                className="w-[150px] md:w-[180px] aspect-[4/1] object-cover"
+              />
+            </a>
+          </div>
         </div>
 
         {/* Lot grid */}
