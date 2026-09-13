@@ -15,6 +15,11 @@ const AIR_AUCTIONEER =
 // there, this page keeps showing the old version until someone edits it.
 // Check it against the catalogue before the festival.
 //
+// `value` filled in for all 34 lots on 13 September 2026, read off each lot's
+// own page on Air Auctioneer. The catalogue listing does not show values, only
+// the individual lot pages do, which is why they were missing until now. Total
+// across the 34 lots is $10,307.
+//
 // `slug` deep links to that lot's own page on Air Auctioneer, so clicking a
 // card lands on the bidding form for that item rather than the catalogue.
 //
@@ -56,36 +61,36 @@ const LOTS: Lot[] = [
   { title: "$200 voucher", donor: "Walls Pharmacy", image: "walls-pharmacy", value: "$200", slug: "walls-pharmacy-200-voucher" },
 
   // Listed twice on Air Auctioneer, so shown twice here for the same reason.
-  { title: "10 training sessions and 10 recovery sessions", donor: "Combine Air", image: "combine-air", note: "1 of 2", slug: "combine-air-10-training-sessions-10-x-recovery-sessions" },
-  { title: "10 training sessions and 10 recovery sessions", donor: "Combine Air", image: "combine-air", note: "2 of 2", slug: "combine-air-10-x-training-sessions-and-10-x-recovery-sessions" },
+  { title: "10 training sessions and 10 recovery sessions", donor: "Combine Air", image: "combine-air", value: "$350", note: "1 of 2", slug: "combine-air-10-training-sessions-10-x-recovery-sessions" },
+  { title: "10 training sessions and 10 recovery sessions", donor: "Combine Air", image: "combine-air", value: "$350", note: "2 of 2", slug: "combine-air-10-x-training-sessions-and-10-x-recovery-sessions" },
 
-  { title: "Family pass", donor: "Taronga Zoo", image: "taronga-zoo", slug: "taronga-zoo-family-pass" },
+  { title: "Family pass", donor: "Taronga Zoo", image: "taronga-zoo", value: "$158", slug: "taronga-zoo-family-pass" },
   // Their title really does read "2adults" with no space. Do not tidy it.
-  { title: "Family pass, 2 adults and 2 children", donor: "Scenic World", image: "scenic-world", slug: "scenic-world-family-pass-2adults-2-children" },
-  { title: "2 adult vouchers, Afternoon Discovery Cruise", donor: "Sydney Tall Ships", image: "tall-ships", slug: "sydney-tall-ships-2-x-adult-voucher-for-afternoon-discovery-cruise" },
-  { title: "Bathhouse experience", donor: "Nature's Energy", image: "natures-energy", slug: "natures-energy-bathhouse-experience" },
-  { title: "Couples Flauna, float and sauna", donor: "City Cave", image: "city-cave", slug: "city-cave-couples-flauna-float-sauna" },
-  { title: "Unlimited rides pass x 4", donor: "Luna Park", image: "luna-park", slug: "unlimited-rides-pass-x-4" },
-  { title: "2 day passes", donor: "Sydney Action Park, formerly Raging Waters", image: "sydney-action-park", slug: "sydney-action-park-frmly-raging-waters-2x-day-passes" },
-  { title: "Family pass", donor: "Sydney Kings and Sydney Flames", image: "sydney-kings", slug: "family-pass-to-sydney-kings-sydney-flames" },
-  { title: "Family pass", donor: "Sydney Indoor Climbing Centre", image: "climbing-centre", slug: "sydney-indoor-climbing-centre-family-pass" },
-  { title: "Ground tour", donor: "Sydney Cricket Ground", image: "scg-tours", slug: "sydney-cricket-ground-scg-tours" },
-  { title: "3 day holiday camp", donor: "Balmain District Football Club", image: "balmain-fc", slug: "balmain-district-football-club-3-day-holiday-camp" },
-  { title: "Holiday camp, 3 day pass", donor: "Sydney Uni Sports", image: "sydney-uni-sports", slug: "sydney-uni-sports-holiday-camp-3-day-pass" },
+  { title: "Family pass, 2 adults and 2 children", donor: "Scenic World", image: "scenic-world", value: "$224", slug: "scenic-world-family-pass-2adults-2-children" },
+  { title: "Afternoon Discovery Cruise for 2 adults", donor: "Sydney Harbour Tall Ships", image: "tall-ships", value: "$168", slug: "sydney-harbour-tall-ships-afternoon-discovery-cruise-for-2-adults" },
+  { title: "Bathhouse experience", donor: "Nature's Energy", image: "natures-energy", value: "$59", slug: "natures-energy-bathhouse-experience" },
+  { title: "Couples Flauna, float and sauna", donor: "City Cave", image: "city-cave", value: "$169", slug: "city-cave-couples-flauna-float-sauna" },
+  { title: "Unlimited rides pass x 4", donor: "Luna Park", image: "luna-park", value: "$200", slug: "unlimited-rides-pass-x-4" },
+  { title: "2 day passes", donor: "Sydney Action Park, formerly Raging Waters", image: "sydney-action-park", value: "$169", slug: "sydney-action-park-frmly-raging-waters-2x-day-passes" },
+  { title: "Family pass", donor: "Sydney Kings and Sydney Flames", image: "sydney-kings", value: "$165", slug: "family-pass-to-sydney-kings-sydney-flames" },
+  { title: "Family pass", donor: "Sydney Indoor Climbing Centre", image: "climbing-centre", value: "$100", slug: "sydney-indoor-climbing-centre-family-pass" },
+  { title: "Ground tour", donor: "Sydney Cricket Ground", image: "scg-tours", value: "$100", slug: "sydney-cricket-ground-scg-tours" },
+  { title: "3 day holiday camp", donor: "Balmain District Football Club", image: "balmain-fc", value: "$270", slug: "balmain-district-football-club-3-day-holiday-camp" },
+  { title: "Holiday camp, 3 day pass", donor: "Sydney Uni Sports", image: "sydney-uni-sports", value: "$235", slug: "sydney-uni-sports-holiday-camp-3-day-pass" },
   { title: "$100 voucher", donor: "Hyperkarting", image: "hyperkarting", value: "$100", slug: "hyperkarting-100-voucher" },
-  { title: "Holiday art classes", donor: "Paper, Rock, Scissors", image: "paper-rock-scissors", slug: "paper-rock-scissors-holiday-art-classes" },
-  { title: "6 pack of assorted wines", donor: "DRNKS", image: "drnks", slug: "6pk-assorted-wines-from-drnks" },
+  { title: "Holiday art classes", donor: "Paper, Rock, Scissors", image: "paper-rock-scissors", value: "$165", slug: "paper-rock-scissors-holiday-art-classes" },
+  { title: "6 pack of assorted wines", donor: "DRNKS", image: "drnks", value: "$150", slug: "6pk-assorted-wines-from-drnks" },
   // Two separate $100 vouchers, so two cards. This pair was the lot missing
   // from the first pass, which is why the page showed 33 of Air Auctioneer's
   // 34. Each gets its own photo rather than the same one twice.
   { title: "$100 voucher", donor: "Eat at Robs", image: "eat-at-robs-signs", value: "$100", note: "1 of 2", slug: "eat-at-robs-x-100-voucher" },
   { title: "$100 voucher", donor: "Eat at Robs", image: "eat-at-robs-burgers", value: "$100", note: "2 of 2", slug: "eat-at-robs-x-100-voucher-2" },
   { title: "$100 voucher", donor: "Eden Pasticceria Five Dock", image: "eden-pasticceria", value: "$100", slug: "eden-pasticceria-five-dock-100-voucher" },
-  { title: "Healthfoods voucher", donor: "The Source Bulk Foods Balmain", image: "the-source", slug: "the-source-healthfoods-balmain" },
-  { title: "Full body massage and 2 gift bags of scalp care", donor: "Scalp Spa", image: "scalp-spa", slug: "scalp-spa-full-body-massage-2-gift-bags-of-scalp-care" },
-  { title: "Bespoke facial", donor: "Suede Clinic", image: "suede-clinic", slug: "suede-clinic-bespoke-facial" },
-  { title: "Yoga and pilates gift certificate", donor: "Soul Agenda", image: "soul-agenda", slug: "soul-agenda-yoga-pilates-gift-certificate" },
-  { title: "2 luxurious candles and a voucher", donor: "House of SNJ Candles", image: "snj-candles", slug: "house-of-snj-candles-2-luxurious-candles-and-voucher" },
+  { title: "Healthfoods voucher", donor: "The Source Bulk Foods Balmain", image: "the-source", value: "$100", slug: "the-source-healthfoods-balmain" },
+  { title: "Full body massage and 2 gift bags of scalp care", donor: "Scalp Spa", image: "scalp-spa", value: "$200", slug: "scalp-spa-full-body-massage-2-gift-bags-of-scalp-care" },
+  { title: "Bespoke facial", donor: "Suede Clinic", image: "suede-clinic", value: "$250", slug: "suede-clinic-bespoke-facial" },
+  { title: "Yoga and pilates gift certificate", donor: "Soul Agenda", image: "soul-agenda", value: "$250", slug: "soul-agenda-yoga-pilates-gift-certificate" },
+  { title: "2 luxurious candles and a $25 voucher", donor: "House of SNJ Candles", image: "snj-candles", value: "$150", slug: "house-of-snj-candles-2-luxurious-candles-and-25-voucher" },
 ];
 
 function BidButton({ className = "" }: { className?: string }) {
