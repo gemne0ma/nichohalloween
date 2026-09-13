@@ -10,15 +10,19 @@ export const metadata = {
 const AIR_AUCTIONEER =
   "https://airauctioneer.com/nicholson-street-ps-halloween-festival-silent-auction";
 
-// Mirrored by hand from the Air Auctioneer catalogue on 10 September 2026.
+// Mirrored by hand from the Air Auctioneer catalogue on 10 September 2026,
+// then again on 13 September 2026 when a second upload took it from 34 lots
+// to 41.
 // THIS LIST DOES NOT SYNC. If a lot is added, withdrawn or renamed over
 // there, this page keeps showing the old version until someone edits it.
 // Check it against the catalogue before the festival.
 //
-// `value` filled in for all 34 lots on 13 September 2026, read off each lot's
-// own page on Air Auctioneer. The catalogue listing does not show values, only
-// the individual lot pages do, which is why they were missing until now. Total
-// across the 34 lots is $10,307.
+// `value` is read off each lot's own page on Air Auctioneer. The catalogue
+// listing does not show values, only the individual lot pages do. 40 of the 41
+// lots carry one and they total $12,422. Two exceptions, both deliberate:
+// Principal for the Day is listed as "Priceless!" so it has no `value` at all,
+// and Pepperwhites has no value line on Air Auctioneer, so its $100 is the
+// voucher's face value off the lot title.
 //
 // `slug` deep links to that lot's own page on Air Auctioneer, so clicking a
 // card lands on the bidding form for that item rather than the catalogue.
@@ -48,8 +52,14 @@ const LOTS: Lot[] = [
   // in place and browsers kept serving the old cached bytes off the unchanged
   // URL, so the fix looked like it had failed. A new filename is a new URL.
   { title: "Photoshoot", donor: "Verve", image: "verve-photoshoot", value: "$1,200", slug: "verve-photoshoot-value-1200" },
+  { title: "Holiday camp sailing", donor: "Hunters Hill Sailing Club", image: "hunters-hill-sailing", value: "$740", slug: "hunters-hill-sailing-club-holiday-camp-sailing" },
   { title: "Intimates photoshoot", donor: "Verve Intimates", image: "verve-intimates", value: "$695", slug: "verve-intimates-photoshoot-value-695" },
+  // A tall portrait on white, so this one is fitted whole rather than
+  // cropped. See the note in the conversion of the source file.
+  { title: "A4 custom watercolour, commissioned house portrait", donor: "Cindy Schuele", image: "cindy-schuele", value: "$500", slug: "a4-custom-watercolour-commissioned-house-portrait-by-artist-cindy-schuele" },
+  { title: "Pizza oven, starter kit and cover", donor: "Bunnings", image: "pizza-oven", value: "$375", slug: "bunnings-pizza-oven-starter-kit-and-cover" },
   { title: "$350 voucher", donor: "Dry Dock Hotel", image: "dry-dock", value: "$350", slug: "dry-dock-hotel-350-voucher" },
+  { title: "A full term of lessons or a week of holiday camp", donor: "State Soccer", image: "state-soccer", value: "$300", slug: "state-soccer-holiday-camp-either-a-full-term-of-lessons-or-a-full-week-school-holiday-camp" },
 
   // Four separate vouchers, four separate lots, four separate bids. $1,000 of
   // East Village Hotel in total. Each card links to its own lot.
@@ -86,11 +96,19 @@ const LOTS: Lot[] = [
   { title: "$100 voucher", donor: "Eat at Robs", image: "eat-at-robs-signs", value: "$100", note: "1 of 2", slug: "eat-at-robs-x-100-voucher" },
   { title: "$100 voucher", donor: "Eat at Robs", image: "eat-at-robs-burgers", value: "$100", note: "2 of 2", slug: "eat-at-robs-x-100-voucher-2" },
   { title: "$100 voucher", donor: "Eden Pasticceria Five Dock", image: "eden-pasticceria", value: "$100", slug: "eden-pasticceria-five-dock-100-voucher" },
+  { title: "$100 voucher", donor: "Cici Italian Wine Bar", image: "cici", value: "$100", slug: "cici-italian-wine-bar-100-voucher" },
+  // Air Auctioneer has no value line for this one. The $100 is the
+  // voucher's face value, taken from the lot title, not invented.
+  { title: "$100 voucher", donor: "Pepperwhites Balmain", image: "pepperwhites", value: "$100", slug: "pepperwhites-balmain-100-voucher" },
   { title: "Healthfoods voucher", donor: "The Source Bulk Foods Balmain", image: "the-source", value: "$100", slug: "the-source-healthfoods-balmain" },
   { title: "Full body massage and 2 gift bags of scalp care", donor: "Scalp Spa", image: "scalp-spa", value: "$200", slug: "scalp-spa-full-body-massage-2-gift-bags-of-scalp-care" },
   { title: "Bespoke facial", donor: "Suede Clinic", image: "suede-clinic", value: "$250", slug: "suede-clinic-bespoke-facial" },
   { title: "Yoga and pilates gift certificate", donor: "Soul Agenda", image: "soul-agenda", value: "$250", slug: "soul-agenda-yoga-pilates-gift-certificate" },
   { title: "2 luxurious candles and a $25 voucher", donor: "House of SNJ Candles", image: "snj-candles", value: "$150", slug: "house-of-snj-candles-2-luxurious-candles-and-25-voucher" },
+  // No `value`. Air Auctioneer reads "Value: Priceless!", which is not a
+  // number, so the card shows no valuation badge rather than the words
+  // "Valued at Priceless".
+  { title: "Principal for the day", donor: "Nicholson Street Public School", image: "principal-for-the-day", slug: "principal-for-the-day" },
 ];
 
 function BidButton({ className = "" }: { className?: string }) {
