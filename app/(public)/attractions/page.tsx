@@ -33,7 +33,7 @@ const ATTRACTIONS: Attraction[] = [
     desc: "Cameron the Kiddiepillar is a popular giant, colourful, caterpillar-shaped inflatable obstacle course and tunnel designed for toddlers and young children. Kids enter through his open mouth, crawl past pop-up obstacles and small ramps inside his belly, and exit down a slide at his tail. He is built with mesh side windows so parents can watch their children play from start to finish.",
     meta: "5 tokens · ages 3 to 5",
     gradient: "from-plum to-forest-deep",
-    image: "/images/attractions/cameron.webp",
+    image: "/images/attractions/kiddiepillar.webp",
   },
   {
     num: "No. 04",
@@ -41,9 +41,7 @@ const ATTRACTIONS: Attraction[] = [
     desc: "The Firetruck jumping castle is a versatile inflatable with a bouncing area, climbing wall, and slide that kids will have a fantastic time enjoying!",
     meta: "5 tokens · all ages",
     gradient: "from-rust to-plum",
-    image: "/images/attractions/firetruck-1.webp",
-    // Opening the card shows both firetruck photos.
-    extraImages: ["/images/attractions/firetruck-2.webp"],
+    image: "/images/attractions/firetruck-castle.webp",
   },
   {
     num: "No. 05",
@@ -51,7 +49,7 @@ const ATTRACTIONS: Attraction[] = [
     desc: "Our carnival inflatable obstacle course is a large, themed bouncing structure featuring climbing walls, dual slides, tunnels, and pop-up barriers.",
     meta: "5 tokens · ages 5+",
     gradient: "from-forest to-plum",
-    image: "/images/attractions/carnival.webp",
+    image: "/images/attractions/carnival-obstacle-course.webp",
   },
   {
     num: "No. 06",
@@ -83,7 +81,7 @@ const ATTRACTIONS: Attraction[] = [
     desc: "The under-5s zone. Gentle games, face painting, craft tables and zero scares. A safe haven for the littlest festival-goers.",
     meta: "2 tokens · under 5s",
     gradient: "from-pumpkin to-rust",
-    image: "/potions2.jpg",
+    image: "/images/attractions/mini-monsters.webp",
   },
   {
     num: "No. 10",
