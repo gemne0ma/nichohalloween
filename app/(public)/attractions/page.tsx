@@ -49,7 +49,11 @@ const ATTRACTIONS: Attraction[] = [
     desc: "Our carnival inflatable obstacle course is a large, themed bouncing structure featuring climbing walls, dual slides, tunnels, and pop-up barriers.",
     meta: "5 tokens · ages 5+",
     gradient: "from-forest to-plum",
-    image: "/images/attractions/carnival-obstacle-course.webp",
+    // Reverted to the older photo. The supplied replacement had garbled
+    // sponsor text baked into the tent valance, legible at card size.
+    // The new file is kept at carnival-obstacle-course.webp if a clean
+    // version turns up.
+    image: "/images/attractions/carnival.webp",
   },
   {
     num: "No. 06",
