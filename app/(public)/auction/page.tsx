@@ -12,14 +12,14 @@ const AIR_AUCTIONEER =
 
 // Mirrored by hand from the Air Auctioneer catalogue on 10 September 2026,
 // then again on 13 September 2026 when a second upload took it from 34 lots
-// to 41.
+// to 41, and once more on 15 September 2026 for the District lamp, 42.
 // THIS LIST DOES NOT SYNC. If a lot is added, withdrawn or renamed over
 // there, this page keeps showing the old version until someone edits it.
 // Check it against the catalogue before the festival.
 //
 // `value` is read off each lot's own page on Air Auctioneer. The catalogue
-// listing does not show values, only the individual lot pages do. 40 of the 41
-// lots carry one and they total $12,422. Two exceptions, both deliberate:
+// listing does not show values, only the individual lot pages do. 41 of the 42
+// lots carry one and they total $12,641. Two exceptions, both deliberate:
 // Principal for the Day is listed as "Priceless!" so it has no `value` at all,
 // and Pepperwhites has no value line on Air Auctioneer, so its $100 is the
 // voucher's face value off the lot title.
@@ -67,6 +67,13 @@ const LOTS: Lot[] = [
   { title: "$250 voucher", donor: "East Village Hotel", image: "evh", value: "$250", note: "2 of 4", slug: "east-village-hotel-evh-250-voucher-2" },
   { title: "$250 voucher", donor: "East Village Hotel", image: "evh", value: "$250", note: "3 of 4", slug: "east-village-hotel-evh-250-voucher-3" },
   { title: "$250 voucher", donor: "East Village Hotel", image: "evh", value: "$250", note: "4 of 4", slug: "east-village-hotel-evh-250-voucher-4" },
+
+  // Supplied as a square marketing tile rather than a photo, so it is
+  // fitted whole onto a bone background rather than cropped: a 4:3 cover
+  // crop cut through the DISTRICT wordmark at the top and the feature
+  // icons at the bottom. bone is the card background, so the bars do not
+  // read as letterboxing.
+  { title: "Karl-Johan portable table lamp", donor: "District", image: "district-lamp", value: "$219", slug: "karl-johan-portable-table-lamp-valued-at-almost-250" },
 
   { title: "$200 voucher", donor: "Walls Pharmacy", image: "walls-pharmacy", value: "$200", slug: "walls-pharmacy-200-voucher" },
 
