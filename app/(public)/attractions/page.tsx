@@ -38,6 +38,16 @@ const ATTRACTIONS: Attraction[] = [
   },
   {
     num: "No. 04",
+    title: "Live Music with Casey Burgess",
+    desc: "Local Balmain legend Casey Burgess will be joining us to belt out tunes that will get the whole family on their feet.",
+    // No token price: watching the stage is not a per-turn attraction like
+    // the rest. Says nothing about cost rather than claiming it is free.
+    meta: "Live music · all ages",
+    gradient: "from-ink to-plum",
+    image: "/images/attractions/casey-burgess.webp",
+  },
+  {
+    num: "No. 05",
     title: "Little Shop of Horrors",
     desc: "A bewitching store filled with everything your heart desires, plushies, lanyards, hand held games, hippers and more. Tokens and eftpos accepted here!",
     meta: "Various · all ages",
@@ -45,7 +55,7 @@ const ATTRACTIONS: Attraction[] = [
     image: "/LSH.jpg",
   },
   {
-    num: "No. 05",
+    num: "No. 06",
     title: "Dunk Tank",
     desc: "Three balls, one target, and someone you know sitting above a tank of very cold water. Take your best shot and send them under.",
     // TOKEN PRICE NOT SET. Placeholder until Gemma confirms it.
@@ -54,7 +64,7 @@ const ATTRACTIONS: Attraction[] = [
     image: "/images/attractions/dunk-tank.webp",
   },
   {
-    num: "No. 06",
+    num: "No. 07",
     title: "Potion Making",
     desc: "Fizzing brew and spooky spells galore at our Witchcraft Workshop. Take home some potions to cast some spells, and make your wishes come true!",
     meta: "3 tokens · all ages",
@@ -62,7 +72,7 @@ const ATTRACTIONS: Attraction[] = [
     image: "/potions.jpg",
   },
   {
-    num: "No. 07",
+    num: "No. 08",
     title: "The Firetruck Jumping Castle",
     desc: "The Firetruck jumping castle is a versatile inflatable with a bouncing area, climbing wall, and slide that kids will have a fantastic time enjoying!",
     meta: "5 tokens · all ages",
@@ -70,7 +80,7 @@ const ATTRACTIONS: Attraction[] = [
     image: "/images/attractions/firetruck-castle.webp",
   },
   {
-    num: "No. 08",
+    num: "No. 09",
     title: "Mini Monsters",
     desc: "The under-5s zone. Gentle games, face painting, craft tables and zero scares. A safe haven for the littlest festival-goers.",
     meta: "2 tokens · under 5s",
@@ -78,7 +88,7 @@ const ATTRACTIONS: Attraction[] = [
     image: "/images/attractions/mini-monsters.webp",
   },
   {
-    num: "No. 09",
+    num: "No. 10",
     title: "Fortune Teller",
     desc: "Lottery win on the cards? A surprise vacation?! Come and try your hand at having your fortune read by our mystic tarot reader.",
     // TOKEN PRICE NOT SET. Placeholder until Gemma confirms it.
@@ -87,7 +97,7 @@ const ATTRACTIONS: Attraction[] = [
     image: "/images/attractions/fortune-teller.webp",
   },
   {
-    num: "No. 10",
+    num: "No. 11",
     title: "Coffee and Snacks galore!",
     desc: "Adults, we gotchu. We wouldn't dream of not caffinating you as your little ones beg you for another turn on the slide! Not only will you get delicious  Little Marionette coffee, but we have snacks and food galore. You won't be going home hungry, that's for sure.",
     meta: "2 tokens · all ages",
@@ -95,7 +105,7 @@ const ATTRACTIONS: Attraction[] = [
     image: "/edcoffee.jpg",
   },
   {
-    num: "No. 11",
+    num: "No. 12",
     title: "Carnival Obstacle Course",
     desc: "Our carnival inflatable obstacle course is a large, themed bouncing structure featuring climbing walls, dual slides, tunnels, and pop-up barriers.",
     meta: "5 tokens · ages 5+",
@@ -107,7 +117,7 @@ const ATTRACTIONS: Attraction[] = [
     image: "/images/attractions/carnival.webp",
   },
   {
-    num: "No. 12",
+    num: "No. 13",
     title: "Henna",
     desc: "Come and get henna on your hands. Our henna artist will draw you something beautiful, and it fades on its own after a week or so.",
     // TOKEN PRICE NOT SET. Placeholder until Gemma confirms it.
@@ -116,7 +126,7 @@ const ATTRACTIONS: Attraction[] = [
     image: "/images/attractions/henna.webp",
   },
   {
-    num: "No. 13",
+    num: "No. 14",
     title: "The Pumpkin Patch",
     desc: "",
     meta: "5 tokens per bag · all ages",
@@ -124,7 +134,7 @@ const ATTRACTIONS: Attraction[] = [
     image: "/pump2.jpg",
   },
   {
-    num: "No. 14",
+    num: "No. 15",
     title: "Willy Wonka's Candy Wonderland",
     desc: "A candy paradise. Sweets, chocolates and lollies as far as the eye can see.",
     meta: "Various · all ages",
@@ -132,7 +142,7 @@ const ATTRACTIONS: Attraction[] = [
     image: "/candy.jpg",
   },
   {
-    num: "No. 15",
+    num: "No. 16",
     title: "Tombolas",
     desc: "A festival favourite! buy a raffle, get the corresponding tombola. Luck of the draw!",
     meta: "2 tokens · all ages",
