@@ -81,11 +81,12 @@ const ATTRACTIONS: Attraction[] = [
   },
   {
     num: "No. 09",
-    title: "Mini Monsters",
-    desc: "The under-5s zone. Gentle games, face painting, craft tables and zero scares. A safe haven for the littlest festival-goers.",
-    meta: "2 tokens · under 5s",
-    gradient: "from-pumpkin to-rust",
-    image: "/images/attractions/mini-monsters.webp",
+    title: "The Box Maze",
+    desc: "A classroom turned into a cardboard labyrinth, lit low and hung with cobwebs. Find your way through to the other side without getting turned around.",
+    // TOKEN PRICE NOT SET. Placeholder until Gemma confirms it.
+    meta: "Tokens TBC · all ages",
+    gradient: "from-rust-deep to-ink",
+    image: "/images/attractions/box-maze.webp",
   },
   {
     num: "No. 10",
@@ -98,11 +99,11 @@ const ATTRACTIONS: Attraction[] = [
   },
   {
     num: "No. 11",
-    title: "Coffee and Snacks galore!",
-    desc: "Adults, we gotchu. We wouldn't dream of not caffinating you as your little ones beg you for another turn on the slide! Not only will you get delicious  Little Marionette coffee, but we have snacks and food galore. You won't be going home hungry, that's for sure.",
-    meta: "2 tokens · all ages",
-    gradient: "from-pumpkin to-rust-deep",
-    image: "/edcoffee.jpg",
+    title: "Mini Monsters",
+    desc: "The under-5s zone. Gentle games, face painting, craft tables and zero scares. A safe haven for the littlest festival-goers.",
+    meta: "2 tokens · under 5s",
+    gradient: "from-pumpkin to-rust",
+    image: "/images/attractions/mini-monsters.webp",
   },
   {
     num: "No. 12",
@@ -118,6 +119,14 @@ const ATTRACTIONS: Attraction[] = [
   },
   {
     num: "No. 13",
+    title: "Coffee and Snacks galore!",
+    desc: "Adults, we gotchu. We wouldn't dream of not caffinating you as your little ones beg you for another turn on the slide! Not only will you get delicious  Little Marionette coffee, but we have snacks and food galore. You won't be going home hungry, that's for sure.",
+    meta: "2 tokens · all ages",
+    gradient: "from-pumpkin to-rust-deep",
+    image: "/edcoffee.jpg",
+  },
+  {
+    num: "No. 14",
     title: "Henna",
     desc: "Come and get henna on your hands. Our henna artist will draw you something beautiful, and it fades on its own after a week or so.",
     // TOKEN PRICE NOT SET. Placeholder until Gemma confirms it.
@@ -126,7 +135,7 @@ const ATTRACTIONS: Attraction[] = [
     image: "/images/attractions/henna.webp",
   },
   {
-    num: "No. 14",
+    num: "No. 15",
     title: "The Pumpkin Patch",
     desc: "",
     meta: "5 tokens per bag · all ages",
@@ -134,7 +143,18 @@ const ATTRACTIONS: Attraction[] = [
     image: "/pump2.jpg",
   },
   {
-    num: "No. 15",
+    num: "No. 16",
+    title: "The Haunted House",
+    desc: "Gentle scares only, nothing that will keep anyone up at night. Step inside if you dare and see who or what is waiting for you in the dark.",
+    // Ages 5+ is not a guess. It is the line the FAQ has given for years:
+    // "The Haunted House has gentle scares suitable for ages 5+."
+    // TOKEN PRICE NOT SET. Placeholder until Gemma confirms it.
+    meta: "Tokens TBC · ages 5+",
+    gradient: "from-ink to-forest-deep",
+    image: "/images/attractions/haunted-house.webp",
+  },
+  {
+    num: "No. 17",
     title: "Willy Wonka's Candy Wonderland",
     desc: "A candy paradise. Sweets, chocolates and lollies as far as the eye can see.",
     meta: "Various · all ages",
@@ -142,7 +162,7 @@ const ATTRACTIONS: Attraction[] = [
     image: "/candy.jpg",
   },
   {
-    num: "No. 16",
+    num: "No. 18",
     title: "Tombolas",
     desc: "A festival favourite! buy a raffle, get the corresponding tombola. Luck of the draw!",
     meta: "2 tokens · all ages",
