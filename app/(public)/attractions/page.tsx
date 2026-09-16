@@ -119,6 +119,15 @@ const ATTRACTIONS: Attraction[] = [
   },
   {
     num: "No. 13",
+    title: "KPop Demon Hunters Disco",
+    desc: "Join us as Rumi entertains the room with all your favourite hits from the movie and dance floor favourites - there will be glow in the dark balloons, a light up floor and a guaranteed good time!",
+    // 5 tokens buys entry to the disco, not a single turn. Confirmed by Gemma.
+    meta: "5 tokens · all ages",
+    gradient: "from-plum to-pumpkin",
+    image: "/images/attractions/disco.webp",
+  },
+  {
+    num: "No. 14",
     title: "Coffee and Snacks galore!",
     desc: "Adults, we gotchu. We wouldn't dream of not caffinating you as your little ones beg you for another turn on the slide! Not only will you get delicious  Little Marionette coffee, but we have snacks and food galore. You won't be going home hungry, that's for sure.",
     meta: "2 tokens · all ages",
@@ -126,7 +135,7 @@ const ATTRACTIONS: Attraction[] = [
     image: "/edcoffee.jpg",
   },
   {
-    num: "No. 14",
+    num: "No. 15",
     title: "Henna",
     desc: "Come and get henna on your hands. Our henna artist will draw you something beautiful, and it fades on its own after a week or so.",
     // TOKEN PRICE NOT SET. Placeholder until Gemma confirms it.
@@ -135,7 +144,7 @@ const ATTRACTIONS: Attraction[] = [
     image: "/images/attractions/henna.webp",
   },
   {
-    num: "No. 15",
+    num: "No. 16",
     title: "The Pumpkin Patch",
     desc: "",
     meta: "5 tokens per bag · all ages",
@@ -143,7 +152,7 @@ const ATTRACTIONS: Attraction[] = [
     image: "/pump2.jpg",
   },
   {
-    num: "No. 16",
+    num: "No. 17",
     title: "The Haunted House",
     desc: "Step inside if you dare and see who or what is waiting for you in the dark.",
     // Ages 5+ is not a guess. It is the line the FAQ has given for years:
@@ -154,7 +163,7 @@ const ATTRACTIONS: Attraction[] = [
     image: "/images/attractions/haunted-house.webp",
   },
   {
-    num: "No. 17",
+    num: "No. 18",
     title: "Willy Wonka's Candy Wonderland",
     desc: "A candy paradise. Sweets, chocolates and lollies as far as the eye can see.",
     meta: "Various · all ages",
@@ -162,7 +171,7 @@ const ATTRACTIONS: Attraction[] = [
     image: "/candy.jpg",
   },
   {
-    num: "No. 18",
+    num: "No. 19",
     title: "Tombolas",
     desc: "A festival favourite! buy a raffle, get the corresponding tombola. Luck of the draw!",
     meta: "2 tokens · all ages",
