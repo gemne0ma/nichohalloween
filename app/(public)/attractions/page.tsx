@@ -145,7 +145,7 @@ const ATTRACTIONS: Attraction[] = [
   {
     num: "No. 16",
     title: "The Haunted House",
-    desc: "Gentle scares only, nothing that will keep anyone up at night. Step inside if you dare and see who or what is waiting for you in the dark.",
+    desc: "Step inside if you dare and see who or what is waiting for you in the dark.",
     // Ages 5+ is not a guess. It is the line the FAQ has given for years:
     // "The Haunted House has gentle scares suitable for ages 5+."
     // TOKEN PRICE NOT SET. Placeholder until Gemma confirms it.
