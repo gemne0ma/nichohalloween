@@ -105,7 +105,7 @@ export default function TokensPage() {
 
       <div className="relative max-w-6xl mx-auto px-6 py-16 md:py-24">
         {/* Intro: polaroid left, copy right */}
-        <div className="flex flex-col md:flex-row gap-12 md:gap-16 items-center mb-14 md:mb-16">
+        <div className="flex flex-col md:flex-row gap-12 md:gap-16 items-start mb-14 md:mb-16">
           <div className="md:w-2/5 flex-shrink-0 flex justify-center">
             <div className="-rotate-2 bg-bone p-4 pb-14 shadow-[3px_5px_16px_rgba(26,26,26,0.18),1px_2px_4px_rgba(26,26,26,0.1)] max-w-[420px]">
               <img src="/payup.webp" alt="Ghost in sunglasses" className="w-full" />
@@ -116,6 +116,34 @@ export default function TokensPage() {
           </div>
 
           <div className="md:w-3/5">
+            {/* Roving sellers note. Sits at the top of the right column rather
+                than in its own band above, so its left edge lines up with the
+                h1 and its top line up with the polaroid: one row, not two.
+
+                The curved box and its glow are the same idiom as the bundle
+                cards below, rounded-3xl with a pumpkin #D87A3F glow, so this
+                reads as part of the page rather than a new component. Text on
+                the left, ghost on the right, so he sits in the corner and the
+                box reads as what he is saying. Stacks on mobile. */}
+            <div className="flex flex-col-reverse sm:flex-row items-center sm:items-stretch gap-5 mb-10 md:mb-12">
+              <div className="bg-bone rounded-3xl p-5 md:p-6 shadow-[0_2px_18px_rgba(216,122,63,0.50),0_8px_55px_rgba(216,122,63,0.60)] flex items-center">
+                <p className="font-body font-bold text-base text-ink leading-relaxed">
+                  No one wants to line up for their tokens for too long! This
+                  year we are increasing the size of the collection booth and
+                  there will be roving festival attendants who will be able to
+                  sell you tokens if you flag them down!
+                </p>
+              </div>
+
+              <Image
+                src="/images/tokens/token-ghost.webp"
+                alt="A ghost in a witch hat carrying a Get your tokens here sign and a card reader"
+                width={520}
+                height={624}
+                className="w-[180px] sm:w-[200px] h-auto self-end sm:self-center flex-shrink-0 rounded-2xl"
+              />
+            </div>
+
             <p className="font-mono text-base uppercase tracking-widest text-rust-deep mb-2">
               Get your tokens
             </p>
