@@ -8,6 +8,9 @@ type Attraction = {
   gradient: string;
   image?: string;
   extraImages?: string[];
+  // A thank you to whoever donated the materials for this attraction, shown
+  // under the blurb with their logo bottom right. Only the box maze has one.
+  credit?: { text: string; logo: string; logoAlt: string };
 };
 
 const ATTRACTIONS: Attraction[] = [
@@ -83,6 +86,11 @@ const ATTRACTIONS: Attraction[] = [
     num: "No. 09",
     title: "The Box Maze",
     desc: "A classroom turned into a cardboard labyrinth, lit low and hung with cobwebs. Find your way through to the other side without getting turned around.",
+    credit: {
+      text: "Huge thank you to Visy for donating the cardboard for our box maze!",
+      logo: "/images/attractions/visy.webp",
+      logoAlt: "Visy",
+    },
     // TOKEN PRICE NOT SET. Placeholder until Gemma confirms it.
     meta: "Tokens TBC · all ages",
     gradient: "from-rust-deep to-ink",
@@ -267,6 +275,26 @@ export default function AttractionsPage() {
                 <p className="font-body text-base text-ink-soft leading-relaxed">
                   {attraction.desc}
                 </p>
+
+                {/* Donor credit. The logo arrives on its own solid blue, so it
+                    sits as a block rather than on a plate: there is nothing to
+                    match it to on a bone card. Bottom right, 50px tall, which
+                    works out 121px wide at its natural ratio. shrink-0 so the
+                    thank you wraps instead of squashing the logo. */}
+                {attraction.credit && (
+                  <div className="mt-4 flex items-end justify-between gap-4">
+                    <p className="font-body text-sm text-moss leading-snug">
+                      {attraction.credit.text}
+                    </p>
+                    <img
+                      src={attraction.credit.logo}
+                      alt={attraction.credit.logoAlt}
+                      width={363}
+                      height={150}
+                      className="h-[50px] w-auto shrink-0"
+                    />
+                  </div>
+                )}
 
                 {/* Meta line */}
                 <div className="mt-4 pt-3 border-t border-dotted border-mist">
