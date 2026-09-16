@@ -61,13 +61,6 @@ const LOTS: Lot[] = [
   { title: "$350 voucher", donor: "Dry Dock Hotel", image: "dry-dock", value: "$350", slug: "dry-dock-hotel-350-voucher" },
   { title: "A full term of lessons or a week of holiday camp", donor: "State Soccer", image: "state-soccer", value: "$300", slug: "state-soccer-holiday-camp-either-a-full-term-of-lessons-or-a-full-week-school-holiday-camp" },
 
-  // Four separate vouchers, four separate lots, four separate bids. $1,000 of
-  // East Village Hotel in total. Each card links to its own lot.
-  { title: "$250 voucher", donor: "East Village Hotel", image: "evh", value: "$250", note: "1 of 4", slug: "east-village-hotel-evh-250-voucher" },
-  { title: "$250 voucher", donor: "East Village Hotel", image: "evh", value: "$250", note: "2 of 4", slug: "east-village-hotel-evh-250-voucher-2" },
-  { title: "$250 voucher", donor: "East Village Hotel", image: "evh", value: "$250", note: "3 of 4", slug: "east-village-hotel-evh-250-voucher-3" },
-  { title: "$250 voucher", donor: "East Village Hotel", image: "evh", value: "$250", note: "4 of 4", slug: "east-village-hotel-evh-250-voucher-4" },
-
   // Supplied as a square marketing tile rather than a photo, so it is
   // fitted whole onto a bone background rather than cropped: a 4:3 cover
   // crop cut through the DISTRICT wordmark at the top and the feature
@@ -92,6 +85,16 @@ const LOTS: Lot[] = [
   { title: "Family pass", donor: "Sydney Kings and Sydney Flames", image: "sydney-kings", value: "$165", slug: "family-pass-to-sydney-kings-sydney-flames" },
   { title: "Family pass", donor: "Sydney Indoor Climbing Centre", image: "climbing-centre", value: "$100", slug: "sydney-indoor-climbing-centre-family-pass" },
   { title: "Ground tour", donor: "Sydney Cricket Ground", image: "scg-tours", value: "$100", slug: "sydney-cricket-ground-scg-tours" },
+
+  // Four separate vouchers, four separate lots, four separate bids. $1,000 of
+  // East Village Hotel in total. Each card links to its own lot.
+  //
+  // Split into two pairs, here and further down, rather than four in a row.
+  // Gemma's call: four identical cards together read as one lot repeated.
+  // The "of 4" notes matter more now they are apart, so keep them.
+  { title: "$250 voucher", donor: "East Village Hotel", image: "evh", value: "$250", note: "1 of 4", slug: "east-village-hotel-evh-250-voucher" },
+  { title: "$250 voucher", donor: "East Village Hotel", image: "evh", value: "$250", note: "2 of 4", slug: "east-village-hotel-evh-250-voucher-2" },
+
   { title: "3 day holiday camp", donor: "Balmain District Football Club", image: "balmain-fc", value: "$270", slug: "balmain-district-football-club-3-day-holiday-camp" },
   { title: "Holiday camp, 3 day pass", donor: "Sydney Uni Sports", image: "sydney-uni-sports", value: "$235", slug: "sydney-uni-sports-holiday-camp-3-day-pass" },
   { title: "$100 voucher", donor: "Hyperkarting", image: "hyperkarting", value: "$100", slug: "hyperkarting-100-voucher" },
@@ -107,6 +110,11 @@ const LOTS: Lot[] = [
   // Air Auctioneer has no value line for this one. The $100 is the
   // voucher's face value, taken from the lot title, not invented.
   { title: "$100 voucher", donor: "Pepperwhites Balmain", image: "pepperwhites", value: "$100", slug: "pepperwhites-balmain-100-voucher" },
+
+  // The other two East Village Hotel vouchers. See the note on the first pair.
+  { title: "$250 voucher", donor: "East Village Hotel", image: "evh", value: "$250", note: "3 of 4", slug: "east-village-hotel-evh-250-voucher-3" },
+  { title: "$250 voucher", donor: "East Village Hotel", image: "evh", value: "$250", note: "4 of 4", slug: "east-village-hotel-evh-250-voucher-4" },
+
   { title: "Healthfoods voucher", donor: "The Source Bulk Foods Balmain", image: "the-source", value: "$100", slug: "the-source-healthfoods-balmain" },
   { title: "Full body massage and 2 gift bags of scalp care", donor: "Scalp Spa", image: "scalp-spa", value: "$200", slug: "scalp-spa-full-body-massage-2-gift-bags-of-scalp-care" },
   { title: "Bespoke facial", donor: "Suede Clinic", image: "suede-clinic", value: "$250", slug: "suede-clinic-bespoke-facial" },
