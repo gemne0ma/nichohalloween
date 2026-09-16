@@ -278,9 +278,10 @@ export default function AttractionsPage() {
 
                 {/* Donor credit. The logo arrives on its own solid blue, so it
                     sits as a block rather than on a plate: there is nothing to
-                    match it to on a bone card. Bottom right, 50px tall, which
-                    works out 121px wide at its natural ratio. shrink-0 so the
-                    thank you wraps instead of squashing the logo. */}
+                    match it to on a bone card. Bottom right, 38px tall, which
+                    works out 92px wide at its natural ratio. That is 50px less
+                    25%, rounded to a whole pixel to avoid a half pixel edge.
+                    shrink-0 so the thank you wraps instead of squashing it. */}
                 {attraction.credit && (
                   <div className="mt-4 flex items-end justify-between gap-4">
                     <p className="font-body text-sm text-moss leading-snug">
@@ -291,7 +292,7 @@ export default function AttractionsPage() {
                       alt={attraction.credit.logoAlt}
                       width={363}
                       height={150}
-                      className="h-[50px] w-auto shrink-0"
+                      className="h-[38px] w-auto shrink-0"
                     />
                   </div>
                 )}
