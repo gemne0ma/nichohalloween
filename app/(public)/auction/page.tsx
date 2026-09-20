@@ -47,6 +47,12 @@ type Lot = {
 };
 
 const LOTS: Lot[] = [
+  // Supplied as a square marketing tile with the wordmark across the top and
+  // the partner logo row along the bottom, so it is fitted whole rather than
+  // cropped: a 4:3 cover crop cut both off. Same reasoning as the District
+  // lamp below. The other three tiles in this batch are handled the same way.
+  { title: "Full day AI workshop for a sole trader or small business", donor: "Neoma", image: "neoma-ai-workshop", value: "$6,000", slug: "neoma-how-to-use-ai-workshop-6000-value" },
+
   { title: "2 hour harbour cruise on Iluka", donor: "Iluka", image: "iluka-cruise", value: "$2,480", slug: "2-hour-harbour-cruise-on-iluka" },
   // Filename changed from verve-portraits on purpose. The crop was corrected
   // in place and browsers kept serving the old cached bytes off the unchanged
@@ -57,6 +63,14 @@ const LOTS: Lot[] = [
   // A tall portrait on white, so this one is fitted whole rather than
   // cropped. See the note in the conversion of the source file.
   { title: "A4 custom watercolour, commissioned house portrait", donor: "Cindy Schuele", image: "cindy-schuele", value: "$500", slug: "a4-custom-watercolour-commissioned-house-portrait-by-artist-cindy-schuele" },
+  // Air Auctioneer's value field reads $410 while the lot title rounds it to
+  // $400. The field is the number they entered, so it is the one shown, same
+  // as the District lamp where the title says "almost $250" and the field
+  // says $219. Fitted whole: the headline and the "kindly donated by Balmain
+  // Kidstuff" credit sit at the very top and bottom of the tile.
+  { title: "Older kids toy bundle", donor: "Kidstuff Balmain", image: "kidstuff-older", value: "$410", slug: "kidstuff-older-kids-toy-bundle-400-value" },
+  { title: "Wearable acupressure wristbands", donor: "Lükii", image: "lukii-bands", value: "$400", slug: "lukii-acupunture-bands-valued-at-400" },
+
   { title: "Pizza oven, starter kit and cover", donor: "Bunnings", image: "pizza-oven", value: "$375", slug: "bunnings-pizza-oven-starter-kit-and-cover" },
   { title: "$350 voucher", donor: "Dry Dock Hotel", image: "dry-dock", value: "$350", slug: "dry-dock-hotel-350-voucher" },
   { title: "A full term of lessons or a week of holiday camp", donor: "State Soccer", image: "state-soccer", value: "$300", slug: "state-soccer-holiday-camp-either-a-full-term-of-lessons-or-a-full-week-school-holiday-camp" },
@@ -68,7 +82,13 @@ const LOTS: Lot[] = [
   // read as letterboxing.
   { title: "Karl-Johan portable table lamp", donor: "District", image: "district-lamp", value: "$219", slug: "karl-johan-portable-table-lamp-valued-at-almost-250" },
 
+  // Air Auctioneer has no value field on this one, unlike its older-kids
+  // sibling. The $200 comes from the lot title and the lot description, which
+  // both read $200, not from anywhere else.
+  { title: "Younger kids toy bundle", donor: "Kidstuff Balmain", image: "kidstuff-younger", value: "$200", slug: "kidstuff-younger-kids-bundle-200-value" },
+
   { title: "$200 voucher", donor: "Walls Pharmacy", image: "walls-pharmacy", value: "$200", slug: "walls-pharmacy-200-voucher" },
+  { title: "$150 voucher", donor: "Bits of Australia", image: "bits-of-australia", value: "$150", slug: "bits-of-australia-150-voucher" },
 
   // Listed twice on Air Auctioneer, so shown twice here for the same reason.
   { title: "10 training sessions and 10 recovery sessions", donor: "Combine Air", image: "combine-air", value: "$350", note: "1 of 2", slug: "combine-air-10-training-sessions-10-x-recovery-sessions" },
@@ -80,6 +100,16 @@ const LOTS: Lot[] = [
   { title: "Afternoon Discovery Cruise for 2 adults", donor: "Sydney Harbour Tall Ships", image: "tall-ships", value: "$168", slug: "sydney-harbour-tall-ships-afternoon-discovery-cruise-for-2-adults" },
   { title: "Bathhouse experience", donor: "Nature's Energy", image: "natures-energy", value: "$59", slug: "natures-energy-bathhouse-experience" },
   { title: "Couples Flauna, float and sauna", donor: "City Cave", image: "city-cave", value: "$169", slug: "city-cave-couples-flauna-float-sauna" },
+  // Sits mid-grid rather than last. Gemma's call: it is one of the lots
+  // people actually talk about, and it was reading as an afterthought at the
+  // bottom of 47 cards. At three columns this lands it in the middle column
+  // of a row, so it is the card your eye goes to on the way down.
+  //
+  // No `value`. Air Auctioneer reads "Value: Priceless!", which is not a
+  // number, so the card shows no valuation badge rather than the words
+  // "Valued at Priceless".
+  { title: "Principal for the day", donor: "Nicholson Street Public School", image: "principal-for-the-day", slug: "principal-for-the-day" },
+
   { title: "Unlimited rides pass x 4", donor: "Luna Park", image: "luna-park", value: "$200", slug: "unlimited-rides-pass-x-4" },
   { title: "2 day passes", donor: "Sydney Action Park, formerly Raging Waters", image: "sydney-action-park", value: "$169", slug: "sydney-action-park-frmly-raging-waters-2x-day-passes" },
   { title: "Family pass", donor: "Sydney Kings and Sydney Flames", image: "sydney-kings", value: "$165", slug: "family-pass-to-sydney-kings-sydney-flames" },
@@ -120,10 +150,6 @@ const LOTS: Lot[] = [
   { title: "Bespoke facial", donor: "Suede Clinic", image: "suede-clinic", value: "$250", slug: "suede-clinic-bespoke-facial" },
   { title: "Yoga and pilates gift certificate", donor: "Soul Agenda", image: "soul-agenda", value: "$250", slug: "soul-agenda-yoga-pilates-gift-certificate" },
   { title: "2 luxurious candles and a $25 voucher", donor: "House of SNJ Candles", image: "snj-candles", value: "$150", slug: "house-of-snj-candles-2-luxurious-candles-and-25-voucher" },
-  // No `value`. Air Auctioneer reads "Value: Priceless!", which is not a
-  // number, so the card shows no valuation badge rather than the words
-  // "Valued at Priceless".
-  { title: "Principal for the day", donor: "Nicholson Street Public School", image: "principal-for-the-day", slug: "principal-for-the-day" },
 ];
 
 function BidButton({ className = "" }: { className?: string }) {
