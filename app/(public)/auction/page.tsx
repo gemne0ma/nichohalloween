@@ -47,11 +47,7 @@ type Lot = {
 };
 
 const LOTS: Lot[] = [
-  // Supplied as a square marketing tile with the wordmark across the top and
-  // the partner logo row along the bottom, so it is fitted whole rather than
-  // cropped: a 4:3 cover crop cut both off. Same reasoning as the District
-  // lamp below. The other three tiles in this batch are handled the same way.
-  { title: "Full day AI workshop for a sole trader or small business", donor: "Neoma", image: "neoma-ai-workshop", value: "$6,000", slug: "neoma-how-to-use-ai-workshop-6000-value" },
+  { title: "Rum tasting and distillery tour", donor: "Red Mill Distillery", image: "red-mill-rum", value: "$1,500", slug: "red-mill-rum-tasting-and-tour-value-1500" },
 
   { title: "2 hour harbour cruise on Iluka", donor: "Iluka", image: "iluka-cruise", value: "$2,480", slug: "2-hour-harbour-cruise-on-iluka" },
   // Filename changed from verve-portraits on purpose. The crop was corrected
@@ -63,6 +59,15 @@ const LOTS: Lot[] = [
   // A tall portrait on white, so this one is fitted whole rather than
   // cropped. See the note in the conversion of the source file.
   { title: "A4 custom watercolour, commissioned house portrait", donor: "Cindy Schuele", image: "cindy-schuele", value: "$500", slug: "a4-custom-watercolour-commissioned-house-portrait-by-artist-cindy-schuele" },
+
+  // Moved down off the top spot on Gemma's instruction. Its $6,000 value is
+  // still the highest on the page, so this position is deliberate and not a
+  // sorting slip.
+  //
+  // Supplied as a square marketing tile with the wordmark across the top and
+  // the partner logo row along the bottom, so it is fitted whole rather than
+  // cropped: a 4:3 cover crop cut both off.
+  { title: "Full day AI workshop for a sole trader or small business", donor: "Neoma", image: "neoma-ai-workshop", value: "$6,000", slug: "neoma-how-to-use-ai-workshop-6000-value" },
   // Air Auctioneer's value field reads $410 while the lot title rounds it to
   // $400. The field is the number they entered, so it is the one shown, same
   // as the District lamp where the title says "almost $250" and the field
@@ -72,6 +77,8 @@ const LOTS: Lot[] = [
   { title: "Wearable acupressure wristbands", donor: "Lükii", image: "lukii-bands", value: "$400", slug: "lukii-acupunture-bands-valued-at-400" },
 
   { title: "Pizza oven, starter kit and cover", donor: "Bunnings", image: "pizza-oven", value: "$375", slug: "bunnings-pizza-oven-starter-kit-and-cover" },
+  { title: "3 months all access", donor: "Balmain Fitness", image: "balmain-fitness", value: "$450", slug: "3-months-all-access-balmain-fitness-450-value" },
+  { title: "10 pack of pilates classes", donor: "Rituel Movement Rozelle", image: "rituel-movement", value: "$385", slug: "rituel-movement-rozelle-10-pack-pilates-classes-value-385" },
   { title: "$350 voucher", donor: "Dry Dock Hotel", image: "dry-dock", value: "$350", slug: "dry-dock-hotel-350-voucher" },
   { title: "A full term of lessons or a week of holiday camp", donor: "State Soccer", image: "state-soccer", value: "$300", slug: "state-soccer-holiday-camp-either-a-full-term-of-lessons-or-a-full-week-school-holiday-camp" },
 
@@ -88,6 +95,8 @@ const LOTS: Lot[] = [
   { title: "Younger kids toy bundle", donor: "Kidstuff Balmain", image: "kidstuff-younger", value: "$200", slug: "kidstuff-younger-kids-bundle-200-value" },
 
   { title: "$200 voucher", donor: "Walls Pharmacy", image: "walls-pharmacy", value: "$200", slug: "walls-pharmacy-200-voucher" },
+  { title: "$200 gift voucher", donor: "Ingenia Holiday Park Soldiers Point", image: "ingenia-park", value: "$200", slug: "ingenia-holiday-park-soldiers-point-gift-voucher-200" },
+  { title: "Kids party voucher", donor: "Vitaland", image: "vitaland", value: "$200", slug: "vitaland-kids-party-voucher-200-value" },
   { title: "$150 voucher", donor: "Bits of Australia", image: "bits-of-australia", value: "$150", slug: "bits-of-australia-150-voucher" },
 
   // Listed twice on Air Auctioneer, so shown twice here for the same reason.
@@ -130,12 +139,19 @@ const LOTS: Lot[] = [
   { title: "$100 voucher", donor: "Hyperkarting", image: "hyperkarting", value: "$100", slug: "hyperkarting-100-voucher" },
   { title: "Holiday art classes", donor: "Paper, Rock, Scissors", image: "paper-rock-scissors", value: "$165", slug: "paper-rock-scissors-holiday-art-classes" },
   { title: "6 pack of assorted wines", donor: "DRNKS", image: "drnks", value: "$150", slug: "6pk-assorted-wines-from-drnks" },
+  { title: "$150 voucher", donor: "The Cricketers Balmain", image: "cricketers-pub", value: "$150", slug: "cricketers-balmain-150-voucher" },
+  // Air Auctioneer's value field says $150 but the lot is titled "$100
+  // voucher". $100 is used so the card matches what a bidder reads when
+  // they click through, same call as Soya Cafe. Worth correcting there.
+  { title: "$100 voucher", donor: "The Cricketers Balmain", image: "cricketers-burger", value: "$100", slug: "the-cricketers-balmain-100-voucher" },
   // Two separate $100 vouchers, so two cards. This pair was the lot missing
   // from the first pass, which is why the page showed 33 of Air Auctioneer's
   // 34. Each gets its own photo rather than the same one twice.
   { title: "$100 voucher", donor: "Eat at Robs", image: "eat-at-robs-signs", value: "$100", note: "1 of 2", slug: "eat-at-robs-x-100-voucher" },
   { title: "$100 voucher", donor: "Eat at Robs", image: "eat-at-robs-burgers", value: "$100", note: "2 of 2", slug: "eat-at-robs-x-100-voucher-2" },
   { title: "$100 voucher", donor: "Eden Pasticceria Five Dock", image: "eden-pasticceria", value: "$100", slug: "eden-pasticceria-five-dock-100-voucher" },
+  { title: "$100 voucher", donor: "Hill of Content", image: "hill-of-content", value: "$100", slug: "hill-of-content-100-voucher" },
+  { title: "$100 voucher", donor: "Big Tree House Cafe Balmain", image: "big-tree-house", value: "$100", slug: "big-tree-house-cafe-in-balmain-100-voucher" },
   { title: "$100 voucher", donor: "Cici Italian Wine Bar", image: "cici", value: "$100", slug: "cici-italian-wine-bar-100-voucher" },
   // Air Auctioneer has no value line for this one. The $100 is the
   // voucher's face value, taken from the lot title, not invented.
@@ -146,6 +162,14 @@ const LOTS: Lot[] = [
   { title: "$250 voucher", donor: "East Village Hotel", image: "evh", value: "$250", note: "4 of 4", slug: "east-village-hotel-evh-250-voucher-4" },
 
   { title: "Healthfoods voucher", donor: "The Source Bulk Foods Balmain", image: "the-source", value: "$100", slug: "the-source-healthfoods-balmain" },
+  { title: "$70 voucher", donor: "TJ's Quality Meats Balmain", image: "tjs-meats", value: "$70", slug: "tjs-quality-meats-balmain-70-voucher" },
+  { title: "$50 voucher", donor: "Nature Baby Balmain", image: "nature-baby", value: "$50", slug: "nature-baby-balmain-50-voucher" },
+  { title: "$50 voucher", donor: "Roaring Stories", image: "roaring-stories", value: "$50", slug: "roaring-stories-50-voucher" },
+  { title: "$50 voucher", donor: "Maloneys Grocer Rozelle", image: "maloneys", value: "$50", slug: "maloneys-voucher-50" },
+  // Air Auctioneer's value field says $150 but the lot is titled "$50
+  // voucher". $50 is used, so the card matches what a bidder reads when
+  // they click through. Worth correcting over there either way.
+  { title: "$50 voucher", donor: "Soya Cafe Balmain", image: "soya-cafe", value: "$50", slug: "soya-cafe-balmain-50-voucher" },
   { title: "Full body massage and 2 gift bags of scalp care", donor: "Scalp Spa", image: "scalp-spa", value: "$200", slug: "scalp-spa-full-body-massage-2-gift-bags-of-scalp-care" },
   { title: "Bespoke facial", donor: "Suede Clinic", image: "suede-clinic", value: "$250", slug: "suede-clinic-bespoke-facial" },
   { title: "Yoga and pilates gift certificate", donor: "Soul Agenda", image: "soul-agenda", value: "$250", slug: "soul-agenda-yoga-pilates-gift-certificate" },
