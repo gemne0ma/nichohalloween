@@ -84,8 +84,11 @@ const LOTS: Lot[] = [
   { title: "Pizza oven, starter kit and cover", donor: "Bunnings", image: "pizza-oven", value: "$375", slug: "bunnings-pizza-oven-starter-kit-and-cover" },
   { title: "3 months all access", donor: "Balmain Fitness", image: "balmain-fitness", value: "$450", slug: "3-months-all-access-balmain-fitness-450-value" },
   { title: "10 pack of pilates classes", donor: "Rituel Movement Rozelle", image: "rituel-movement", value: "$385", slug: "rituel-movement-rozelle-10-pack-pilates-classes-value-385" },
+  { title: "Holiday camp, 2 day passes", donor: "Leray Gymnastics", image: "leray-gymnastics", value: "$240", slug: "leray-gymnastics-holiday-camp-2x-day-passes-240-value" },
+  { title: "Blowdry, cut and deluxe treatment", donor: "Smith and Queen Salon", image: "smith-and-queen", value: "$220", slug: "smith-and-queen-salon-blowdry-cut-deluxe-treatment-220-value" },
   { title: "$350 voucher", donor: "Dry Dock Hotel", image: "dry-dock", value: "$350", slug: "dry-dock-hotel-350-voucher" },
-  { title: "A full term of lessons or a week of holiday camp", donor: "State Soccer", image: "state-soccer", value: "$300", slug: "state-soccer-either-a-full-term-of-lessons-or-a-full-week-school-holiday-camp-valued-at-300" },
+  { title: "A full term of lessons or a week of holiday camp", donor: "State Soccer", image: "state-soccer", value: "$300", note: "1 of 2", slug: "state-soccer-either-a-full-term-of-lessons-or-a-full-week-school-holiday-camp-valued-at-300" },
+  { title: "A full term of lessons or a week of holiday camp", donor: "State Soccer", image: "state-soccer", value: "$300", note: "2 of 2", slug: "state-soccer-either-a-full-term-of-lessons-or-a-full-week-school-holiday-camp-valued-at-300-2" },
 
   // Supplied as a square marketing tile rather than a photo, so it is
   // fitted whole onto a bone background rather than cropped: a 4:3 cover
@@ -102,6 +105,7 @@ const LOTS: Lot[] = [
   { title: "$200 voucher", donor: "Walls Pharmacy", image: "walls-pharmacy", value: "$200", slug: "walls-pharmacy-200-voucher" },
   { title: "$200 gift voucher", donor: "Ingenia Holiday Park Soldiers Point", image: "ingenia-park", value: "$200", slug: "ingenia-holiday-park-soldiers-point-gift-voucher-200" },
   { title: "Kids party voucher", donor: "Vitaland", image: "vitaland", value: "$200", slug: "vitaland-kids-party-voucher-200-value" },
+  { title: "Family pass", donor: "Australian Reptile Park", image: "australian-reptile-park", value: "$155", slug: "australian-reptile-park-family-pass" },
   { title: "$150 voucher", donor: "Bits of Australia", image: "bits-of-australia", value: "$150", slug: "bits-of-australia-150-voucher" },
 
   // Listed twice on Air Auctioneer, so shown twice here for the same reason.
@@ -145,6 +149,9 @@ const LOTS: Lot[] = [
   { title: "Holiday art classes", donor: "Paper, Rock, Scissors", image: "paper-rock-scissors", value: "$165", slug: "paper-rock-scissors-holiday-art-classes" },
   { title: "6 pack of assorted wines", donor: "DRNKS", image: "drnks", value: "$150", slug: "6pk-assorted-wines-from-drnks" },
   { title: "$150 voucher", donor: "The Cricketers Balmain", image: "cricketers-pub", value: "$150", slug: "cricketers-balmain-150-voucher" },
+  { title: "$150 voucher", donor: "Fruitologist Rozelle", image: "fruitologist-store", value: "$150", slug: "fruitologist-rozelle-150-voucher" },
+  { title: "$100 voucher", donor: "Fruitologist Rozelle", image: "fruitologist-produce", value: "$100", slug: "fruitologist-rozelle-100-voucher" },
+  { title: "School holiday camp voucher", donor: "Beyond the Bell", image: "beyond-the-bell", value: "$150", slug: "beyond-the-bell-school-holiday-camp-voucher-150" },
   // Air Auctioneer's value field says $150 but the lot is titled "$100
   // voucher". $100 is used so the card matches what a bidder reads when
   // they click through, same call as Soya Cafe. Worth correcting there.
@@ -169,6 +176,7 @@ const LOTS: Lot[] = [
   { title: "Healthfoods voucher", donor: "The Source Bulk Foods Balmain", image: "the-source", value: "$100", slug: "the-source-healthfoods-balmain" },
   { title: "$70 voucher", donor: "TJ's Quality Meats Balmain", image: "tjs-meats", value: "$70", slug: "tjs-quality-meats-balmain-70-voucher" },
   { title: "$50 voucher", donor: "Nature Baby Balmain", image: "nature-baby", value: "$50", slug: "nature-baby-balmain-50-voucher" },
+  { title: "$50 voucher", donor: "Atom Thai", image: "atom-thai", value: "$50", slug: "atom-thai-50-voucher" },
   { title: "$50 voucher", donor: "Roaring Stories", image: "roaring-stories", value: "$50", slug: "roaring-stories-50-voucher" },
   { title: "$50 voucher", donor: "Maloneys Grocer Rozelle", image: "maloneys", value: "$50", slug: "maloneys-voucher-50" },
   // Air Auctioneer's value field says $150 but the lot is titled "$50
