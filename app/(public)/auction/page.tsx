@@ -74,13 +74,18 @@ const LOTS: Lot[] = [
   // says $219. Fitted whole: the headline and the "kindly donated by Balmain
   // Kidstuff" credit sit at the very top and bottom of the tile.
   { title: "Older kids toy bundle", donor: "Kidstuff Balmain", image: "kidstuff-older", value: "$410", slug: "kidstuff-older-kids-toy-bundle-400-value" },
-  { title: "Wearable acupressure wristbands", donor: "Lükii", image: "lukii-bands", value: "$400", slug: "lukii-acupunture-bands-valued-at-400" },
+  // Two boxes were donated, so Air Auctioneer runs them as two separate
+  // auctions. The slugs differ only by how "Acupunture" is spelled: ours is
+  // "acupunture", the second is "accupunture". Not a typo to tidy up, they
+  // are two different lots and correcting either would break the link.
+  { title: "Wearable acupressure wristbands", donor: "Lükii", image: "lukii-bands", value: "$400", note: "1 of 2", slug: "lukii-acupunture-bands-valued-at-400" },
+  { title: "Wearable acupressure wristbands", donor: "Lükii", image: "lukii-bands", value: "$400", note: "2 of 2", slug: "lukii-accupunture-bands-valued-at-400" },
 
   { title: "Pizza oven, starter kit and cover", donor: "Bunnings", image: "pizza-oven", value: "$375", slug: "bunnings-pizza-oven-starter-kit-and-cover" },
   { title: "3 months all access", donor: "Balmain Fitness", image: "balmain-fitness", value: "$450", slug: "3-months-all-access-balmain-fitness-450-value" },
   { title: "10 pack of pilates classes", donor: "Rituel Movement Rozelle", image: "rituel-movement", value: "$385", slug: "rituel-movement-rozelle-10-pack-pilates-classes-value-385" },
   { title: "$350 voucher", donor: "Dry Dock Hotel", image: "dry-dock", value: "$350", slug: "dry-dock-hotel-350-voucher" },
-  { title: "A full term of lessons or a week of holiday camp", donor: "State Soccer", image: "state-soccer", value: "$300", slug: "state-soccer-holiday-camp-either-a-full-term-of-lessons-or-a-full-week-school-holiday-camp" },
+  { title: "A full term of lessons or a week of holiday camp", donor: "State Soccer", image: "state-soccer", value: "$300", slug: "state-soccer-either-a-full-term-of-lessons-or-a-full-week-school-holiday-camp-valued-at-300" },
 
   // Supplied as a square marketing tile rather than a photo, so it is
   // fitted whole onto a bone background rather than cropped: a 4:3 cover
@@ -173,7 +178,7 @@ const LOTS: Lot[] = [
   { title: "Full body massage and 2 gift bags of scalp care", donor: "Scalp Spa", image: "scalp-spa", value: "$200", slug: "scalp-spa-full-body-massage-2-gift-bags-of-scalp-care" },
   { title: "Bespoke facial", donor: "Suede Clinic", image: "suede-clinic", value: "$250", slug: "suede-clinic-bespoke-facial" },
   { title: "Yoga and pilates gift certificate", donor: "Soul Agenda", image: "soul-agenda", value: "$250", slug: "soul-agenda-yoga-pilates-gift-certificate" },
-  { title: "2 luxurious candles and a $25 voucher", donor: "House of SNJ Candles", image: "snj-candles", value: "$150", slug: "house-of-snj-candles-2-luxurious-candles-and-25-voucher" },
+  { title: "2 luxurious candles and a $20 voucher", donor: "House of SNJ Candles", image: "snj-candles", value: "$150", slug: "house-of-snj-candles-2-luxurious-candles-and-20-voucher" },
 ];
 
 function BidButton({ className = "" }: { className?: string }) {
