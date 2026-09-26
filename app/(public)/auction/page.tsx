@@ -74,12 +74,14 @@ const LOTS: Lot[] = [
   // says $219. Fitted whole: the headline and the "kindly donated by Balmain
   // Kidstuff" credit sit at the very top and bottom of the tile.
   { title: "Older kids toy bundle", donor: "Kidstuff Balmain", image: "kidstuff-older", value: "$410", slug: "kidstuff-older-kids-toy-bundle-400-value" },
+  { title: "Private lesson for four people", donor: "Mahjong Club Sydney", image: "mahjong", value: "$400", slug: "private-mahjong-lesson-for-four-people-valued-at-400" },
   // Two boxes were donated, so Air Auctioneer runs them as two separate
   // auctions. The slugs differ only by how "Acupunture" is spelled: ours is
   // "acupunture", the second is "accupunture". Not a typo to tidy up, they
   // are two different lots and correcting either would break the link.
-  { title: "Wearable acupressure wristbands", donor: "Lükii", image: "lukii-bands", value: "$400", note: "1 of 2", slug: "lukii-acupunture-bands-valued-at-400" },
-  { title: "Wearable acupressure wristbands", donor: "Lükii", image: "lukii-bands", value: "$400", note: "2 of 2", slug: "lukii-accupunture-bands-valued-at-400" },
+  { title: "Wearable acupressure wristbands", donor: "Lükii", image: "lukii-bands", value: "$350", note: "1 of 2", slug: "lukii-acupunture-bands-valued-at-350" },
+  { title: "Wearable acupressure wristbands", donor: "Lükii", image: "lukii-bands", value: "$350", note: "2 of 2", slug: "lukii-accupunture-bands-valued-at-350" },
+  { title: "Pamper and health bundle", donor: "The Well Store Rozelle", image: "well-store", value: "$350", slug: "the-well-store-bundle-350-value" },
 
   { title: "Pizza oven, starter kit and cover", donor: "Bunnings", image: "pizza-oven", value: "$375", slug: "bunnings-pizza-oven-starter-kit-and-cover" },
   { title: "3 months all access", donor: "Balmain Fitness", image: "balmain-fitness", value: "$450", slug: "3-months-all-access-balmain-fitness-450-value" },
@@ -103,7 +105,7 @@ const LOTS: Lot[] = [
   { title: "Younger kids toy bundle", donor: "Kidstuff Balmain", image: "kidstuff-younger", value: "$200", slug: "kidstuff-younger-kids-bundle-200-value" },
 
   { title: "$200 voucher", donor: "Walls Pharmacy", image: "walls-pharmacy", value: "$200", slug: "walls-pharmacy-200-voucher" },
-  { title: "$200 gift voucher", donor: "Ingenia Holiday Park Soldiers Point", image: "ingenia-park", value: "$200", slug: "ingenia-holiday-park-soldiers-point-gift-voucher-200" },
+  { title: "$200 voucher", donor: "Ingenia Holiday Parks", image: "ingenia-park", value: "$200", slug: "ingenia-holiday-park-200-voucher" },
   { title: "Kids party voucher", donor: "Vitaland", image: "vitaland", value: "$200", slug: "vitaland-kids-party-voucher-200-value" },
   { title: "Family pass", donor: "Australian Reptile Park", image: "australian-reptile-park", value: "$155", slug: "australian-reptile-park-family-pass" },
   { title: "$150 voucher", donor: "Bits of Australia", image: "bits-of-australia", value: "$150", slug: "bits-of-australia-150-voucher" },
@@ -127,6 +129,7 @@ const LOTS: Lot[] = [
   // number, so the card shows no valuation badge rather than the words
   // "Valued at Priceless".
   { title: "Principal for the day", donor: "Nicholson Street Public School", image: "principal-for-the-day", slug: "principal-for-the-day" },
+  { title: "A pizza party for your class", donor: "Domino's", image: "pizza-party", slug: "win-a-pizza-party-for-your-class-priceless" },
 
   { title: "Unlimited rides pass x 4", donor: "Luna Park", image: "luna-park", value: "$200", slug: "unlimited-rides-pass-x-4" },
   { title: "2 day passes", donor: "Sydney Action Park, formerly Raging Waters", image: "sydney-action-park", value: "$169", slug: "sydney-action-park-frmly-raging-waters-2x-day-passes" },
@@ -149,9 +152,9 @@ const LOTS: Lot[] = [
   { title: "Holiday art classes", donor: "Paper, Rock, Scissors", image: "paper-rock-scissors", value: "$165", slug: "paper-rock-scissors-holiday-art-classes" },
   { title: "6 pack of assorted wines", donor: "DRNKS", image: "drnks", value: "$150", slug: "6pk-assorted-wines-from-drnks" },
   { title: "$150 voucher", donor: "The Cricketers Balmain", image: "cricketers-pub", value: "$150", slug: "cricketers-balmain-150-voucher" },
-  { title: "$150 voucher", donor: "Fruitologist Rozelle", image: "fruitologist-store", value: "$150", slug: "fruitologist-rozelle-150-voucher" },
+  { title: "$50 voucher", donor: "Fruitologist Rozelle", image: "fruitologist-store", value: "$50", slug: "fruitologist-rozelle-50-voucher" },
   { title: "$100 voucher", donor: "Fruitologist Rozelle", image: "fruitologist-produce", value: "$100", slug: "fruitologist-rozelle-100-voucher" },
-  { title: "School holiday camp voucher", donor: "Beyond the Bell", image: "beyond-the-bell", value: "$150", slug: "beyond-the-bell-school-holiday-camp-voucher-150" },
+  { title: "School holiday camp voucher", donor: "Beyond the Bell", image: "beyond-the-bell", value: "$150", slug: "beyond-the-bell-school-holiday-camps-150-voucher" },
   // Air Auctioneer's value field says $150 but the lot is titled "$100
   // voucher". $100 is used so the card matches what a bidder reads when
   // they click through, same call as Soya Cafe. Worth correcting there.
@@ -163,6 +166,8 @@ const LOTS: Lot[] = [
   { title: "$100 voucher", donor: "Eat at Robs", image: "eat-at-robs-burgers", value: "$100", note: "2 of 2", slug: "eat-at-robs-x-100-voucher-2" },
   { title: "$100 voucher", donor: "Eden Pasticceria Five Dock", image: "eden-pasticceria", value: "$100", slug: "eden-pasticceria-five-dock-100-voucher" },
   { title: "$100 voucher", donor: "Hill of Content", image: "hill-of-content", value: "$100", slug: "hill-of-content-100-voucher" },
+  { title: "$100 voucher", donor: "Darling Street Meats", image: "darling-street-meats-crest", value: "$100", note: "1 of 2", slug: "darling-street-meats-100-voucher" },
+  { title: "$100 voucher", donor: "Darling Street Meats", image: "darling-street-meats-diamond", value: "$100", note: "2 of 2", slug: "darling-street-meats-100-voucher-2" },
   { title: "$100 voucher", donor: "Big Tree House Cafe Balmain", image: "big-tree-house", value: "$100", slug: "big-tree-house-cafe-in-balmain-100-voucher" },
   { title: "$100 voucher", donor: "Cici Italian Wine Bar", image: "cici", value: "$100", slug: "cici-italian-wine-bar-100-voucher" },
   // Air Auctioneer has no value line for this one. The $100 is the
