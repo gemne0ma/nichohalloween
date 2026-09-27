@@ -184,6 +184,7 @@ const LOTS: Lot[] = [
 
   { title: "Healthfoods voucher", donor: "The Source Bulk Foods Balmain", image: "the-source", value: "$100", slug: "the-source-healthfoods-balmain-100-voucher" },
   { title: "$70 voucher", donor: "TJ's Quality Meats Balmain", image: "tjs-meats", value: "$70", slug: "tjs-quality-meats-balmain-70-voucher" },
+  { title: "Junior racket and a set of balls", donor: "Leichhardt Tennis Academy", image: "junior-tennis", value: "$60", slug: "junior-tennis-racket-and-set-of-balls-valued-at-60" },
   { title: "$50 voucher", donor: "Nature Baby Balmain", image: "nature-baby", value: "$50", slug: "nature-baby-balmain-50-voucher" },
   { title: "$50 voucher", donor: "Atom Thai", image: "atom-thai", value: "$50", slug: "atom-thai-50-voucher" },
   { title: "$50 voucher", donor: "Roaring Stories", image: "roaring-stories", value: "$50", slug: "roaring-stories-50-voucher" },
@@ -197,6 +198,7 @@ const LOTS: Lot[] = [
   { title: "Full body massage and a scalp care gift bag", donor: "Scalp Spa", image: "scalp-spa", value: "$230", slug: "scalp-spa-full-body-massage-scalp-care-gift-bag-value-230" },
   { title: "Scalp care gift bag", donor: "Scalp Spa", image: "scalp-spa", value: "$70", slug: "scalp-spa-scalp-care-gift-bag-value-70" },
   { title: "Bespoke facial", donor: "Suede Clinic", image: "suede-clinic", value: "$250", slug: "suede-clinic-bespoke-facial-value-250" },
+  { title: "Hamper", donor: "QE Food Stores Balmain", image: "qe-foods-hamper", value: "$250", slug: "qe-foods-hamper-valued-at-250" },
   { title: "Yoga and pilates gift certificate", donor: "Soul Agenda", image: "soul-agenda", value: "$250", slug: "soul-agenda-yoga-pilates-gift-certificate-value-250" },
   { title: "2 luxurious candles and a $20 voucher", donor: "House of SNJ Candles", image: "snj-candles", value: "$150", slug: "house-of-snj-candles-2-luxurious-candles-and-20-voucher-value-150" },
 ];
