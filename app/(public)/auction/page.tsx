@@ -49,7 +49,7 @@ type Lot = {
 const LOTS: Lot[] = [
   { title: "Rum tasting and distillery tour", donor: "Red Mill Distillery", image: "red-mill-rum", value: "$1,500", slug: "red-mill-rum-tasting-and-tour-value-1500" },
 
-  { title: "2 hour harbour cruise on Iluka", donor: "Iluka", image: "iluka-cruise", value: "$2,480", slug: "2-hour-harbour-cruise-on-iluka" },
+  { title: "2 hour harbour cruise on Iluka", donor: "Iluka", image: "iluka-cruise", value: "$2,480", slug: "2-hour-harbour-cruise-on-iluka-value-2480" },
   // Filename changed from verve-portraits on purpose. The crop was corrected
   // in place and browsers kept serving the old cached bytes off the unchanged
   // URL, so the fix looked like it had failed. A new filename is a new URL.
@@ -83,7 +83,7 @@ const LOTS: Lot[] = [
   { title: "Wearable acupressure wristbands", donor: "Lükii", image: "lukii-bands", value: "$350", note: "2 of 2", slug: "lukii-accupunture-bands-valued-at-350" },
   { title: "Pamper and health bundle", donor: "The Well Store Rozelle", image: "well-store", value: "$350", slug: "the-well-store-bundle-350-value" },
 
-  { title: "Pizza oven, starter kit and cover", donor: "Bunnings", image: "pizza-oven", value: "$375", slug: "bunnings-pizza-oven-starter-kit-and-cover" },
+  { title: "Cozze pizza oven, starter kit and cover", donor: "Bunnings Rozelle", image: "pizza-oven", value: "$375", slug: "cozze-pizza-oven-starter-kit-and-cover-value-375" },
   { title: "3 months all access", donor: "Balmain Fitness", image: "balmain-fitness", value: "$450", slug: "3-months-all-access-balmain-fitness-450-value" },
   { title: "10 pack of pilates classes", donor: "Rituel Movement Rozelle", image: "rituel-movement", value: "$385", slug: "rituel-movement-rozelle-10-pack-pilates-classes-value-385" },
   { title: "Holiday camp, 2 day passes", donor: "Leray Gymnastics", image: "leray-gymnastics", value: "$240", slug: "leray-gymnastics-holiday-camp-2x-day-passes-240-value" },
@@ -91,6 +91,7 @@ const LOTS: Lot[] = [
   { title: "$350 voucher", donor: "Dry Dock Hotel", image: "dry-dock", value: "$350", slug: "dry-dock-hotel-350-voucher" },
   { title: "A full term of lessons or a week of holiday camp", donor: "State Soccer", image: "state-soccer", value: "$300", note: "1 of 2", slug: "state-soccer-either-a-full-term-of-lessons-or-a-full-week-school-holiday-camp-valued-at-300" },
   { title: "A full term of lessons or a week of holiday camp", donor: "State Soccer", image: "state-soccer", value: "$300", note: "2 of 2", slug: "state-soccer-either-a-full-term-of-lessons-or-a-full-week-school-holiday-camp-valued-at-300-2" },
+  { title: "2026 signed NRLW away jersey", donor: "Wests Tigers", image: "nrlw-jersey", value: "$300", slug: "2026-west-tigers-nrlw-signature-away-jersey-value-300" },
 
   // Supplied as a square marketing tile rather than a photo, so it is
   // fitted whole onto a bone background rather than cropped: a 4:3 cover
@@ -111,15 +112,15 @@ const LOTS: Lot[] = [
   { title: "$150 voucher", donor: "Bits of Australia", image: "bits-of-australia", value: "$150", slug: "bits-of-australia-150-voucher" },
 
   // Listed twice on Air Auctioneer, so shown twice here for the same reason.
-  { title: "10 training sessions and 10 recovery sessions", donor: "Combine Air", image: "combine-air", value: "$350", note: "1 of 2", slug: "combine-air-10-training-sessions-10-x-recovery-sessions" },
-  { title: "10 training sessions and 10 recovery sessions", donor: "Combine Air", image: "combine-air", value: "$350", note: "2 of 2", slug: "combine-air-10-x-training-sessions-and-10-x-recovery-sessions" },
+  { title: "10 training sessions and 10 recovery sessions", donor: "Combine Air", image: "combine-air", value: "$350", note: "1 of 2", slug: "combine-air-10-training-sessions-10-x-recovery-sessions-value-350" },
+  { title: "10 training sessions and 10 recovery sessions", donor: "Combine Air", image: "combine-air", value: "$350", note: "2 of 2", slug: "combine-air-10-x-training-sessions-and-10-x-recovery-sessions-value-350" },
 
-  { title: "Family pass", donor: "Taronga Zoo", image: "taronga-zoo", value: "$158", slug: "taronga-zoo-family-pass" },
+  { title: "Family pass", donor: "Taronga Zoo", image: "taronga-zoo", value: "$158", slug: "taronga-zoo-family-pass-value-158" },
   // Their title really does read "2adults" with no space. Do not tidy it.
-  { title: "Family pass, 2 adults and 2 children", donor: "Scenic World", image: "scenic-world", value: "$224", slug: "scenic-world-family-pass-2adults-2-children" },
-  { title: "Afternoon Discovery Cruise for 2 adults", donor: "Sydney Harbour Tall Ships", image: "tall-ships", value: "$168", slug: "sydney-harbour-tall-ships-afternoon-discovery-cruise-for-2-adults" },
-  { title: "Bathhouse experience", donor: "Nature's Energy", image: "natures-energy", value: "$59", slug: "natures-energy-bathhouse-experience" },
-  { title: "Couples Flauna, float and sauna", donor: "City Cave", image: "city-cave", value: "$169", slug: "city-cave-couples-flauna-float-sauna" },
+  { title: "Family pass, 2 adults and 2 children", donor: "Scenic World", image: "scenic-world", value: "$224", slug: "scenic-world-family-pass-value-224" },
+  { title: "Afternoon Discovery Cruise for 2 adults", donor: "Sydney Harbour Tall Ships", image: "tall-ships", value: "$168", slug: "sydney-harbour-tall-ships-afternoon-discovery-cruise-for-2-adults-value-168" },
+  { title: "Bathhouse experience", donor: "Nature's Energy", image: "natures-energy", value: "$59", slug: "natures-energy-bathhouse-experience-value-59" },
+  { title: "Couples Flauna, float and sauna", donor: "City Cave", image: "city-cave", value: "$169", slug: "city-cave-couples-flauna-float-sauna-value-169" },
   // Sits mid-grid rather than last. Gemma's call: it is one of the lots
   // people actually talk about, and it was reading as an afterthought at the
   // bottom of 47 cards. At three columns this lands it in the middle column
@@ -131,11 +132,11 @@ const LOTS: Lot[] = [
   { title: "Principal for the day", donor: "Nicholson Street Public School", image: "principal-for-the-day", slug: "principal-for-the-day" },
   { title: "A pizza party for your class", donor: "Domino's", image: "pizza-party", slug: "win-a-pizza-party-for-your-class-priceless" },
 
-  { title: "Unlimited rides pass x 4", donor: "Luna Park", image: "luna-park", value: "$200", slug: "unlimited-rides-pass-x-4" },
-  { title: "2 day passes", donor: "Sydney Action Park, formerly Raging Waters", image: "sydney-action-park", value: "$169", slug: "sydney-action-park-frmly-raging-waters-2x-day-passes" },
-  { title: "Family pass", donor: "Sydney Kings and Sydney Flames", image: "sydney-kings", value: "$165", slug: "family-pass-to-sydney-kings-sydney-flames" },
-  { title: "Family pass", donor: "Sydney Indoor Climbing Centre", image: "climbing-centre", value: "$100", slug: "sydney-indoor-climbing-centre-family-pass" },
-  { title: "Ground tour", donor: "Sydney Cricket Ground", image: "scg-tours", value: "$100", slug: "sydney-cricket-ground-scg-tours" },
+  { title: "Unlimited rides pass for 4 people", donor: "Luna Park", image: "luna-park", value: "$176", slug: "luna-park-unlimited-rides-pass-for-4-people-value-176" },
+  { title: "2 day passes", donor: "Sydney Action Park, formerly Raging Waters", image: "sydney-action-park", value: "$168", slug: "sydney-action-park-frmly-raging-waters-2-x-day-passes-value-168" },
+  { title: "Family pass", donor: "Sydney Kings and Sydney Flames", image: "sydney-kings", value: "$165", slug: "family-pass-to-sydney-kings-sydney-flames-value-165" },
+  { title: "Family pass", donor: "Sydney Indoor Climbing Centre", image: "climbing-centre", value: "$97", slug: "sydney-indoor-climbing-centre-family-pass-value-97" },
+  { title: "Guided walking tour", donor: "Sydney Cricket Ground", image: "scg-tours", value: "$100", slug: "sydney-cricket-ground-scg-guided-walking-tour-100-voucher" },
 
   // Four separate vouchers, four separate lots, four separate bids. $1,000 of
   // East Village Hotel in total. Each card links to its own lot.
@@ -146,11 +147,14 @@ const LOTS: Lot[] = [
   { title: "$250 voucher", donor: "East Village Hotel", image: "evh", value: "$250", note: "1 of 4", slug: "east-village-hotel-evh-250-voucher" },
   { title: "$250 voucher", donor: "East Village Hotel", image: "evh", value: "$250", note: "2 of 4", slug: "east-village-hotel-evh-250-voucher-2" },
 
-  { title: "3 day holiday camp", donor: "Balmain District Football Club", image: "balmain-fc", value: "$270", slug: "balmain-district-football-club-3-day-holiday-camp" },
-  { title: "Holiday camp, 3 day pass", donor: "Sydney Uni Sports", image: "sydney-uni-sports", value: "$235", slug: "sydney-uni-sports-holiday-camp-3-day-pass" },
+  { title: "3 day holiday camp", donor: "Balmain District Football Club", image: "balmain-fc", value: "$270", slug: "balmain-district-football-club-3-day-holiday-camp-value-270" },
+  { title: "3 day holiday camp", donor: "Sydney Uni Sports", image: "sydney-uni-sports", value: "$235", slug: "sydney-uni-sports-3-day-holiday-camp-value-235" },
   { title: "$100 voucher", donor: "Hyperkarting", image: "hyperkarting", value: "$100", slug: "hyperkarting-100-voucher" },
-  { title: "Holiday art classes", donor: "Paper, Rock, Scissors", image: "paper-rock-scissors", value: "$165", slug: "paper-rock-scissors-holiday-art-classes" },
-  { title: "6 pack of assorted wines", donor: "DRNKS", image: "drnks", value: "$150", slug: "6pk-assorted-wines-from-drnks" },
+  // Split in two on Air Auctioneer: one $165 lot became two half day classes
+  // at $82.50 each. Same artwork for both.
+  { title: "Half day holiday art class", donor: "Paper, Rock, Scissors", image: "paper-rock-scissors", value: "$82.50", note: "1 of 2", slug: "paper-rock-scissors-half-day-holiday-art-class-value-8250" },
+  { title: "Half day holiday art class", donor: "Paper, Rock, Scissors", image: "paper-rock-scissors", value: "$82.50", note: "2 of 2", slug: "paper-rock-scissors-half-day-holiday-art-class-value-8250-2" },
+  { title: "6 pack of assorted wines", donor: "DRNKS", image: "drnks", value: "$150", slug: "6pk-assorted-wines-from-drnks-value-150" },
   { title: "$150 voucher", donor: "The Cricketers Balmain", image: "cricketers-pub", value: "$150", slug: "cricketers-balmain-150-voucher" },
   { title: "$50 voucher", donor: "Fruitologist Rozelle", image: "fruitologist-store", value: "$50", slug: "fruitologist-rozelle-50-voucher" },
   { title: "$100 voucher", donor: "Fruitologist Rozelle", image: "fruitologist-produce", value: "$100", slug: "fruitologist-rozelle-100-voucher" },
@@ -169,7 +173,7 @@ const LOTS: Lot[] = [
   { title: "$100 voucher", donor: "Darling Street Meats", image: "darling-street-meats-crest", value: "$100", note: "1 of 2", slug: "darling-street-meats-100-voucher" },
   { title: "$100 voucher", donor: "Darling Street Meats", image: "darling-street-meats-diamond", value: "$100", note: "2 of 2", slug: "darling-street-meats-100-voucher-2" },
   { title: "$100 voucher", donor: "Big Tree House Cafe Balmain", image: "big-tree-house", value: "$100", slug: "big-tree-house-cafe-in-balmain-100-voucher" },
-  { title: "$100 voucher", donor: "Cici Italian Wine Bar", image: "cici", value: "$100", slug: "cici-italian-wine-bar-100-voucher" },
+  { title: "$100 voucher", donor: "Cicci Italian Wine Bar", image: "cici", value: "$100", slug: "cicci-italian-wine-bar-100-voucher" },
   // Air Auctioneer has no value line for this one. The $100 is the
   // voucher's face value, taken from the lot title, not invented.
   { title: "$100 voucher", donor: "Pepperwhites Balmain", image: "pepperwhites", value: "$100", slug: "pepperwhites-balmain-100-voucher" },
@@ -178,7 +182,7 @@ const LOTS: Lot[] = [
   { title: "$250 voucher", donor: "East Village Hotel", image: "evh", value: "$250", note: "3 of 4", slug: "east-village-hotel-evh-250-voucher-3" },
   { title: "$250 voucher", donor: "East Village Hotel", image: "evh", value: "$250", note: "4 of 4", slug: "east-village-hotel-evh-250-voucher-4" },
 
-  { title: "Healthfoods voucher", donor: "The Source Bulk Foods Balmain", image: "the-source", value: "$100", slug: "the-source-healthfoods-balmain" },
+  { title: "Healthfoods voucher", donor: "The Source Bulk Foods Balmain", image: "the-source", value: "$100", slug: "the-source-healthfoods-balmain-100-voucher" },
   { title: "$70 voucher", donor: "TJ's Quality Meats Balmain", image: "tjs-meats", value: "$70", slug: "tjs-quality-meats-balmain-70-voucher" },
   { title: "$50 voucher", donor: "Nature Baby Balmain", image: "nature-baby", value: "$50", slug: "nature-baby-balmain-50-voucher" },
   { title: "$50 voucher", donor: "Atom Thai", image: "atom-thai", value: "$50", slug: "atom-thai-50-voucher" },
@@ -188,10 +192,13 @@ const LOTS: Lot[] = [
   // voucher". $50 is used, so the card matches what a bidder reads when
   // they click through. Worth correcting over there either way.
   { title: "$50 voucher", donor: "Soya Cafe Balmain", image: "soya-cafe", value: "$50", slug: "soya-cafe-balmain-50-voucher" },
-  { title: "Full body massage and 2 gift bags of scalp care", donor: "Scalp Spa", image: "scalp-spa", value: "$200", slug: "scalp-spa-full-body-massage-2-gift-bags-of-scalp-care" },
-  { title: "Bespoke facial", donor: "Suede Clinic", image: "suede-clinic", value: "$250", slug: "suede-clinic-bespoke-facial" },
-  { title: "Yoga and pilates gift certificate", donor: "Soul Agenda", image: "soul-agenda", value: "$250", slug: "soul-agenda-yoga-pilates-gift-certificate" },
-  { title: "2 luxurious candles and a $20 voucher", donor: "House of SNJ Candles", image: "snj-candles", value: "$150", slug: "house-of-snj-candles-2-luxurious-candles-and-20-voucher" },
+  // Split in two on Air Auctioneer: the massage with a gift bag, and a gift
+  // bag on its own. Same artwork for both.
+  { title: "Full body massage and a scalp care gift bag", donor: "Scalp Spa", image: "scalp-spa", value: "$230", slug: "scalp-spa-full-body-massage-scalp-care-gift-bag-value-230" },
+  { title: "Scalp care gift bag", donor: "Scalp Spa", image: "scalp-spa", value: "$70", slug: "scalp-spa-scalp-care-gift-bag-value-70" },
+  { title: "Bespoke facial", donor: "Suede Clinic", image: "suede-clinic", value: "$250", slug: "suede-clinic-bespoke-facial-value-250" },
+  { title: "Yoga and pilates gift certificate", donor: "Soul Agenda", image: "soul-agenda", value: "$250", slug: "soul-agenda-yoga-pilates-gift-certificate-value-250" },
+  { title: "2 luxurious candles and a $20 voucher", donor: "House of SNJ Candles", image: "snj-candles", value: "$150", slug: "house-of-snj-candles-2-luxurious-candles-and-20-voucher-value-150" },
 ];
 
 function BidButton({ className = "" }: { className?: string }) {
