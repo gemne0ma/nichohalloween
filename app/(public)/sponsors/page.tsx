@@ -109,14 +109,14 @@ const SPONSORS: Sponsor[] = [
     height: 261,
   },
   {
-    name: "Mannings Funerals",
-    url: "https://www.mannings.com.au/",
+    name: "Global Travel Co",
+    url: "https://www.globaltravelco.au/",
     tier: "bite",
-    logo: "/images/sponsor-logos/mannings-funerals.webp",
-    width: 900,
-    height: 473,
+    logo: "/images/sponsor-logos/global-travel-co.webp",
+    width: 700,
+    height: 700,
     // Sampled from the corners of the file.
-    plateBg: "#163C2D",
+    plateBg: "#00083F",
   },
   {
     name: "Hearlix",
@@ -127,14 +127,14 @@ const SPONSORS: Sponsor[] = [
     height: 430,
   },
   {
-    name: "Global Travel Co",
-    url: "https://www.globaltravelco.au/",
+    name: "Mannings Funerals",
+    url: "https://www.mannings.com.au/",
     tier: "bite",
-    logo: "/images/sponsor-logos/global-travel-co.webp",
-    width: 700,
-    height: 700,
+    logo: "/images/sponsor-logos/mannings-funerals.webp",
+    width: 900,
+    height: 473,
     // Sampled from the corners of the file.
-    plateBg: "#00083F",
+    plateBg: "#163C2D",
   },
 ];
 
