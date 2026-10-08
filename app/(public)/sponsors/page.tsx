@@ -11,12 +11,15 @@ import Image from "next/image";
 //
 // Names are written as they should appear publicly. The "TBC - " prefix used
 // in the database is internal shorthand and must never reach this file.
-type Tier = "gold" | "silver" | "bronze";
+type Tier = "gold" | "silver" | "bronze" | "bite";
 
 type Sponsor = {
   name: string;
   tier: Tier;
-  url: string;
+  // Optional. A sponsor with no website renders as a plain card rather than a
+  // link, and drops the "Click for website" pill, so we never ship a pill that
+  // goes nowhere.
+  url?: string;
   logo: string;
   // Real pixel dimensions, so next/image reserves the right space.
   width: number;
@@ -96,6 +99,43 @@ const SPONSORS: Sponsor[] = [
     // Sampled from the file itself, not guessed.
     plateBg: "#B7D5DF",
   },
+  {
+    // Display name is Gemma's. The artwork reads "dB print management".
+    name: "DB Printing",
+    url: "https://www.dbprintmanagement.com.au/",
+    tier: "bronze",
+    logo: "/images/sponsor-logos/db-printing.webp",
+    width: 900,
+    height: 261,
+  },
+  {
+    name: "Mannings Funerals",
+    url: "https://www.mannings.com.au/",
+    tier: "bite",
+    logo: "/images/sponsor-logos/mannings-funerals.webp",
+    width: 900,
+    height: 473,
+    // Sampled from the corners of the file.
+    plateBg: "#163C2D",
+  },
+  {
+    name: "Hearlix",
+    url: "https://hearlix.com.au/",
+    tier: "bite",
+    logo: "/images/sponsor-logos/hearlix.webp",
+    width: 900,
+    height: 430,
+  },
+  {
+    name: "Global Travel Co",
+    url: "https://www.globaltravelco.au/",
+    tier: "bite",
+    logo: "/images/sponsor-logos/global-travel-co.webp",
+    width: 700,
+    height: 700,
+    // Sampled from the corners of the file.
+    plateBg: "#00083F",
+  },
 ];
 
 // Gold carries the most weight because it paid for it. 40pt on the gold name
@@ -104,17 +144,19 @@ const SPONSORS: Sponsor[] = [
 // Builders" at 53px on a 390px screen runs to four lines.
 const TIER_STYLES: Record<
   Tier,
-  { name: string; plate: string; grid: string; heading: string }
+  { name: string; plate: string; pad: string; grid: string; heading: string }
 > = {
   gold: {
     name: "text-[26pt] md:text-[40pt]",
     plate: "h-[220px] md:h-[300px]",
+    pad: "p-6 md:p-8",
     grid: "grid grid-cols-1",
     heading: "Gold Sponsor",
   },
   silver: {
     name: "text-[20pt] md:text-[28pt]",
     plate: "h-[150px] md:h-[200px]",
+    pad: "p-6 md:p-8",
     // Two silver sponsors since Woolworths came off, so two across rather
     // than a pair sitting in a three-column track with an empty third
     // column. They now come out wider than the bronze cards, which suits
@@ -126,12 +168,21 @@ const TIER_STYLES: Record<
   bronze: {
     name: "text-[16pt] md:text-[22pt]",
     plate: "h-[120px] md:h-[150px]",
-    // Three bronze sponsors since Vision dropped out, so three across rather
-    // than a 2x2 with a lone card on the second row. Same shape as silver
-    // now, which is fine: the tiers are told apart by plate height and name
-    // size, not by how many fit on a row.
-    grid: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8",
+    pad: "p-6 md:p-8",
+    // Four bronze sponsors since DB Printing came on, so four across on large
+    // screens. At three across the fourth card is stranded alone on a second
+    // row, which is what the Vision removal was done to avoid. Four across
+    // also keeps bronze narrower than silver's two across, so the hierarchy
+    // still reads by width as well as by plate height and name size.
+    grid: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8",
     heading: "Bronze Sponsors",
+  },
+  bite: {
+    name: "text-[14pt] md:text-[18pt]",
+    plate: "h-[100px] md:h-[120px]",
+    pad: "p-4 md:p-5",
+    grid: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8",
+    heading: "Bite-Sized",
   },
 };
 
@@ -141,27 +192,25 @@ function SponsorCard({ sponsor }: { sponsor: Sponsor }) {
   // nowhere else.
   const isGold = sponsor.tier === "gold";
 
-  return (
-    // The whole card is the link, so the logo, the name and the pill are all
-    // clickable rather than just the pill. New tab, because sending someone
-    // off the festival site mid-visit loses them. rel guards against the
-    // opened page reaching back through window.opener.
-    <a
-      href={sponsor.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label={`Visit the ${sponsor.name} website, opens in a new tab`}
-      // No outline. A rust glow does the work instead, at 22% resting and 45%
-      // on hover, with a small downward offset so the card sits on the page
-      // rather than floating in a halo. rust is #B85C2E, the same accent as
-      // the pills and CTAs.
-      className="group bg-bone shadow-[0_2px_20px_rgba(184,92,46,0.22)] hover:shadow-[0_8px_34px_rgba(184,92,46,0.45)] transition-all duration-300 hover:-translate-y-1 flex flex-col focus:outline-none focus-visible:ring-2 focus-visible:ring-rust focus-visible:ring-offset-2 focus-visible:ring-offset-paper">
+  // No outline. A rust glow does the work instead, at 22% resting and 45% on
+  // hover, with a small downward offset so the card sits on the page rather
+  // than floating in a halo. rust is #B85C2E, the same accent as the pills
+  // and CTAs. A card with no website keeps the look but not the lift, since
+  // nothing happens when you click it.
+  const shell =
+    "group bg-bone shadow-[0_2px_20px_rgba(184,92,46,0.22)] flex flex-col" +
+    (sponsor.url
+      ? " hover:shadow-[0_8px_34px_rgba(184,92,46,0.45)] transition-all duration-300 hover:-translate-y-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-rust focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
+      : "");
+
+  const inner = (
+    <>
       {/* Plate behind the logo, white unless the sponsor supplies otherwise.
           Logos arrive with their background baked in, so the plate matches it:
           a cream tile would show a white rectangle inside it, and a white tile
           would show The Little Marionette's blue one. */}
       <div
-        className={`${style.plate} relative flex items-center justify-center p-6 md:p-8`}
+        className={`${style.plate} ${style.pad} relative flex items-center justify-center`}
         style={{ backgroundColor: sponsor.plateBg ?? "#FFFFFF" }}
       >
         {isGold && (
@@ -230,14 +279,36 @@ function SponsorCard({ sponsor }: { sponsor: Sponsor }) {
         </p>
 
         {/* Decorative: the anchor already carries the accessible name, so
-            this is a visual affordance rather than a second link. */}
-        <span
-          aria-hidden
-          className="inline-block mt-3 font-mono text-[9px] uppercase tracking-[0.15em] bg-rust text-bone rounded-full px-3 py-1 group-hover:bg-rust-deep transition-colors"
-        >
-          Click for website
-        </span>
+            this is a visual affordance rather than a second link. Omitted
+            when there is no website, so the card never offers a click that
+            does nothing. */}
+        {sponsor.url && (
+          <span
+            aria-hidden
+            className="inline-block mt-3 font-mono text-[9px] uppercase tracking-[0.15em] bg-rust text-bone rounded-full px-3 py-1 group-hover:bg-rust-deep transition-colors"
+          >
+            Click for website
+          </span>
+        )}
       </div>
+    </>
+  );
+
+  // The whole card is the link, so the logo, the name and the pill are all
+  // clickable rather than just the pill. New tab, because sending someone off
+  // the festival site mid-visit loses them. rel guards against the opened
+  // page reaching back through window.opener.
+  if (!sponsor.url) return <div className={shell}>{inner}</div>;
+
+  return (
+    <a
+      href={sponsor.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`Visit the ${sponsor.name} website, opens in a new tab`}
+      className={shell}
+    >
+      {inner}
     </a>
   );
 }
@@ -254,6 +325,23 @@ function TierSection({ tier }: { tier: Tier }) {
         <p className="font-mono text-xs uppercase tracking-[0.3em] text-rust-deep whitespace-nowrap">
           {style.heading}
         </p>
+
+        {/* The vampire sits after the label, not before it, so every tier
+            heading on the page still starts at the same left edge. He is a
+            cut-out on transparency, like the gold ghost, so he stands on the
+            cream rather than in a box. Decorative only: the heading beside
+            him already says what the section is. */}
+        {tier === "bite" && (
+          <Image
+            src="/images/sponsor-logos/vampire.webp"
+            alt=""
+            aria-hidden
+            width={460}
+            height={440}
+            className="h-[68px] md:h-[72px] w-auto shrink-0 -my-4"
+          />
+        )}
+
         <span className="h-px bg-mist flex-1" aria-hidden />
       </div>
 
@@ -308,6 +396,7 @@ export default function SponsorsPage() {
         <TierSection tier="gold" />
         <TierSection tier="silver" />
         <TierSection tier="bronze" />
+        <TierSection tier="bite" />
 
         <p className="font-body text-base italic text-moss text-center mt-16">
           Interested in sponsoring the festival? Email{" "}
