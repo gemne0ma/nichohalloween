@@ -50,7 +50,7 @@ type Lot = {
 
 const LOTS: Lot[] = [
   { title: "Rum tasting and distillery tour", donor: "Red Mill Distillery", image: "aa/red-mill-rum-private-tasting-and-behind-the-scenes-tour-for-up-to-12-people-value-1500", value: "$1,500", slug: "red-mill-rum-private-tasting-and-behind-the-scenes-tour-for-up-to-12-people-value-1500" },
-  { title: "2 hour harbour cruise on Iluka", donor: "Iluka", image: "aa/localing-tours-2-hour-harbour-cruise-value-2480", value: "$2,480", slug: "localing-tours-2-hour-harbour-cruise-value-2480" },
+  { title: "2 hour harbour cruise on the Iluka", donor: "Localing Tours", image: "aa/localing-tours-2-hour-harbour-cruise-value-2480", value: "$2,480", slug: "localing-tours-2-hour-harbour-cruise-value-2480" },
   { title: "Rock Lobster, an original artwork", donor: "Lara Scolari", image: "aa/rock-lobster-by-local-artist-lara-scolari-value-1290", value: "$1,290", slug: "rock-lobster-by-local-artist-lara-scolari-value-1290" },
   { title: "Photoshoot", donor: "Verve", image: "aa/verve-photoshoot-value-1200", value: "$1,200", slug: "verve-photoshoot-value-1200" },
   { title: "A Small School with a Big Heart, an original artwork", donor: "Mark Naismith-Beeley", image: "aa/a-small-school-with-a-big-heart-by-mark-naismith-beeley-value-800", value: "$800", slug: "a-small-school-with-a-big-heart-by-mark-naismith-beeley-value-800" },
@@ -72,7 +72,7 @@ const LOTS: Lot[] = [
   { title: "Pamper and health bundle", donor: "The Well Store Rozelle", image: "aa/the-well-store-bundle-value-350", value: "$350", slug: "the-well-store-bundle-value-350" },
   { title: "Cozze pizza oven, starter kit and cover", donor: "Bunnings Rozelle", image: "aa/cozze-pizza-oven-starter-kit-and-cover-value-375", value: "$375", slug: "cozze-pizza-oven-starter-kit-and-cover-value-375" },
   { title: "3 months all access", donor: "Balmain Fitness", image: "aa/balmain-fitness-3-months-full-access-membership-value-450", value: "$450", slug: "balmain-fitness-3-months-full-access-membership-value-450" },
-  { title: "10 pack of pilates classes", donor: "Rituel Movement Rozelle", image: "aa/rituel-movement-10-pack-pilates-classes-value-385", value: "$385", slug: "rituel-movement-10-pack-pilates-classes-value-385" },
+  { title: "10 pack of pilates classes", donor: "Rituel Movement", image: "aa/rituel-movement-10-pack-pilates-classes-value-385", value: "$385", slug: "rituel-movement-10-pack-pilates-classes-value-385" },
   { title: "Signed poster, Balmain Tigers legend", donor: "Wayne Pearce", image: "aa/signed-wayne-pearce-poster-balmain-tigers-legend-value-350", value: "$350", slug: "signed-wayne-pearce-poster-balmain-tigers-legend-value-350" },
   { title: "$300 voucher for hand woven Panama hats", donor: "Camilo Hats", image: "aa/camilo-hats-hand-woven-panama-hats-300-voucher", value: "$300", note: "1 of 2", slug: "camilo-hats-hand-woven-panama-hats-300-voucher" },
   { title: "$300 voucher for hand woven Panama hats", donor: "Camilo Hats", image: "aa/camilo-hats-hand-woven-panama-hats-300-voucher-2", value: "$300", note: "2 of 2", slug: "camilo-hats-hand-woven-panama-hats-300-voucher-2" },
@@ -95,7 +95,7 @@ const LOTS: Lot[] = [
   { title: "Younger kids toy bundle", donor: "Kidstuff Balmain", image: "aa/kidstuff-younger-kids-bundle-value-200", value: "$200", slug: "kidstuff-younger-kids-bundle-value-200" },
   { title: "$200 voucher", donor: "Walls Pharmacy", image: "aa/walls-pharmacy-200-voucher", value: "$200", slug: "walls-pharmacy-200-voucher" },
   { title: "$200 voucher", donor: "Ingenia Holiday Parks", image: "aa/ingenia-holiday-park-200-voucher", value: "$200", slug: "ingenia-holiday-park-200-voucher" },
-  { title: "Kids party voucher", donor: "Vitaland", image: "aa/vitaland-kids-st-leonards-200-party-voucher", value: "$200", slug: "vitaland-kids-st-leonards-200-party-voucher" },
+  { title: "Kids party voucher", donor: "Vitaland Kids St Leonards", image: "aa/vitaland-kids-st-leonards-200-party-voucher", value: "$200", slug: "vitaland-kids-st-leonards-200-party-voucher" },
   { title: "Family pass", donor: "Australian Reptile Park", image: "aa/australian-reptile-park-family-pass-value-155", value: "$155", slug: "australian-reptile-park-family-pass-value-155" },
   { title: "$150 voucher", donor: "Bits of Australia", image: "aa/bits-of-australia-150-voucher", value: "$150", slug: "bits-of-australia-150-voucher" },
   { title: "10 training sessions and 10 recovery sessions", donor: "Combine Air", image: "aa/combine-air-10-training-sessions-10-x-recovery-sessions-value-350", value: "$350", note: "1 of 2", slug: "combine-air-10-training-sessions-10-x-recovery-sessions-value-350" },
