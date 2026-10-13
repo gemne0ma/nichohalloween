@@ -127,6 +127,15 @@ const SPONSORS: Sponsor[] = [
     height: 430,
   },
   {
+    // White is baked into the file, so it keeps the default white plate.
+    name: "Elemental Chiropractic",
+    url: "https://elementalchiropractic.com.au/",
+    tier: "bite",
+    logo: "/images/sponsor-logos/elemental-chiropractic.webp",
+    width: 900,
+    height: 403,
+  },
+  {
     name: "Mannings Funerals",
     url: "https://www.mannings.com.au/",
     tier: "bite",
@@ -181,7 +190,11 @@ const TIER_STYLES: Record<
     name: "text-[14pt] md:text-[18pt]",
     plate: "h-[100px] md:h-[120px]",
     pad: "p-4 md:p-5",
-    grid: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8",
+    // Four Bite-Sized sponsors since Elemental Chiropractic came on, so four
+    // across rather than three with the fourth stranded alone on a second
+    // row. Same shape as bronze now, which is fine: the tiers are told apart
+    // by plate height and name size, not by how many fit on a row.
+    grid: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8",
     heading: "Bite-Sized",
   },
 };
