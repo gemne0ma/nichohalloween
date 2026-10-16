@@ -154,7 +154,7 @@ const ATTRACTIONS: Attraction[] = [
   {
     num: "No. 16",
     title: "The Pumpkin Patch",
-    desc: "",
+    desc: "Can you snag three spooky pumpkins from our patch with the giant hook?\n\nSnatch 3 pumpkins, add the numbers and grab your corresponding prize!\n\nWill it be Pok\u00e9mon cards, a giant inflatable or a viral hard to find squishy?! \ud83c\udf83\n\nLots of prizes to be won!\n\nFeel free to swing by for a photo at our famous scarecrow set up too!",
     meta: "5 tokens per bag · all ages",
     gradient: "from-forest to-forest-deep",
     image: "/pump2.jpg",
@@ -272,7 +272,7 @@ export default function AttractionsPage() {
                 <h2 className="font-display text-2xl md:text-3xl text-ink tracking-wide leading-tight mb-3">
                   {attraction.title}
                 </h2>
-                <p className="font-body text-base text-ink-soft leading-relaxed">
+                <p className="font-body text-base text-ink-soft leading-relaxed whitespace-pre-line">
                   {attraction.desc}
                 </p>
 
