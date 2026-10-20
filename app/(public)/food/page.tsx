@@ -23,13 +23,16 @@ const ROCKET_BOY = {
   ],
 };
 
-// No token prices anywhere on this page, on purpose. They are not set yet and
-// a wrong number on a food stall is the kind of thing a parent queues for and
-// then argues about. Add them here when they are confirmed, as a `meta` line
-// on each item, matching the pattern on /attractions.
+// Token prices are opt in, via `meta`. They were deliberately absent while
+// none were set, because a wrong number on a food stall is the kind of thing
+// a parent queues for and then argues about. Only the assorted ice creams
+// have a confirmed price so far, so only that card shows one. Add the rest
+// here as they are confirmed, matching the pattern on /attractions.
 type Item = {
   name: string;
   desc?: string;
+  // Token price. Only set where it is confirmed, see the note above.
+  meta?: string;
   image?: string;
   // A second photo, laid over the corner of the first as a small tilted
   // polaroid. The site already leans on tilted bone-framed photos (the
@@ -61,7 +64,7 @@ const SWEETS: Item[] = [
   { name: "Fairy floss", image: "/images/food/fairy-floss.webp" },
   { name: "Snow cones", image: "/images/food/snow-cones.webp" },
   { name: "Popcorn", image: "/images/food/popcorn.webp" },
-  { name: "Ben & Jerry's ice cream", image: "/images/food/ben-and-jerrys.webp" },
+  { name: "Assorted ice creams", meta: "4 tokens", image: "/images/food/assorted-ice-creams.webp" },
 ];
 
 const CAKE_STALL: Item[] = [
@@ -113,6 +116,11 @@ function ItemCard({ item, size = "md" }: { item: Item; size?: "sm" | "md" }) {
         >
           {item.name}
         </h3>
+        {item.meta && (
+          <p className="font-mono text-xs uppercase tracking-[0.15em] text-moss mt-2">
+            {item.meta}
+          </p>
+        )}
         {item.desc && (
           <p className="font-body text-base text-ink-soft leading-relaxed mt-3">
             {item.desc}
