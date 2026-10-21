@@ -23,11 +23,14 @@ const ROCKET_BOY = {
   ],
 };
 
-// Token prices are opt in, via `meta`. They were deliberately absent while
-// none were set, because a wrong number on a food stall is the kind of thing
-// a parent queues for and then argues about. Only the assorted ice creams
-// have a confirmed price so far, so only that card shows one. Add the rest
-// here as they are confirmed, matching the pattern on /attractions.
+// Token prices live on `meta`. Gemma confirmed them in dollars on 21 October
+// and they are shown as tokens, because tokens are what food is paid for with
+// on the day and a token is a dollar: the ice cream carries "4 TOKENS" on its
+// own poster and appears in her list at $4, which fixes the rate from two
+// independent sources. If that rate is ever not 1:1 then every one of these
+// has to change, so do not treat the conversion as cosmetic.
+//
+// The cake stall is priced on the day and deliberately carries no `meta`.
 type Item = {
   name: string;
   desc?: string;
@@ -48,11 +51,13 @@ type Item = {
 const KITCHEN: Item[] = [
   {
     name: "Sausage sizzle",
+    meta: "7 tokens",
     desc: "The one that never changes. Onions optional, sauce compulsory.",
     image: "/images/food/sausage-sizzle.webp",
   },
   {
     name: "American nachos",
+    meta: "4 tokens",
     desc: "Corn chips under a proper amount of melted cheese.",
     image: "/images/food/nachos.webp",
     inset: "/images/food/nachos-tray.webp",
@@ -61,10 +66,17 @@ const KITCHEN: Item[] = [
 ];
 
 const SWEETS: Item[] = [
-  { name: "Fairy floss", image: "/images/food/fairy-floss.webp" },
-  { name: "Snow cones", image: "/images/food/snow-cones.webp" },
-  { name: "Popcorn", image: "/images/food/popcorn.webp" },
+  { name: "Fairy floss", meta: "4 tokens", image: "/images/food/fairy-floss.webp" },
+  { name: "Snow cones", meta: "4 tokens", image: "/images/food/snow-cones.webp" },
+  { name: "Popcorn", meta: "4 tokens", image: "/images/food/popcorn.webp" },
   { name: "Assorted ice creams", meta: "4 tokens", image: "/images/food/assorted-ice-creams.webp" },
+];
+
+const KIOSK: Item[] = [
+  { name: "Soft drinks", meta: "3 tokens" },
+  { name: "Water", meta: "3 tokens" },
+  { name: "Bag of chips", meta: "3 tokens" },
+  { name: "Fruit", meta: "1 token" },
 ];
 
 const CAKE_STALL: Item[] = [
@@ -207,6 +219,9 @@ export default function FoodPage() {
                 Rocket Boy will be spinning out delicious Italian-made pizza,
                 fresh from the oven. Vegetarian and non options both available.
               </p>
+              <p className="font-mono text-xs uppercase tracking-[0.15em] text-moss mt-4">
+                Pepperoni 8 tokens &middot; Margherita 7 tokens
+              </p>
             </div>
           </div>
 
@@ -277,6 +292,16 @@ export default function FoodPage() {
           <SectionHeading>Something sweet</SectionHeading>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {SWEETS.map((item) => (
+              <ItemCard key={item.name} item={item} size="sm" />
+            ))}
+          </div>
+        </div>
+
+        {/* Drinks and the odds and ends, which have no photographs. */}
+        <div className="mb-16">
+          <SectionHeading>Drinks and snacks</SectionHeading>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
+            {KIOSK.map((item) => (
               <ItemCard key={item.name} item={item} size="sm" />
             ))}
           </div>
