@@ -1,3 +1,15 @@
+// Pre-purchase kill switch. Flipped true on festival morning, 24 October
+// 2026, when online sales closed and the token booth took over.
+//
+// Both the /tokens page and /api/checkout read this. The page alone is not
+// enough: a browser that loaded /tokens before the switch still has a working
+// checkout button, and without the route refusing too, that stale tab can
+// take money after the booth list has been printed. That family then arrives
+// with a confirmation email and no name on the list.
+//
+// Set back to false to reopen sales.
+export const PRE_PURCHASE_CLOSED = true;
+
 // Token bundles. Hardcoded, not configurable in v1.
 // AT-FESTIVAL price is what families pay at the door (Square).
 // PRE-PURCHASE price is what we charge online (15% less).

@@ -2,7 +2,12 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { BUNDLES, formatCents, type BundleType } from "@/lib/bundles";
+import {
+  BUNDLES,
+  PRE_PURCHASE_CLOSED,
+  formatCents,
+  type BundleType,
+} from "@/lib/bundles";
 
 // Artwork is decorative only. Every price, count and label on this page comes
 // from BUNDLES. Nothing here reads a number off an image.
@@ -157,6 +162,25 @@ export default function TokensPage() {
           </div>
         </div>
 
+        {PRE_PURCHASE_CLOSED ? (
+          <div className="bg-bone rounded-3xl p-8 md:p-12 text-center shadow-[0_2px_24px_rgba(216,122,63,0.30)]">
+            <p className="font-mono text-xs uppercase tracking-[0.3em] text-rust-deep mb-4">
+              Pre-purchase has closed
+            </p>
+            <h2 className="font-display font-bold text-3xl md:text-4xl text-ink mb-4 leading-tight">
+              See you at the Token Booth
+            </h2>
+            <p className="font-body text-lg text-ink-soft max-w-xl mx-auto">
+              Online pre-purchase is now closed. You can buy tokens at the Token
+              Booth on the day, cash or card.
+            </p>
+            <p className="font-body text-base text-ink-soft max-w-xl mx-auto mt-4">
+              Already pre-purchased? Bring your confirmation email to the Token
+              Booth and we will hand over your tokens.
+            </p>
+          </div>
+        ) : (
+          <>
         {/* Bundle cards: artwork on top, purchase panel underneath */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
           {bundleEntries.map(([bundleType, bundle], i) => (
@@ -297,6 +321,8 @@ export default function TokensPage() {
           Pre-purchase closes at midnight the day before the festival. Bring your
           confirmation email to the Token Booth on the day.
         </p>
+          </>
+        )}
       </div>
     </main>
   );

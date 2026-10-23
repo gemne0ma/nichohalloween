@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
-import { BUNDLES, type BundleType } from "@/lib/bundles";
+import { BUNDLES, PRE_PURCHASE_CLOSED, type BundleType } from "@/lib/bundles";
 
 // Hard cap per bundle line. Nobody is buying twenty 200-packs, and without a
 // cap a crafted request could ask Stripe for a nonsense amount.
@@ -21,6 +21,19 @@ type CartLine = { bundleType: BundleType; quantity: number };
 // Quantities come from the client. Prices never do: every unit_amount is read
 // from BUNDLES on the server.
 export async function POST(req: NextRequest) {
+  // Refuse before reading the body. The page hides the checkout button, but a
+  // browser holding an older copy of the page does not, so this is what
+  // actually stops a sale once the booth has taken over.
+  if (PRE_PURCHASE_CLOSED) {
+    return NextResponse.json(
+      {
+        error:
+          "Online pre-purchase has closed. You can buy tokens at the Token Booth on the day, cash or card.",
+      },
+      { status: 403 }
+    );
+  }
+
   try {
     const body = (await req.json()) as {
       items?: unknown;
