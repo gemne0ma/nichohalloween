@@ -66,19 +66,10 @@ export default function Home() {
             <span className="text-pumpkin mx-1 md:mx-3 text-[1.2em] md:text-[3em] leading-none align-middle relative -top-[1px] md:-top-[2px]">&middot;</span> <span>Tasty food</span>
           </p>
 
-          {/* Countdown with "Haunted sleeps to go" graphic.
-              Order is unchanged, graphic above the numbers. The mobile gap is
-              tightened so the graphic sits on top of the countdown rather
-              than floating apart from it. Desktop is untouched. */}
-          <div className="md:order-5 flex flex-col md:flex-row items-center gap-0 md:gap-6">
-            <img
-              src="/text.webp"
-              alt="Haunted sleeps to go"
-              /* -mb-3 on mobile only. The 15deg tilt leaves empty space inside
-                 the image's upright bounding box, so a negative margin pulls
-                 the countdown up into it. Desktop keeps its natural spacing. */
-              className="w-[160px] md:w-[360px] h-auto -rotate-[15deg] -mb-3 md:mb-0"
-            />
+          {/* Countdown, which carries its own "Haunted sleeps to go" graphic
+              while it is still counting and drops it, with the numbers, once
+              the festival has passed. */}
+          <div className="md:order-5">
             <Countdown />
           </div>
         </div>

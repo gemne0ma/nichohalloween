@@ -54,21 +54,39 @@ export default function Countdown() {
 
   if (time.isPast) {
     return (
-      <p className="font-display text-3xl text-pumpkin italic">
-        The festival has begun.
-      </p>
+      <div className="text-center">
+        <p className="font-display text-3xl md:text-4xl text-pumpkin italic leading-tight">
+          The festival has ended for 2026!
+        </p>
+        <p className="font-body text-base md:text-lg text-paper mt-3 max-w-md mx-auto">
+          Thank you so much to the community for joining us and supporting our
+          small school.
+        </p>
+      </div>
     );
   }
 
   return (
-    <div className="flex gap-3 md:gap-6 justify-center items-baseline font-mono text-ink">
+    <div className="flex flex-col md:flex-row items-center gap-0 md:gap-6">
+      {/* Moved here from the homepage so it is shown only while there is
+          something to count down to. */}
+      <img
+        src="/text.webp"
+        alt="Haunted sleeps to go"
+        /* -mb-3 on mobile only. The 15deg tilt leaves empty space inside the
+           image's upright bounding box, so a negative margin pulls the
+           countdown up into it. Desktop keeps its natural spacing. */
+        className="w-[160px] md:w-[360px] h-auto -rotate-[15deg] -mb-3 md:mb-0"
+      />
+      <div className="flex gap-3 md:gap-6 justify-center items-baseline font-mono text-ink">
       <Unit value={time.days} label="days" />
       <Separator />
       <Unit value={time.hours} label="hours" />
       <Separator />
       <Unit value={time.minutes} label="mins" />
       <Separator />
-      <Unit value={time.seconds} label="secs" />
+        <Unit value={time.seconds} label="secs" />
+      </div>
     </div>
   );
 }

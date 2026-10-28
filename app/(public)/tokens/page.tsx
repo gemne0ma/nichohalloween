@@ -165,14 +165,14 @@ export default function TokensPage() {
         {PRE_PURCHASE_CLOSED ? (
           <div className="bg-bone rounded-3xl p-8 md:p-12 text-center shadow-[0_2px_24px_rgba(216,122,63,0.30)]">
             <p className="font-mono text-xs uppercase tracking-[0.3em] text-rust-deep mb-4">
-              Thank you
+              Pre-purchase has closed
             </p>
             <h2 className="font-display font-bold text-3xl md:text-4xl text-ink mb-4 leading-tight">
-              The festival has ended for 2026!
+              Token sales are closed for 2026
             </h2>
             <p className="font-body text-lg text-ink-soft max-w-xl mx-auto">
-              Thank you so much to the community for joining us and supporting
-              our small school.
+              Thank you to everyone who pre-purchased. Tokens will be back when
+              the festival returns in 2027.
             </p>
           </div>
         ) : (
